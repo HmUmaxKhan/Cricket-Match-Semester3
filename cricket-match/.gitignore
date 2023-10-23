@@ -1,0 +1,35 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+cricket-match/node_modules
+cricket-match/.pnp
+cricket-match/.pnp.js
+
+# testing
+cricket-match/coverage
+
+# next.js
+cricket-match/.next/
+cricket-match/out/
+
+# production
+cricket-match/build
+
+# misc
+cricket-match/.DS_Store
+cricket-match/*.pem
+
+# debug
+cricket-match/npm-debug.log*
+cricket-match/yarn-debug.log*
+cricket-match/yarn-error.log*
+
+# local env files
+cricket-match/.env*.local
+
+# vercel
+cricket-match/.vercel
+
+# typescript
+cricket-match/*.tsbuildinfo
+cricket-match/next-env.d.ts
