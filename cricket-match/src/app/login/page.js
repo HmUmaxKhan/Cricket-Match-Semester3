@@ -31,10 +31,10 @@ function Login() {
     });
     response = await response.json();
 
-    console.log(response.token);
+    console.log(response);
 
     if (response.token) {
-      localStorage.setItem("login",response.token)
+      localStorage.setItem("login",JSON.stringify(response));
       window.location.href="/";
       
     }

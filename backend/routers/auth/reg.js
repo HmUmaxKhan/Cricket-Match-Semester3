@@ -9,7 +9,7 @@ const querySql = require("../../dbConnection/db");
 router.post("/reg", async(req,res)=> {
 
   // Fetching Data from the Body
-  let { FName, LName, Email, Username, Password, Phone } = await req.body;
+  let { FName, LName, Email, Username, Password, Phone, CNIC } = await req.body;
 
   // Checking if User is already exits or not
   const results = await querySql({
@@ -29,8 +29,8 @@ router.post("/reg", async(req,res)=> {
 
   //Inserting data into Sql
   const user = await querySql({
-    query: "INSERT INTO Users (FName, LName, Email, Username, Password, Phone) VALUES(?,?,?,?,?,?)",
-    values: [FName, LName, Email, Username, Pass, Phone]
+    query: "INSERT INTO Users (FName, LName, Email, Username, Password, Phone, CNIC) VALUES(?,?,?,?,?,?,?)",
+    values: [FName, LName, Email, Username, Pass, Phone,CNIC]
   })
 
   // Generating Json Web Token for Authentication
