@@ -1,8 +1,10 @@
 "use client"
 
+import styles from   "./login.module.css"
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
+import NavBar from "../components/shared/NavBar/NavBar";
 
 function Login() {
 
@@ -41,10 +43,12 @@ function Login() {
   }
 
   return (
+    <div>
+      <NavBar />
     <div className='container flex justify-center items-center'  style={{height:"100vh"}}> 
     <div className="form-floating mb-3 ">
   <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" name="Username" onChange={Change} />
-  <label htmlFor="floatingInput">Email address</label>
+  <label htmlFor="floatingInput" className={styles.main}>Email address</label>
 </div>
 <br></br>
 <div className="form-floating">
@@ -55,7 +59,7 @@ function Login() {
 <button className=' text-center bg-slate-400' onClick={handleClick}>Submit</button>
 <Link href={"/register"}> Registration</Link>
     </div>
-
+    </div>
   )
 }
 

@@ -1,0 +1,35 @@
+/* components/NavBar.module.css */
+.navBar {
+  background-color: #333;
+  padding: 1rem;
+  text-align: center;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.navItem {
+  margin: 0 10px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  /* Mobile styles */
+  .navList {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navItem {
+    margin: 10px 0;
+  }
+}
