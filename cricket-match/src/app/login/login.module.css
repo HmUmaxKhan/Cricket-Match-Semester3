@@ -1,5 +1,47 @@
-.main{
-  font-size:xx-large;
-  font-style: italic;
+/* Add your styles here */
 
+.body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.form-floating {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 300px; /* Adjust the width as needed */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Green color, you can change this */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #45a049; /* Darker green color on hover */
+}
+
+/* Add your custom styles as needed */
