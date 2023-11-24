@@ -2,8 +2,12 @@
 
 import styles from "./login.module.css";
 import { useState } from "react";
+<<<<<<< HEAD
 import NavBar from "../components/shared/NavBar/NavBar";
 import Link from "next/link";
+=======
+import Navbar from "../nav/Navbar";
+>>>>>>> 47635ab74d55c9f12c546c7fb55440a392b67cb3
 
 function Login() {
   const [login, setLogin] = useState({

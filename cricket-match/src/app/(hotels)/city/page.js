@@ -3,16 +3,16 @@ import Link from "next/link";
 const HostelsList = () => {
     return ( 
         <div>
-         <Link href="/lhr">Lahore</Link>
+         <Link href="/city/lahore">Lahore</Link>
          <br></br>
 
-         <Link href="/karachi">Karachi</Link>
+         <Link href="/city/karachi">Karachi</Link>
          <br></br>
 
-         <Link href="/multan">Multan</Link>
+         <Link href="/city/multan">Multan</Link>
          <br></br>
 
-         <Link href="/pindi">Twin Cities</Link>
+         <Link href="/city/rawalpindi">Twin Cities</Link>
          <br></br>
         </div>
      );
