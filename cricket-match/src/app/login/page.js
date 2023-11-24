@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
+import Navbar from "../nav/Navbar";
 
 function Login() {
 
@@ -41,6 +42,7 @@ function Login() {
   }
 
   return (
+    <div>  
     <div className='container flex justify-center items-center'  style={{height:"100vh"}}> 
     <div className="form-floating mb-3 ">
   <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" name="Username" onChange={Change} />
@@ -55,7 +57,7 @@ function Login() {
 <button className=' text-center bg-slate-400' onClick={handleClick}>Submit</button>
 <Link href={"/register"}> Registration</Link>
     </div>
-
+    </div>
   )
 }
 
