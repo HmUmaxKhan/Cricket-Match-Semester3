@@ -1,0 +1,378 @@
+.box {
+    height: 96px;
+    width: 1200px;
+}
+
+.box .nav-bar {
+    height: 96px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 1206px;
+}
+
+.box .overlap {
+    height: 96px;
+    position: relative;
+    width: 1200px;
+}
+
+.box .rectangle {
+    background-color: #d9d9d9;
+    height: 96px;
+    left: 1px;
+    position: absolute;
+    top: 0;
+    width: 1199px;
+}
+
+.box .div {
+    background-color: #051622;
+    height: 96px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 310px;
+}
+
+.box .text-wrapper {
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 60px;
+    font-weight: 400;
+    left: 60px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 15px;
+    white-space: nowrap;
+    width: 192px;
+}
+
+.box .text-wrapper-2 {
+    color: #000000;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 40px;
+    font-weight: 600;
+    left: 891px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 25px;
+    width: 118px;
+}
+
+.box .transport-icon {
+    background-color: #ffffff;
+    border: 4px solid;
+    border-color: #000000;
+    border-radius: 49.13px/46.69px;
+    height: 93px;
+    left: 520px;
+    position: absolute;
+    top: 3px;
+    width: 98px;
+}
+
+.box .bus {
+    height: 45px;
+    left: 22px;
+    position: relative;
+    top: 20px;
+    width: 46px;
+}
+
+.box .overlap-group {
+    background-color: #ffffff;
+    border: 5px solid;
+    border-color: #000000;
+    border-radius: 8px;
+    height: 38px;
+    left: 5px;
+    position: absolute;
+    top: 0;
+    width: 37px;
+}
+
+.box .front-mirror {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #000000;
+    border-radius: 1px;
+    height: 16px;
+    left: 2px;
+    position: absolute;
+    top: 5px;
+    width: 22px;
+}
+
+.box .head-light {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #000000;
+    border-radius: 2.78px/2.75px;
+    height: 5px;
+    left: 3px;
+    position: absolute;
+    top: 22px;
+    width: 6px;
+}
+
+.box .head-light-2 {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #000000;
+    border-radius: 2.78px/2.75px;
+    height: 5px;
+    left: 18px;
+    position: absolute;
+    top: 22px;
+    width: 6px;
+}
+
+.box .tyre {
+    background-color: #060505;
+    border-radius: 2px;
+    height: 6px;
+    left: 13px;
+    position: absolute;
+    top: 38px;
+    width: 5px;
+}
+
+.box .tyre-2 {
+    background-color: #050505;
+    border-radius: 2px;
+    height: 6px;
+    left: 28px;
+    position: absolute;
+    top: 38px;
+    width: 5px;
+}
+
+.box .side-mirror {
+    background-color: #000000;
+    height: 9px;
+    left: 0;
+    position: absolute;
+    top: 12px;
+    width: 4px;
+}
+
+.box .side-mirror-2 {
+    background-color: #000000;
+    height: 9px;
+    left: 43px;
+    position: absolute;
+    top: 12px;
+    width: 4px;
+}
+
+.box .ticket-icon {
+    background-color: #ffffff;
+    border: 4px solid;
+    border-color: #000000;
+    border-radius: 49.13px/46.69px;
+    height: 93px;
+    left: 689px;
+    position: absolute;
+    top: 3px;
+    width: 98px;
+}
+
+.box .ticket {
+    height: 82px;
+    left: 13px;
+    position: relative;
+    top: 2px;
+    width: 63px;
+}
+
+.box .overlap-2 {
+    height: 82px;
+    position: relative;
+}
+
+.box .ticket-structure {
+    height: 82px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 63px;
+}
+
+.box .overlap-group-2 {
+    height: 77px;
+    left: -1px;
+    position: relative;
+    top: 1px;
+    width: 65px;
+}
+
+.box .ticket-rectangle {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #000000;
+    height: 71px;
+    left: 17px;
+    position: absolute;
+    top: 3px;
+    transform: rotate(32.91deg);
+    width: 32px;
+}
+
+.box .ticket-semi-circle {
+    height: 13px;
+    left: 42px;
+    position: absolute;
+    top: 4px;
+    width: 15px;
+}
+
+.box .img {
+    height: 13px;
+    left: 9px;
+    position: absolute;
+    top: 61px;
+    width: 15px;
+}
+
+.box .tickets-dots {
+    height: 18px;
+    left: 28px;
+    position: absolute;
+    top: 15px;
+    width: 24px;
+}
+
+.box .rectangle-2 {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #000000;
+    border-radius: 1.55px;
+    height: 2px;
+    left: 20px;
+    position: absolute;
+    top: 15px;
+    transform: rotate(33.85deg);
+    width: 4px;
+}
+
+.box .rectangle-3 {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #000000;
+    border-radius: 1.55px;
+    height: 2px;
+    left: 15px;
+    position: absolute;
+    top: 12px;
+    transform: rotate(33.85deg);
+    width: 4px;
+}
+
+.box .rectangle-4 {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #000000;
+    border-radius: 1.55px;
+    height: 2px;
+    left: 0;
+    position: absolute;
+    top: 1px;
+    transform: rotate(33.85deg);
+    width: 4px;
+}
+
+.box .rectangle-5 {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #000000;
+    border-radius: 1.55px;
+    height: 2px;
+    left: 5px;
+    position: absolute;
+    top: 5px;
+    transform: rotate(33.85deg);
+    width: 4px;
+}
+
+.box .rectangle-6 {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: #000000;
+    border-radius: 1.55px;
+    height: 2px;
+    left: 10px;
+    position: absolute;
+    top: 8px;
+    transform: rotate(33.85deg);
+    width: 4px;
+}
+
+.box .text-wrapper-3 {
+    color: #000000;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 40px;
+    font-weight: 600;
+    left: 1037px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 25px;
+    white-space: nowrap;
+    width: 163px;
+}
+
+.box .house-icon {
+    background-color: #ffffff;
+    border: 4px solid;
+    border-color: #000000;
+    border-radius: 49.13px/46.69px;
+    height: 93px;
+    left: 351px;
+    position: absolute;
+    top: 3px;
+    width: 98px;
+}
+
+.box .house {
+    height: 49px;
+    left: 26px;
+    position: relative;
+    top: 19px;
+    width: 38px;
+}
+
+.box .overlap-group-3 {
+    height: 49px;
+    position: relative;
+}
+
+.box .home {
+    background-color: #ffffff;
+    border: 3px solid;
+    border-color: #000000;
+    border-radius: 7px;
+    height: 28px;
+    left: 0;
+    position: absolute;
+    top: 21px;
+    width: 38px;
+}
+
+.box .door {
+    height: 16px;
+    left: 13px;
+    position: absolute;
+    top: 33px;
+    width: 14px;
+}
+
+.box .roof {
+    height: 23px;
+    left: 1px;
+    position: absolute;
+    top: 0;
+    width: 36px;
+}
