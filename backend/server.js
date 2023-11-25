@@ -10,6 +10,7 @@ app.use(express.json());
 app.use('/api/auth',require('./routers/auth/reg'));
 app.use('/api/auth',require('./routers/auth/login'));
 app.use('/api/auth',update);
+app.use('/api',require("./routers/tournament/tournament"))
 
 
 

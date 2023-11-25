@@ -9,12 +9,12 @@ const querySql = require("../../dbConnection/db");
 router.post("/reg", async(req,res)=> {
 
   // Fetching Data from the Body
-  let { FName, LName, Email, Username, Password, Phone, CNIC } = await req.body;
+  let { Fname, Lname, EmailAddress, UserName, Password, Contact, CNIC, Address } = await req.body;
 
   // Checking if User is already exits or not
   const results = await querySql({
-    query: "SELECT * FROM Users WHERE Email = ?",
-    values: [Email],
+    query: "SELECT * FROM users WHERE EmailAddress = ?",
+    values: [EmailAddress],
   });
   
   let len = results.length;
@@ -29,15 +29,15 @@ router.post("/reg", async(req,res)=> {
 
   //Inserting data into Sql
   const user = await querySql({
-    query: "INSERT INTO Users (FName, LName, Email, Username, Password, Phone, CNIC) VALUES(?,?,?,?,?,?,?)",
-    values: [FName, LName, Email, Username, Pass, Phone,CNIC]
+    query: "INSERT INTO users (Fname, Lname, EmailAddress, UserName, Password, Contact, CNIC, Address) VALUES(?,?,?,?,?,?,?,?)",
+    values: [Fname, Lname, EmailAddress, UserName, Pass, Contact,CNIC, Address]
   })
 
   // Generating Json Web Token for Authentication
-  const token = JWT.sign({Email:Email},"Hello World , My life is js")
+  const token = JWT.sign({EmailAddress:EmailAddress,UserName:UserName},"Hello World , My life is js")
 
   // Last Response
-  let newUserObj={Email,Username,token}
+  let newUserObj={EmailAddress,UserName,token}
   
   res.json(newUserObj);
 

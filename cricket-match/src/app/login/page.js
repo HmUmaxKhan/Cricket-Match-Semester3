@@ -7,7 +7,7 @@ import Link from "next/link";
 
 function Login() {
   const [login, setLogin] = useState({
-    Username: "",
+    UserName: "",
     Password: "",
   });
 
@@ -25,7 +25,7 @@ function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          Username: login.Username,
+          UserName: login.UserName,
           Password: login.Password,
         }),
       });
@@ -64,7 +64,7 @@ function Login() {
             className={`form-control ${styles.input}`}
             id="floatingInput"
             placeholder="name@example.com"
-            name="Username"
+            name="UserName"
             onChange={Change}
           />
           <label htmlFor="floatingInput" className={`${styles.label} ${styles.main}`}>

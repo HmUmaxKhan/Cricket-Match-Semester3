@@ -14,28 +14,28 @@ const UpdatePage = () => {
       const loginInfo=JSON.parse(localStorage.getItem('login'));
       SetUserDetails(loginInfo);
   
-      const { Email, FName, LName, Username, Phone, CNIC } = loginInfo;
+      const { EmailAddress, Fname, Lname, UserName, Contact, CNIC, Address } = loginInfo;
 
       setReg({
-        Email,
-        FName,
-        LName,
-        Username,
-        Password: "",
-        Phone,
+        EmailAddress,
+        Fname,
+        Lname,
+        UserName,
+        Contact,
         CNIC,
+        Address
       });
     }
   }, []);
 
   const [reg, setReg] = useState({
-    Email: "",
-    FName: "",
-    LName: "",
-    Username: "",
-    Password: "",
-    Phone: "",
+    EmailAddress: "",
+    Fname: "",
+    Lname: "",
+    UserName: "",
+    Contact: "",
     CNIC: "",
+    Address:""
   });
 
   const Change = (e)=>{
@@ -51,13 +51,13 @@ const UpdatePage = () => {
         "content-type":"application/json"
       },
       body:JSON.stringify({
-            Email:reg.Email,
-            FName:reg.FName,
-            LName:reg.LName,
-            Username:reg.Username,
-            Password:reg.Password,
-            Phone:reg.Phone,
-            CNIC:reg.CNIC
+            EmailAddress:reg.EmailAddress,
+            Fname:reg.Fname,
+            Lname:reg.Lname,
+            UserName:reg.UserName,
+            Contact:reg.Contact,
+            CNIC:reg.CNIC,
+            Address:reg.Address
       })
     });
     response = await response.json();
@@ -65,48 +65,49 @@ const UpdatePage = () => {
   }
 
   return (
-    <div className='container flex justify-center items-center'  style={{height:"100vh"}}> 
+    <div className='container flex justify-center items-center flex-col'  style={{height:"100vh"}}> 
 
     <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="FName" value={reg.FName} onChange={Change} />
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Fname" value={reg.Fname} onChange={Change} />
   <label htmlFor="floatingInput">First Name</label>
 </div>
 <br></br>
 
     <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="LName" value={reg.LName} onChange={Change} readOnly/>
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Lname" value={reg.Lname} onChange={Change} readOnly/>
   <label htmlFor="floatingInput">Last Name</label>
 </div>
 <br></br>
 
 
     <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Username" value={reg.Username} onChange={Change} />
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="UserName" value={reg.UserName} onChange={Change} />
   <label htmlFor="floatingInput">Username</label>
 </div>
 <br></br>
 
-<div className="form-floating">
-  <input type="password" className="form-control" id="floatingPassword" placeholder="Password" name="Password" onChange={Change}/>
-  <label htmlFor="floatingPassword" >Password</label>
-</div>
-<br></br>
 
 <div className="form-floating mb-3 ">
-  <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" name="Email" value={reg.Email} onChange={Change} />
+  <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" name="EmailAddress" value={reg.EmailAddress} onChange={Change} />
   <label htmlFor="floatingInput">Email address</label>
 </div>
 <br></br>
 
 
 <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" value={reg.Phone} name="Phone" onChange={Change} />
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" value={reg.Contact} name="Contact" onChange={Change} />
   <label htmlFor="floatingInput">Phone</label>
 </div>
 <br></br>
 
 <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Phone" value={reg.CNIC} onChange={Change} disabled/>
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="CNIC" value={reg.CNIC} onChange={Change} disabled/>
+  <label htmlFor="floatingInput">CNIC</label>
+</div>
+<br></br>
+
+<div className="form-floating mb-3 ">
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Address" value={reg.Address} onChange={Change} />
   <label htmlFor="floatingInput">CNIC</label>
 </div>
 <br></br>

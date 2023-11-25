@@ -11,14 +11,13 @@ export default function Home() {
   useEffect(()=>{
     if (!localStorage.getItem("login")) {
       window.location.href="/login";
-
     }
 
   })
   return (
     <main>
        <Link href="/update">Update</Link><br></br>
-       <Link href="/city">Cities in which Hostels are present</Link>
+       <Link href="/tournaments">Tournaments</Link>
   
 
 

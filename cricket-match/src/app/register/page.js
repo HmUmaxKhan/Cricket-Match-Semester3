@@ -5,12 +5,13 @@ import { useState } from "react";
 function Login() {
 
   const [reg, setReg] = useState({
-    Email:"",
-    FName:"",
-    LName:"",
-    Username:"",
+    EmailAddress:"",
+    Fname:"",
+    Lname:"",
+    UserName:"",
     Password:"",
-    Phone:""
+    CNIC:"",
+    Contact:""
   })
 
   const Change = (e)=>{
@@ -26,36 +27,42 @@ function Login() {
         "content-type":"application/json"
       },
       body:JSON.stringify({
-            Email:reg.Email,
-            FName:reg.FName,
-            LName:reg.LName,
-            Username:reg.Username,
+            EmailAddress:reg.EmailAddress,
+            Fname:reg.Fname,
+            Lname:reg.Lname,
+            UserName:reg.UserName,
             Password:reg.Password,
-            Phone:reg.Phone
+            Contact:reg.Contact,
+            CNIC : reg.CNIC,
+            Address:reg.Address
       })
     });
     response = await response.json();
     console.log(response.token);
+
+    if (response) {
+      window.location.href="/login";
+    }
   }
 
   return (
-    <div className='container flex justify-center items-center'  style={{height:"100vh"}}> 
+    <div className='container flex justify-center items-center flex-col'  style={{height:"100vh"}}> 
 
     <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="FName" onChange={Change} />
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Fname" onChange={Change} />
   <label htmlFor="floatingInput">First Name</label>
 </div>
 <br></br>
 
     <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="LName" onChange={Change} />
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Lname" onChange={Change} />
   <label htmlFor="floatingInput">Last Name</label>
 </div>
 <br></br>
 
 
     <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Username" onChange={Change} />
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="UserName" onChange={Change} />
   <label htmlFor="floatingInput">Username</label>
 </div>
 <br></br>
@@ -67,14 +74,26 @@ function Login() {
 <br></br>
 
 <div className="form-floating mb-3 ">
-  <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" name="Email" onChange={Change} />
+  <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" name="EmailAddress" onChange={Change} />
   <label htmlFor="floatingInput">Email address</label>
 </div>
 <br></br>
 
 
 <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Phone" onChange={Change} />
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Contact" onChange={Change} />
+  <label htmlFor="floatingInput">Phone</label>
+</div>
+<br></br>
+
+<div className="form-floating mb-3 ">
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="CNIC" onChange={Change} />
+  <label htmlFor="floatingInput">Phone</label>
+</div>
+<br></br>
+
+<div className="form-floating mb-3 ">
+  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Address" onChange={Change} />
   <label htmlFor="floatingInput">Phone</label>
 </div>
 <br></br>

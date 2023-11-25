@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const HostelsList = () => {
+const Matches = () => {
     return ( 
         <div>
          <Link href="/lhr">Lahore</Link>
@@ -18,4 +18,4 @@ const HostelsList = () => {
      );
 }
  
-export default HostelsList;
+export default Matches;
