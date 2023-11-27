@@ -3,21 +3,23 @@ const router = express.Router();
 const querySql = require("../../dbConnection/db");
 
 // This is login Api
-router.post("/matches", async(req,res)=>{
+router.post("/hotels", async(req,res)=>{
 
-    const {match} = req.body;
+    const {hotel} = req.body;
 
     try {
     // Taking Data from the Sql
     const results = await querySql({
-        query:"select * from matches join venues where tournament_id = ?",
-        values:[match]
+        query:"select * from Hotels join RatingOfHotel where Hotels.City  = ? && RatingOfHotel.hotel_id = Hotels.hotel_id",
+        values:[hotel]
     });
 
     // Checking if the result is present or not
     if (!results || results.length===0) {
-        res.status(204).json({Msg:"There are no Tournaments"})
+        res.status(204).json({Msg:"There are no Hotels in this City"})
     }
+
+    console.log(results);
 
     res.status(201).json({result:results})
 

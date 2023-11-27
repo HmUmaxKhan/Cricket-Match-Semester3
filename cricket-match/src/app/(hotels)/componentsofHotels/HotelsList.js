@@ -1,27 +1,27 @@
 "use client"
 import { useEffect, useState } from "react";
-import MatchesListItems from "./MatchesListItems";
+import HotelListItems from "./HotelListItems";
 
 
-export default function MatchesList(props){
+export default function HotelsList(props){
 
-    const [matchesList, setMatches] = useState([])
+    const [hotelsList, setHotels] = useState([])
 
     useEffect(()=>{
 
         const list = async () =>{
-            let response = await fetch("http://localhost:5005/api/matches",{
+            let response = await fetch("http://localhost:5005/api/hotels",{
                 method:'POST',
                 headers:{
-                  "content-type":"application/json"
+                  "content-type":"application/json",
                 },
                 body:JSON.stringify({
-                    match: props.matches
+                    hotel: props.hotels
                 })
               });
               response = await response.json();
               console.log(response.result);
-              setMatches(response.result);  
+              setHotels(response.result);  
             };
         list();    
 },[])  
@@ -29,10 +29,10 @@ export default function MatchesList(props){
   return (
     <div>
     {
-        Array.isArray(matchesList) && matchesList.map((item, index) => {
+        Array.isArray(hotelsList) && hotelsList.map((item, index) => {
             return(
                 {key : index},
-                <MatchesListItems match = {item} />
+                <HotelListItems hotel = {item} />
             )
         })
     }

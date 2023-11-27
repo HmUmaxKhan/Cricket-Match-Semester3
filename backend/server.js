@@ -12,6 +12,7 @@ app.use('/api/auth',require('./routers/auth/login'));
 app.use('/api/auth',update);
 app.use('/api',require("./routers/tournament/tournament"));
 app.use('/api',require("./routers/matches/matches"));
+app.use('/api',require("./routers/hotels/hotels"));
 
 
 

@@ -16,8 +16,7 @@ router.get("/tournament", async(req,res)=>{
         res.status(204).json({Msg:"There are no Tournaments"})
     }
 
-    console.log(results);
-
+    
     res.status(201).json({result:results})
 
 } catch (error) {
