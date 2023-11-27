@@ -3,12 +3,15 @@ const router = express.Router();
 const querySql = require("../../dbConnection/db");
 
 // This is login Api
-router.get("/tournament", async(req,res)=>{
+router.post("/matches", async(req,res)=>{
+
+    const {match} = req.body;
 
     try {
     // Taking Data from the Sql
     const results = await querySql({
-        query:"SELECT * FROM tournament"
+        query:"select * from matches join venues where tournament_id = ?",
+        values:[match]
     });
 
     // Checking if the result is present or not
@@ -25,7 +28,6 @@ router.get("/tournament", async(req,res)=>{
 }
     
 })
-
 
 module.exports = router
 
