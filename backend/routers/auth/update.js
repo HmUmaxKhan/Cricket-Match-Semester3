@@ -7,17 +7,15 @@ const AuthToken = require("../../middlewares/authMiddleware");
 
 router.put("/update",
 async(req,res)=>{
-    let {FName,LName,Username,Phone,Email,CNIC} = req.body;
-
-    console.log(FName,LName,Username,Phone,Email,CNIC);
+    let {Fname,Lname,UserName,Contact,EmailAddress,CNIC,Address} = req.body;
 
     try {
 
           
         // check if user is authenticated or not
         let user = await querySql({
-            query: "Update Users Set FName=? , LName=?, Username=?, Phone=?, Email=? WHERE CNIC = ?",
-            values: [FName,LName,Username,Phone,Email,CNIC],
+            query: "Update users Set Fname=? , Lname=?, UserName=?, Contact=?, EmailAddress=?,Address=? WHERE CNIC = ?",
+            values: [Fname,Lname,UserName,Contact,EmailAddress,Address,CNIC],
           });
 
           console.log(user);

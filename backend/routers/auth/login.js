@@ -10,21 +10,20 @@ router.post("/login", async(req,res)=>{
 
     try {
     // Fetching Data from the body
-    const{Username,Password} = await (req.body);
+    const{UserName,Password} = await (req.body);
 
-    console.log(Username);
+    console.log(UserName);
     console.log(Password);
 
     // Taking Data from the Sql
     const results = await querySql({
-        query:"SELECT * FROM Users WHERE Username = ?",
-        values:[Username]
+        query:"SELECT * FROM users WHERE UserName = ?",
+        values:[UserName]
     });
 
     // Checking if User is Present or Not
 
     const len = results.length;
-    console.log(len);
 
     if (!results || len==0) {
         return res.json({Msg:"User with this username is not exits"})
@@ -41,11 +40,14 @@ router.post("/login", async(req,res)=>{
         return res.json({Msg:"Invalid Password"})
 
     }else{
+
+        let userid = String(results[0].user_id);
+
     // If User is valid then assigning him a token
-    const token = JWT.sign({Email:results[0].Email},"Hello World , My life is js");
+    const token = JWT.sign({EmailAddress:results[0].EmailAddress,userId:userid},"Hello World , My life is js");
 
     // Last response 
-    return res.status(201).json({FName:results[0].FName,LName:results[0].LName,Email:results[0].Email,Username,id:results[0].id,CNIC:results[0].CNIC,Phone:results[0].Phone,Password,token});
+    return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token});
     }
 
 } catch (error) {
@@ -58,8 +60,8 @@ router.post('/getuser',AuthToken,
 async (req, res)=>{
     try {
         console.log("token authenticate");
-        console.log(req.Email);
-        res.json(req.Email);
+        console.log(req.userId);
+        res.json({user_id:req.userId});
     } catch (err) {
         res.status(500).json({ err: err.message });
         console.log(err);

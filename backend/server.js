@@ -10,8 +10,16 @@ app.use(express.json());
 app.use('/api/auth',require('./routers/auth/reg'));
 app.use('/api/auth',require('./routers/auth/login'));
 app.use('/api/auth',update);
+<<<<<<< HEAD
 app.use('/api/city',require('./routers/HotelsManagement/listOfHotelsinCity'));
 app.use('/api/city',require('./routers/HotelsManagement/hostelInput'));
+=======
+app.use('/api',require("./routers/tournament/tournament"));
+app.use('/api',require("./routers/matches/matches"));
+app.use('/api',require("./routers/hotels/hotels"));
+app.use('/api',require("./routers/tickets/ticket"));
+
+>>>>>>> 88e579114222586c4af39ae3b2a935b6af01327b
 
 
 

@@ -2,10 +2,11 @@ const mysql = require("mysql2/promise");
 
 const querySql = async ({ query, values = [] }) => {
   const db = await mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "Password123#",
-    database: "Cricket-Match"
+    host: "crickcruiser-crick-cruiser.a.aivencloud.com",
+    port:"10543",
+    user: "avnadmin",
+    password: "AVNS_Z-OsLcI50pN17xDjzED",
+    database: "criccruiser"
   });
 
   try {
