@@ -13,6 +13,7 @@ export default function MatchesListItems(props) {
             <h4>{match.location}</h4>
         </li>
         <Link href={`/hotel/${match.location}`}><h2>Book hotel</h2></Link>
+        <Link href={`/ticket/${match.match_id}`}><h2>Book Ticket</h2></Link>
     </ul>      
     </div>
   )

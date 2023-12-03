@@ -20,7 +20,6 @@ function Login() {
 
   const handleClick =async (e) =>{
     e.preventDefault();
-    console.log(reg);
     let response = await fetch("http://localhost:5005/api/auth/reg",{
       method:'POST',
       headers:{
@@ -38,7 +37,6 @@ function Login() {
       })
     });
     response = await response.json();
-    console.log(response.token);
 
     if (response) {
       window.location.href="/login";

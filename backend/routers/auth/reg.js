@@ -33,8 +33,13 @@ router.post("/reg", async(req,res)=> {
     values: [Fname, Lname, EmailAddress, UserName, Pass, Contact,CNIC, Address]
   })
 
+  const userId = await querySql({
+    query:"Select user_id From users where EmailAddress = ?",
+    values:[EmailAddress]
+  })
+
   // Generating Json Web Token for Authentication
-  const token = JWT.sign({EmailAddress:EmailAddress,UserName:UserName},"Hello World , My life is js")
+  const token = JWT.sign({EmailAddress:EmailAddress,userId:userId},"Hello World , My life is js")
 
   // Last Response
   let newUserObj={EmailAddress,UserName,token}

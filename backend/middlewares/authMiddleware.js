@@ -10,7 +10,7 @@ const AuthToken = (req,res,next)=>{
         }
             let data = jwt.verify(token,jwt_secret);
             console.log(data);
-            req.Email = data.Email
+            req.userId = data.userId
             next();
     }  catch (err) {
         res.status(500).json({ err: err.message });

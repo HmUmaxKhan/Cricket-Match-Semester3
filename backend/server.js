@@ -13,6 +13,8 @@ app.use('/api/auth',update);
 app.use('/api',require("./routers/tournament/tournament"));
 app.use('/api',require("./routers/matches/matches"));
 app.use('/api',require("./routers/hotels/hotels"));
+app.use('/api',require("./routers/tickets/ticket"));
+
 
 
 
