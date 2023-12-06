@@ -3,19 +3,18 @@ import { useEffect, useState } from "react";
 
 export default function page(params) {
   
-  const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedOption, setSelectedOption] = useState();
 
   const handleOptionChange = (e) => {
-    const selectedValue =e.target.value
-    const selectedArray  = selectedValue.split(',') 
-    setSelectedOption(selectedArray);
+    setSelectedOption(e.target.value);
   };
+
+  console.log(selectedOption);
 
   const [details ,setDetails] = useState({})
 
   const [ticket, setTicket] = useState({})
 
-  console.log(details.token);
  
   useEffect(()=>{
 
@@ -29,6 +28,7 @@ export default function page(params) {
 
   const handleSubmit = async(e) =>{
     e.preventDefault();
+  try {
     let response = await fetch("http://localhost:5005/api/tickets",{
       method:'POST',
       headers:{
@@ -37,34 +37,40 @@ export default function page(params) {
       },
       body:JSON.stringify({
             match_id:params.params.tickets,
-            Category:selectedOption[0],
-            price:selectedOption[1]
+            Category:selectedOption,
       })
     });
+
     response = await response.json();
-    setTicket({...response});
+
+    console.log(response);
+    setTicket(response);
+    console.log("Best prac",ticket);
+  } 
+  catch (error) {
+    console.log("Error is ",error); 
   }
 
-  console.log("Best prac",ticket);
-  console.log(selectedOption[0]);
+ }
 
     return (
       <div>
       Hello WORLD {params.params.tickets}
+      <form onSubmit={handleSubmit}>
       <input
               type="radio"
               id="premium"
               name="fav_language"
-              value={['Primary','5000'].join(',')}
+              value='Premium'
               onChange={handleOptionChange}
             />
-            <label htmlFor="primary">Premium</label><br></br>
+            <label htmlFor="premium">Premium</label><br></br>
       
             <input
               type="radio"
               id="vip"
               name="fav_language"
-              value={["VIP","10000"]}
+              value="VIP"
               onChange={handleOptionChange}
             />
             <label htmlFor="vip">VIP</label><br />
@@ -73,12 +79,13 @@ export default function page(params) {
               type="radio"
               id="regular"
               name="fav_language"
-              value={["Regular","2000"]}
+              value="Regular"
               onChange={handleOptionChange}
             />
             <label htmlFor="regular">Regular</label>
             <br></br>
-            <button onClick={()=>{handleSubmit}} >Submit</button>
+            <button  type="submit" >Submit</button>
+            </form>
           </div>
         );
 
