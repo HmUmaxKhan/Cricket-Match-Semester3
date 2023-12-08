@@ -1,94 +1,27 @@
-"use client"
-import { useEffect, useState } from "react";
+"use client";
+import { useSelector } from "react-redux";
+import Ticket from "../../commponentsofHotels/Ticket";
+import { useState } from "react";
 
 export default function page(params) {
-  
-  const [selectedOption, setSelectedOption] = useState();
+console.log(params.params.tickets);
+const details = useSelector((state)=>state.ticketInfo.ticketInfo)
+console.log("MainticketPaege  ",details);
 
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
-  };
 
-  console.log(selectedOption);
+  return (
+    <div>
 
-  const [details ,setDetails] = useState({})
-
-  const [ticket, setTicket] = useState({})
-
- 
-  useEffect(()=>{
-
-    let info = localStorage.getItem("login");
-    if (!info){
-      window.location.href="/login"
-    }
-    info = JSON.parse(info)
-    setDetails(info);
-  },[])
-
-  const handleSubmit = async(e) =>{
-    e.preventDefault();
-  try {
-    let response = await fetch("http://localhost:5005/api/tickets",{
-      method:'POST',
-      headers:{
-        "content-type":"application/json",
-        "auth-token":details.token
-      },
-      body:JSON.stringify({
-            match_id:params.params.tickets,
-            Category:selectedOption,
-      })
-    });
-
-    response = await response.json();
-
-    console.log(response);
-    setTicket(response);
-    console.log("Best prac",ticket);
-  } 
-  catch (error) {
-    console.log("Error is ",error); 
+    {details.show?<div className="show">
+    <h1>Name: {details.Fname} {details.Lname}</h1>
+    <h2>Enclosure: {details.Category}</h2>
+    <h2>Tournament : {details.TournamentName} {details.Lname}</h2>
+    <h2>Match: {details.team1} vs {details.team2} </h2>
+    <h2>City: {details.location}</h2>
+    <h2>Stadium: {details.venue_name}</h2>
+  </div>:
+    <Ticket match_id = {params.params.tickets}/>
   }
-
- }
-
-    return (
-      <div>
-      Hello WORLD {params.params.tickets}
-      <form onSubmit={handleSubmit}>
-      <input
-              type="radio"
-              id="premium"
-              name="fav_language"
-              value='Premium'
-              onChange={handleOptionChange}
-            />
-            <label htmlFor="premium">Premium</label><br></br>
-      
-            <input
-              type="radio"
-              id="vip"
-              name="fav_language"
-              value="VIP"
-              onChange={handleOptionChange}
-            />
-            <label htmlFor="vip">VIP</label><br />
-      
-            <input
-              type="radio"
-              id="regular"
-              name="fav_language"
-              value="Regular"
-              onChange={handleOptionChange}
-            />
-            <label htmlFor="regular">Regular</label>
-            <br></br>
-            <button  type="submit" >Submit</button>
-            </form>
-          </div>
-        );
-
-  
-  
+    </div>
+  );
 }
