@@ -33,7 +33,8 @@ function Login() {
             Password:reg.Password,
             Contact:reg.Contact,
             CNIC : reg.CNIC,
-            Address:reg.Address
+            Address:reg.Address,
+            usertype:"user"
       })
     });
     response = await response.json();
