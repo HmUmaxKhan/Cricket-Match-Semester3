@@ -18,8 +18,6 @@ async(req,res)=>{
             values: [Fname,Lname,UserName,Contact,EmailAddress,Address,CNIC],
           });
 
-          console.log(user);
-
           if(user){
             res.status(200).json({Details:"Your Info has been updated"});
           }

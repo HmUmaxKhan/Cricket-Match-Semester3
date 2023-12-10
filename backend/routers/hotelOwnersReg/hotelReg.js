@@ -3,6 +3,7 @@ const router = express.Router();
 const JWT = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const querySql = require("../../dbConnection/db");
+const AuthToken = require("../../middlewares/authMiddleware");
 
 
 // This Registration Api
@@ -40,7 +41,7 @@ router.post("/hotelregown", async(req,res)=> {
     query:"Select admin_id From Admins where user_id = ?",
     values:[user_id]
   })
-  let newUserObj={userId:user_id,admin_id:admin_id,UserName:UserName}
+  let newUserObj={userId:user_id,admin_id:admin_id,UserName:UserName,token:token}
   
   res.json(newUserObj);
 
@@ -61,6 +62,7 @@ router.post('/hotelreg', async (req, res) => {
       RoomCapacity,
       WebUrl,
       admin_id,
+      ImageUrl
     } = req.body;
 
 
@@ -78,8 +80,8 @@ router.post('/hotelreg', async (req, res) => {
     // Insert data into the database
     const result = await querySql({
       query: `
-        INSERT INTO Hotels (Email, Name, City, PhoneNumber, Address, Description, RoomPrice, RoomCapacity, WebUrl, admin_id,venue_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
+        INSERT INTO Hotels (Email, Name, City, PhoneNumber, Address, Description, RoomPrice, RoomCapacity, WebUrl, admin_id,venue_id,ImageUrl)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)
       `,
       values: [
         Email,
@@ -92,7 +94,8 @@ router.post('/hotelreg', async (req, res) => {
         RoomCapacity,
         WebUrl,
         admin_id,
-        venue[0].venue_id
+        venue[0].venue_id,
+        ImageUrl
       ],
     });
 
@@ -104,5 +107,53 @@ router.post('/hotelreg', async (req, res) => {
   }
 });
 
+router.post('/paymentadmin', async (req, res) => {
+  try {
+    const { Name, amount, package_id, startingDate, expiringDate, admin_id } = req.body;
+
+    // Insert payment details into the database
+    const result = await querySql({
+      query: `
+        INSERT INTO PaymentAdmin (Name, amount, package_id, startingDate, expiringDate, admin_id)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `,
+      values: [Name, amount, package_id, startingDate, expiringDate, admin_id],
+    });
+
+    // Respond with success
+    res.json({ success: true, message: 'Payment details saved successfully' });
+  } catch (error) {
+    console.error('Error saving payment details:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+router.get("/pricehostel",
+async(req,res)=>{
+
+  let result = await querySql({
+      query: `
+      Select package_id ,packageFee,DurationInDays from Packages where packageName = 'hotel'
+      `,
+      values: [],
+    });
+
+    res.status(200).json({results:result[0]})
+})
+
+
+router.get("/allhotelinfo",AuthToken,
+async(req,res)=>{
+  const user_id = req.userId;
+
+
+  let result = await querySql({
+    query: `
+    Select * from Hotels where admin_id = ( select admin_id from Admins where user_id = ? )'
+    `,
+    values: [user_id],
+  });
+  
+})
 
 module.exports = router

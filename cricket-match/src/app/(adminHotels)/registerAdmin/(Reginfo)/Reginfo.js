@@ -47,7 +47,7 @@ import { useDispatch } from "react-redux";
         localStorage.setItem("adminLogin",JSON.stringify(response));
        
 
-        window.location.href="/hotelreg"
+        window.location.href="/paymenthotel"
         
       }
     
