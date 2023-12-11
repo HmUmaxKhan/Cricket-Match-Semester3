@@ -18,7 +18,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5005/api/auth/login", {
+      const response = await fetch("http://localhost:5005/api/hotelloginadmin", {
         method: "post",
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ function Login() {
       console.log(responseData);
 
       if (responseData.token) {
-        localStorage.setItem("login", JSON.stringify(responseData));
+        localStorage.setItem("adminLogin", JSON.stringify(responseData));
         window.location.href = "/adminDashboard";
       } else {
         console.error("Login failed. No token in the response.");
