@@ -3,43 +3,79 @@ import { useEffect, useState } from "react"
 import "../(Payment)/payment.css"
 function Payment() {
 
-    const [price,setPrice] = useState({});
-    const [detail,setDetail] = useState({});
+    const [packages,setPackages] = useState({});
+    const [adminId,setAdminId] = useState();
     const [name,setname] = useState();
 
     useEffect(()=>{
-        const priceID = async()=>{
-            let response = await fetch("http://localhost:5005/api/getPriceHostel");
+        const details= async() =>{
+            let detail = localStorage.getItem("adminLogin");
 
-            const responseId = await response.json();
-            setPrice(responseId.details[0])
+            if (!detail) {
+                window.location.href="/registerAdmin"
+            }
+            detail = await JSON.parse(detail)
+            console.log("detail-- ",detail);
+            
+            if (detail.admin_id && detail.admin_id.length > 0) {
+                setAdminId(detail.admin_id[0].admin_id);
+            }
         }
 
-        priceID();
-    })
+        const Price = async() =>{
+            let response = await fetch("http://localhost:5005/api/pricehostel");
+            response = await response.json();
+            console.log("Price",response.results.packageFee);
+            setPackages(response.results);
+        }
+
+        details();
+        Price();
+      },[])
 
 
     const handleChange = (e) =>{
         setname(e.target.value)
     }
 
-    const handleSubmit = ()=>{
+    const handleSubmit = async()=>{
         
 const currentDate = new Date();
 const expiringDate = new Date(currentDate);
-expiringDate.setDate(currentDate.getDate() + price.DurationInDays);
+expiringDate.setDate(currentDate.getDate() + packages.DurationInDays);
+
+const mysqlCurrentDate = currentDate.toISOString().slice(0, 10);
+const mysqlExpiringDate = expiringDate.toISOString().slice(0, 10);
 
 const dataObject = {
     Name: name,
-    amount: price.packageFee,
-    package_id: price.package_id,
-    startingDate: currentDate,
-    expiringDate: expiringDate,
-    admin_id:""
+    amount: packages.packageFee,
+    package_id: packages.package_id,
+    startingDate: mysqlCurrentDate,
+    expiringDate: mysqlExpiringDate,
+    admin_id:adminId
 };
 
 console.log(dataObject);
-    }
+
+let response = await fetch("http://localhost:5005/api/paymentadmin",{
+          method:'POST',
+          headers:{
+            "content-type":"application/json"
+          },
+          body:JSON.stringify(dataObject)
+        });
+
+        response = await response.json();
+        console.log(response);
+        console.log(adminId);
+
+        if (response.success) {
+            window.location.href="/adminDashboard"
+        }
+        
+      }
+    
 
   return (
     <div>
@@ -73,7 +109,7 @@ console.log(dataObject);
             </div>
             <div class="col-12">
                 <div class="btn btn-primary mb-3">
-                    <button onClick={handleSubmit} class="ps-3">{price.packageFee}</button>
+                    <button onClick={handleSubmit} class="ps-3">{packages.packageFee}</button>
                     <span class="fas fa-arrow-right"></span>
                 </div>
             </div>

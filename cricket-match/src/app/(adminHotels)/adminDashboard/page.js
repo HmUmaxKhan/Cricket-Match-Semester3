@@ -1,20 +1,11 @@
-"use client"
-import React, { useEffect } from 'react'
-
+import Link from 'next/link'
+import React from 'react'
 
 function page() {
-
-    useEffect(()=>{
-        const details = localStorage.getItem("login");
-        console.log(details);
-
-        if (!details && details===null && details.usertype=="hosteladmin") {
-            window.location.href="/loginAdmin"
-        }
-    })
   return (
     <div>
-        <h1>Admins</h1>
+      <Link href="/hotelreg">Register Hostel</Link>
+      <Link href="/updatehotel">Update Hotel Info</Link>
     </div>
   )
 }
