@@ -1,4 +1,7 @@
     "use client"
+import React from 'react';
+import "./Reginfo.css"
+
 
 import { adminId } from "@/app/redux/slice/registerAdmin";
 import Link from "next/link";
@@ -104,9 +107,9 @@ import { useDispatch } from "react-redux";
     </div>
     <br></br>
     
-    <button className=' text-center bg-slate-400' onClick={handleClick}>Submit</button>
+    <button type="button" class="btn btn-success" className=' text-center bg-slate-400' onClick={handleClick}>Submit</button>
 
-    <Link href="/paymentHotel">Hotel Payment</Link>
+    <Link  class="link-warning" className="link right-align" href="/paymentHotel">Hotel Payment</Link>
         </div>
     
       )

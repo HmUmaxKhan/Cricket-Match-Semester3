@@ -1,1 +1,5 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
+
+.right-align{
+  text-align: right;
+}
