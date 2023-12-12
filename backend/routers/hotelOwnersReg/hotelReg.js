@@ -99,8 +99,18 @@ router.post('/hotelreg', async (req, res) => {
       ],
     });
 
+
+    const results = await querySql({
+      query: `
+        Select * from Hotels where WebUrl = ?
+      `,
+      values: [WebUrl],
+    });
+
+
+
     // Respond with success
-    res.json({ success: true, message: 'Hotel registration successful' });
+    res.json({ success: true, message: 'Hotel registration successful'},results);
   } catch (error) {
     console.error('Error registering hotel:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
