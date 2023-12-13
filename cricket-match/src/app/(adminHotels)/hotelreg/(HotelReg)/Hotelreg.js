@@ -1,9 +1,7 @@
 "use client";
 
-import { adminId } from "@/app/redux/slice/registerAdmin";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 function Hotelreg() {
   const [adminId, setAdminId] = useState();
@@ -19,14 +17,16 @@ function Hotelreg() {
       detail = await JSON.parse(detail);
       console.log("detail-- ", detail);
 
-      if (detail.admin_id && detail.admin_id.length > 0) {
-        setAdminId(detail.admin_id[0].admin_id);
+      if (detail.admin_id) {
+        setAdminId(detail.admin_id);
       }
     };
 
     details();
+    
   }, []);
 
+  console.log(adminId);
   const handleImageChange = (e)=>{
     const file = e.target.files[0];
     convertToBase64(file);
@@ -94,139 +94,164 @@ function Hotelreg() {
   };
 
   return (
-    <div
-      className="container flex justify-center items-center flex-col"
-      style={{ height: "100vh" }}
-    >
-      <div className="form-floating mb-3 ">
-        <input
-          type="text"
-          className="form-control"
-          id="floatingInput"
-          name="Name"
-          onChange={Change}
-        />
-        <label htmlFor="floatingInput">Name of Hotel</label>
-      </div>
-      <br></br>
+    <>
+    <h1 className="text-center m-4 bg-slate-400">Hotel Registration</h1>
+    <div className="container">
+      <div className="row">
+        <div className="col-md-6">
+          <form>
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">
+                Name of Hotel
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                name="Name"
+                onChange={Change}
+              />
+            </div>
 
-      <div className="form-floating mb-3 ">
-        <input
-          type="text"
-          className="form-control"
-          id="floatingInput"
-          name="City"
-          onChange={Change}
-        />
-        <label htmlFor="floatingInput">City</label>
-      </div>
-      <br></br>
+            <div className="mb-3">
+              <label htmlFor="city" className="form-label">
+                City
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="city"
+                name="City"
+                onChange={Change}
+              />
+            </div>
 
-      <div className="form-floating mb-3 ">
-        <input
-          type="text"
-          className="form-control"
-          id="floatingInput"
-          name="Address"
-          onChange={Change}
-        />
-        <label htmlFor="floatingInput">Address</label>
-      </div>
-      <br></br>
+            <div className="mb-3">
+              <label htmlFor="address" className="form-label">
+                Address
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="address"
+                name="Address"
+                onChange={Change}
+              />
+            </div>
 
-      <div className="form-floating">
-        <input
-          type="number"
-          className="form-control"
-          id="floatingPassword"
-          name="PhoneNumber"
-          onChange={Change}
-        />
-        <label htmlFor="floatingPassword">Phone Number</label>
-      </div>
-      <br></br>
+            <div className="mb-3">
+              <label htmlFor="phoneNumber" className="form-label">
+                Phone Number
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                id="phoneNumber"
+                name="PhoneNumber"
+                onChange={Change}
+              />
+            </div>
 
-      <div className="form-floating mb-3 ">
-        <input
-          type="email"
-          className="form-control"
-          id="floatingInput"
-          placeholder="name@example.com"
-          name="Email"
-          onChange={Change}
-        />
-        <label htmlFor="floatingInput">Email of Hotel</label>
-      </div>
-      <br></br>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
+                Email of Hotel
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                name="Email"
+                onChange={Change}
+              />
+            </div>
 
-      <div className="form-floating mb-3 ">
-        <input
-          type="text"
-          className="form-control"
-          id="floatingInput"
-          placeholder="name@example.com"
-          name="Description"
-          onChange={Change}
-        />
-        <label htmlFor="floatingInput">Description</label>
-      </div>
-      <br></br>
+            <div className="mb-3">
+              <label htmlFor="description" className="form-label">
+                Description
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="description"
+                name="Description"
+                onChange={Change}
+              />
+            </div>
 
-      <div className="form-floating mb-3 ">
-        <input
-          type="text"
-          className="form-control"
-          id="floatingInput"
-          placeholder="name@example.com"
-          name="RoomCapacity"
-          onChange={Change}
-        />
-        <label htmlFor="floatingInput">No. of Rooms</label>
-      </div>
-      <br></br>
+            <div className="mb-3">
+              <label htmlFor="roomCapacity" className="form-label">
+                No. of Rooms
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="roomCapacity"
+                name="RoomCapacity"
+                onChange={Change}
+              />
+            </div>
 
-      <div className="form-floating mb-3 ">
-        <input
-          type="Number"
-          className="form-control"
-          id="floatingInput"
-          placeholder="name@example.com"
-          name="RoomPrice"
-          onChange={Change}
-        />
-        <label htmlFor="floatingInput">Price </label>
-      </div>
-      <br></br>
+            <div className="mb-3">
+              <label htmlFor="roomPrice" className="form-label">
+                Price
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                id="roomPrice"
+                name="RoomPrice"
+                onChange={Change}
+              />
+            </div>
 
-      <div className="form-floating mb-3 ">
-        <input
-          type="text"
-          className="form-control"
-          id="floatingInput"
-          placeholder="name@example.com"
-          name="WebUrl"
-          onChange={Change}
-        />
-        <label htmlFor="floatingInput">Website Link </label>
-      </div>
-      <br></br>
+            <div className="mb-3">
+              <label htmlFor="webUrl" className="form-label">
+                Website Link
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="webUrl"
+                name="WebUrl"
+                onChange={Change}
+              />
+            </div>
+          </form>
+        </div>
 
-      <div className="form-floating mb-3 ">
-        <input
-          type="file"
-          accept=".jpeg, .jpg, .png"
-          onChange={handleImageChange}
-        />
-        <label htmlFor="floatingInput">Website Link </label>
-      </div>
-      <br></br>
+        <div className="col-md-6">
+          <div className="mb-3">
+            <label htmlFor="image" className="form-label">
+              Upload Image
+            </label>
+            <input
+              type="file"
+              className="form-control"
+              accept=".jpeg, .jpg, .png"
+              onChange={handleImageChange}
+            />
+          </div>
 
-      <button className=" text-center bg-slate-400" onClick={handleClick}>
+          {image && (
+            <div className="mb-3">
+              <label className="form-label">Image Preview</label>
+              <img
+                src={`data:image/png;base64,${image}`}
+                alt="Preview"
+                className="img-thumbnail"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+
+      <button className="btn btn-primary" onClick={handleClick}>
         Submit
       </button>
 
-      <Link href="/paymenthotel">Hotel Payment</Link>
+      <Link style={{marginLeft:"30px"}} href="/paymenthotel">Hotel Payment</Link>
     </div>
+    </>
   );
 }
 

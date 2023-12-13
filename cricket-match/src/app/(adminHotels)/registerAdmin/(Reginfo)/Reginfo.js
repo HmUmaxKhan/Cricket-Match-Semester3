@@ -52,64 +52,132 @@ import { useDispatch } from "react-redux";
       }
     
       return (
-        <div className='container flex justify-center items-center flex-col'  style={{height:"100vh"}}> 
+        <div className="container d-flex justify-content-center align-items-center flex-column p-5">
+          <div className="card p-4">
+            <h3 className=" py-3 text-center">Registration Information for Hostel Admin</h3>
     
-        <div className="form-floating mb-3 ">
-      <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Fname" onChange={Change} />
-      <label htmlFor="floatingInput">First Name</label>
-    </div>
-    <br></br>
+            <div className="mb-3">
+              <label htmlFor="Fname" className="form-label">
+                First Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="Fname"
+                placeholder="Enter your first name"
+                name="Fname"
+                onChange={Change}
+              />
+            </div>
     
-        <div className="form-floating mb-3 ">
-      <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Lname" onChange={Change} />
-      <label htmlFor="floatingInput">Last Name</label>
-    </div>
-    <br></br>
+            <div className="mb-3">
+              <label htmlFor="Lname" className="form-label">
+                Last Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="Lname"
+                placeholder="Enter your last name"
+                name="Lname"
+                onChange={Change}
+              />
+            </div>
     
+            <div className="mb-3">
+              <label htmlFor="UserName" className="form-label">
+                Username
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="UserName"
+                placeholder="Choose a username"
+                name="UserName"
+                onChange={Change}
+              />
+            </div>
     
-        <div className="form-floating mb-3 ">
-      <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="UserName" onChange={Change} />
-      <label htmlFor="floatingInput">Username</label>
-    </div>
-    <br></br>
+            <div className="mb-3">
+              <label htmlFor="Password" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="Password"
+                placeholder="Enter your password"
+                name="Password"
+                onChange={Change}
+              />
+            </div>
     
-    <div className="form-floating">
-      <input type="password" className="form-control" id="floatingPassword" placeholder="Password" name="Password" onChange={Change}/>
-      <label htmlFor="floatingPassword" >Password</label>
-    </div>
-    <br></br>
+            <div className="mb-3">
+              <label htmlFor="EmailAddress" className="form-label">
+                Email address
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="EmailAddress"
+                placeholder="name@example.com"
+                name="EmailAddress"
+                onChange={Change}
+              />
+            </div>
     
-    <div className="form-floating mb-3 ">
-      <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" name="EmailAddress" onChange={Change} />
-      <label htmlFor="floatingInput">Email address</label>
-    </div>
-    <br></br>
+            <div className="mb-3">
+              <label htmlFor="Contact" className="form-label">
+                Phone
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="Contact"
+                placeholder="Enter your phone number"
+                name="Contact"
+                onChange={Change}
+              />
+            </div>
     
+            <div className="mb-3">
+              <label htmlFor="CNIC" className="form-label">
+                CNIC
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="CNIC"
+                placeholder="Enter your CNIC"
+                name="CNIC"
+                onChange={Change}
+              />
+            </div>
     
-    <div className="form-floating mb-3 ">
-      <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Contact" onChange={Change} />
-      <label htmlFor="floatingInput">Phone</label>
-    </div>
-    <br></br>
+            <div className="mb-3">
+              <label htmlFor="Address" className="form-label">
+                Address
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="Address"
+                placeholder="Enter your address"
+                name="Address"
+                onChange={Change}
+              />
+            </div>
     
-    <div className="form-floating mb-3 ">
-      <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="CNIC" onChange={Change} />
-      <label htmlFor="floatingInput">Phone</label>
-    </div>
-    <br></br>
+            <button type="button" className="btn btn-success" onClick={handleClick}>
+              Submit
+            </button>
     
-    <div className="form-floating mb-3 ">
-      <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Address" onChange={Change} />
-      <label htmlFor="floatingInput">Phone</label>
-    </div>
-    <br></br>
-    
-    <button type="button" class="btn btn-success" className=' text-center bg-slate-400' onClick={handleClick}>Submit</button>
-
-    <Link  class="link-warning" className="link right-align" href="/paymentHotel">Hotel Payment</Link>
+            <Link href="/paymentHotel" className="link  mt-3">
+              Hotel Payment
+            </Link>
+          </div>
         </div>
-    
-      )
+      );
     }
     
     export default Reginfo

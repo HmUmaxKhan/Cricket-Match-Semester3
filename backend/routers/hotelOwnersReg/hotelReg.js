@@ -75,7 +75,7 @@ router.post('/hotelreg', async (req, res) => {
       ],
     });
 
-    console.log(venue);
+    console.log(venue[0].venue_id);
 
     // Insert data into the database
     const result = await querySql({
@@ -110,7 +110,8 @@ router.post('/hotelreg', async (req, res) => {
 
 
     // Respond with success
-    res.json({ success: true, message: 'Hotel registration successful'},results);
+    res.status(200).json({ success: true, message: 'Hotel registration successful', results });
+
   } catch (error) {
     console.error('Error registering hotel:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
@@ -193,8 +194,15 @@ router.post("/hotelloginadmin", async(req,res)=>{
     // If User is valid then assigning him a token
     const token = JWT.sign({EmailAddress:results[0].EmailAddress,userId:userid},"Hello World , My life is js");
 
+    let admin_id = await querySql({
+      query:"SELECT admin_id FROM Admins WHERE user_id = ?",
+      values:[userid]
+  });
+
+  console.log(admin_id[0].admin_id);
+
     // Last response 
-    return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,usertype:results[0].usertype});
+    return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,usertype:results[0].usertype,admin_id:admin_id[0].admin_id});
     }
 
 } catch (error) {

@@ -76,48 +76,75 @@ let response = await fetch("http://localhost:5005/api/paymentadmin",{
         
       }
     
-
-  return (
-    <div>
-    <div class="container p-0">
-    <div class="card px-4">
-        <p class="h8 py-3">Payment Details</p>
-        <div class="row gx-3">
-            <div class="col-12">
-                <div class="d-flex flex-column">
-                    <p class="text mb-1">Person Name</p>
-                    <input class="form-control mb-3" type="text" placeholder="Name" name="Name" onChange={handleChange}/>
-                </div>
+      return(
+      <div className="container d-flex justify-content-center align-items-center p-0 min-vh-100">
+      <div className="card px-4">
+        <p className="h8 py-3">Payment Details</p>
+        <div className="row gx-3">
+          <div className="col-12">
+            <div className="mb-3">
+              <label htmlFor="personName" className="text mb-1">
+                Person Name
+              </label>
+              <input
+                className="form-control"
+                type="text"
+                id="personName"
+                placeholder="Name"
+                name="Name"
+                onChange={handleChange}
+              />
             </div>
-            <div class="col-12">
-                <div class="d-flex flex-column">
-                    <p class="text mb-1">Card Number</p>
-                    <input class="form-control mb-3" type="text" placeholder="1234 5678 435678"/>
-                </div>
+          </div>
+          <div className="col-12">
+            <div className="mb-3">
+              <label htmlFor="cardNumber" className="text mb-1">
+                Card Number
+              </label>
+              <input
+                className="form-control"
+                type="text"
+                id="cardNumber"
+                placeholder="1234 5678 435678"
+              />
             </div>
-            <div class="col-6">
-                <div class="d-flex flex-column">
-                    <p class="text mb-1">Expiry</p>
-                    <input class="form-control mb-3" type="text" placeholder="MM/YYYY" />
-                </div>
+          </div>
+          <div className="col-6">
+            <div className="mb-3">
+              <label htmlFor="expiry" className="text mb-1">
+                Expiry
+              </label>
+              <input
+                className="form-control"
+                type="text"
+                id="expiry"
+                placeholder="MM/YYYY"
+              />
             </div>
-            <div class="col-6">
-                <div class="d-flex flex-column">
-                    <p class="text mb-1">CVV/CVC</p>
-                    <input class="form-control mb-3 pt-2 " type="password" placeholder="***" />
-                </div>
+          </div>
+          <div className="col-6">
+            <div className="mb-3">
+              <label htmlFor="cvv" className="text mb-1">
+                CVV/CVC
+              </label>
+              <input
+                className="form-control pt-2"
+                type="password"
+                id="cvv"
+                placeholder="***"
+              />
             </div>
-            <div class="col-12">
-                <div class="btn btn-primary mb-3">
-                    <button onClick={handleSubmit} class="ps-3">{packages.packageFee}</button>
-                    <span class="fas fa-arrow-right"></span>
-                </div>
-            </div>
+          </div>
+          <div className="col-12 d-flex align-items-center  justify-center">
+            <button onClick={handleSubmit} className="btn btn-primary d-flex align-items-center  justify-center">
+              <span>{packages.packageFee}</span>
+              <span className="fas fa-arrow-right"></span>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-    </div>
-  )
+  );
 }
 
 export default Payment
