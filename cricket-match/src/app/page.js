@@ -8,7 +8,7 @@ export default function Home() {
       <br></br>
       <Link href="/tournaments">Tournaments</Link>
       <br></br>
-      <Link href="/registerAdmin">Admin Pannel</Link> 
+      <Link href="/adminDashboard">Admin Hotels</Link> 
     </main>
   );
 }

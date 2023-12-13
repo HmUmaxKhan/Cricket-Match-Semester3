@@ -1,35 +1,24 @@
 "use client"
 import { useEffect, useState } from "react"
 
-const page = () => {
+const page = (params) => {
 
-  const [token,SetToken] = useState({});
   const [image,setImage] = useState();
 
   useEffect(()=>{
     //Getting the previous info
-
-    let details = localStorage.getItem("adminLogin");
-    if (!details && details===null) {
-        window.location.href="/hotelloginAdmin"
-    }
-    details = JSON.parse(details)
-    console.log(details.token);
-    const token1 = details.token
-
-    console.log(token1);
-    const info = async()=>{
-        let response = await fetch("http://localhost:5005/api/allhotelinfo",{
+        const info = async()=>{
+        let response = await fetch("http://localhost:5005/api/updatehotelinfo",{
             method:'POST',
             headers:{
               "Content-Type":"application/json",
             },
-            body:JSON.stringify({user_id:details.user_id})
+            body:JSON.stringify({hotel_id:params.params.updateHotels})
           });
           response = await response.json();
           console.log(response);
 
-          const { Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl } = response.result;
+          const { Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl } = response;
 
           setImage(ImageUrl);
           setReg({
@@ -86,13 +75,14 @@ const page = () => {
   const handleClick =async (e) =>{
     e.preventDefault();
     console.log(reg);
-    let response = await fetch("http://localhost:5005/api/auth/update",{
+    let response = await fetch("http://localhost:5005/api/updatehotelinfo",{
       method:'PUT',
       headers:{
         "content-type":"application/json",
         "auth-token":""
       },
       body: JSON.stringify({
+        hotel_id:params.params.updateHotels,
         Email: reg.Email,
         Name: reg.Name,
         PhoneNumber: reg.PhoneNumber,
@@ -102,7 +92,6 @@ const page = () => {
         Description: reg.Description,
         RoomPrice: reg.RoomPrice,
         WebUrl: reg.WebUrl,
-        admin_id: adminId,
         ImageUrl:image
       }),
     });

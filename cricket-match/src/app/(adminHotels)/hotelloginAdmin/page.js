@@ -39,7 +39,7 @@ function Login() {
       const responseData = await response.json();
       console.log(responseData);
 
-      if (responseData.token) {
+      if (responseData.usertype==="hoteladmin") {
         localStorage.setItem("adminLogin", JSON.stringify(responseData));
         window.location.href = "/adminDashboard";
       } else {

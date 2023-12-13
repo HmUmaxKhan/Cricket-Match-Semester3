@@ -1,9 +1,6 @@
     "use client"
 import React from 'react';
 import "./Reginfo.css"
-
-
-import { adminId } from "@/app/redux/slice/registerAdmin";
 import Link from "next/link";
     import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";

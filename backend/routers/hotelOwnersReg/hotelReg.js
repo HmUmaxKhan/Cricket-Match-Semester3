@@ -204,9 +204,9 @@ router.post("/hotelloginadmin", async(req,res)=>{
 })
 
 
-router.get("/allhotelinfo",AuthToken,
+router.post("/allhotelinfo",
 async(req,res)=>{
-  const user_id = req.userId;
+  const {user_id} = req.body;
   console.log(user_id);
 
   let result = await querySql({
@@ -216,8 +216,49 @@ async(req,res)=>{
     values: [user_id],
   });
 
-  res.status(200).json({result:result[0]})
+  res.status(200).json({result})
   
 })
 
-module.exports = router
+
+router.post("/updatehotelinfo",
+async(req,res)=>{
+  const {hotel_id} = req.body;
+  console.log(hotel_id);
+
+  let result = await querySql({
+    query: `
+      SELECT * FROM Hotels WHERE hotel_id = ?
+    `,
+    values: [hotel_id],
+  });
+
+  res.status(200).json(result[0])
+  
+})
+
+
+router.put("/updatehotelinfo",
+async(req,res)=>{
+    let  { hotel_id,Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl } = req.body;
+
+    try {
+
+          
+        // check if user is authenticated or not
+        let user = await querySql({
+            query: "Update Hotels Set Email = ?,Name = ?,City = ?,PhoneNumber = ?,Address = ?,Description = ?,RoomPrice = ?,RoomCapacity = ?,WebUrl = ?,ImageUrl = ? Where hotel_id = ?",
+            values: [Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl,hotel_id],
+          });
+
+          if(user){
+            res.status(200).json({Details:"Your Info has been updated"});
+          }
+        
+    } catch (error) {
+        res.status(600).json({ERROR:"You are gettinhg error"});
+    }
+})
+
+module.exports = router;
+
