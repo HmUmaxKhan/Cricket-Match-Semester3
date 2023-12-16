@@ -111,8 +111,8 @@ const page = () => {
   }
 
   return (
-  
-  
+    <>
+    <h1 className="text-center m-4 bg-slate-400">Hotel Registration</h1>
     <div className="container">
       <div className="row">
         <div className="col-md-6">
@@ -277,7 +277,7 @@ const page = () => {
 
       <Link style={{marginLeft:"30px"}} href="/paymenthotel">Hotel Payment</Link>
     </div>
-    
+    </>
   );
 
 }

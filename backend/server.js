@@ -18,7 +18,8 @@ app.use('/api',require("./routers/tickets/ticket"));
 app.use('/api',require("./routers/getallusers/getallusers"));
 app.use('/api',require("./routers/payments/payments"));
 app.use('/api',require("./routers/hotelOwnersReg/hotelReg"));
-app.use('/api',require("./routers/rootUser/rootUser"));
+app.use('/api',require("./routers/rootLogin_tournamentEdit/tournamentEdit"));
+app.use('/api',require("./routers/matchEdit/matchEdit"));
 
 
 

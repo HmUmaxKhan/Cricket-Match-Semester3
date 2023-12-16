@@ -59,7 +59,7 @@ router.post("/rootlogin", async(req,res)=>{
     
 })
 
-router.get("/tournaments",
+router.get("/gettournaments",
 async(req,res)=>{
     const result = await querySql({
         query:"SELECT * FROM tournament ",
@@ -76,12 +76,12 @@ async(req,res)=>{
 router.post("/addtournament",
 async(req,res)=>{
 
-    const {TournamentName,StartingDate,EndingDate,AddingDate} = req.body
+    const {TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl} = req.body
 
 
     const result = await querySql({
-        query: "INSERT INTO tournament (TournamentName, StartingDate, EndingDate, AddingDate) VALUES (?, ?, ?, ?)",
-        values: [TournamentName, StartingDate, EndingDate, AddingDate]
+        query: "INSERT INTO tournament (TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl) VALUES (?, ?, ?, ?,?)",
+        values: [TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl]
     });
     
 
@@ -89,7 +89,41 @@ async(req,res)=>{
         res.status(201).json({Msg:"No tournaments are found"})
     }
 
-    res.status(200).json(result,{Msg:"Tournament is inserted"});
+    res.status(200).json({Msg:"Tournament is inserted"});
+})
+
+router.put("/updatetournament",
+async(req,res)=>{
+    const {tournament_id,TournamentName,StartingDate,EndingDate,AddingDate} = req.body
+
+    const result = await querySql({
+        query: "Update tournament Set TournamentName = ?, StartingDate = ?, EndingDate = ?, AddingDate = ? where tournament_id = ?" ,
+        values: [TournamentName, StartingDate, EndingDate, AddingDate,tournament_id]
+    });
+
+    if (!result || result.length === 0) {
+        res.status(201).json({Msg:"No tournaments are found"})
+    }
+
+    res.status(200).json({Msg:"Tournament is updated"});
+})
+
+
+
+router.delete("/deletetournament",
+async(req,res)=>{
+    const {tournament_id} = req.body
+
+    const result = await querySql({
+        query: "Delete From tournament where tournament_id = ?" ,
+        values: [tournament_id]
+    });
+
+    if (!result || result.length === 0) {
+        res.status(201).json({Msg:"No tournaments are found"})
+    }
+
+    res.status(200).json({Msg:"Tournament is deleted"});
 })
 
 module.exports = router
