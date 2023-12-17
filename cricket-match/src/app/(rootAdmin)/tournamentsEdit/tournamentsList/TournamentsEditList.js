@@ -5,6 +5,7 @@ import TournamentsEditListItems from "../tournamentsListItems/TournamentsEditLis
 function TournamentsEditList() {
 
     const [tournaments,Settournaments] = useState([]);
+    const [render,setRender] = useState(false)
   useEffect(() => {
     //Getting the previous info
 
@@ -25,13 +26,11 @@ function TournamentsEditList() {
     };
 
     info();
-  }, []);
+  }, [render]);
 
 
   const handleDelete=(tournament_id)=>{
-    Settournaments((prevtournaments)=>{
-      prevtournaments.filter((tournament)=>tournament.tournament_id!=tournament_id)
-    })
+    setRender(true)
   }
   
 

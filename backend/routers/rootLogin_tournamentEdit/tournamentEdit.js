@@ -84,7 +84,7 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-        res.status(201).json({Msg:"No tournaments are found"})
+       return  res.status(201).json({Msg:"No tournaments are found"})
     }
 
     res.status(200).json(result[0]);
@@ -94,8 +94,11 @@ async(req,res)=>{
 router.post("/addtournament",
 async(req,res)=>{
 
-    const {TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl} = req.body
+    let {TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl} = req.body
 
+    StartingDate = StartingDate.slice(0,10)
+    EndingDate = EndingDate.slice(0,10)
+    AddingDate = AddingDate.slice(0,10)
 
     const result = await querySql({
         query: "INSERT INTO tournament (TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl) VALUES (?, ?, ?, ?,?)",
@@ -104,10 +107,10 @@ async(req,res)=>{
     
 
     if (!result || result.length === 0) {
-        res.status(201).json({Msg:"No tournaments are found"})
+       return res.status(201).json({Msg:"No tournaments are found"})
     }
 
-    res.status(200).json({Msg:"Tournament is inserted"});
+     return res.status(200).json({Msg:"Tournament is inserted"});
 })
 
 router.put("/updatetournament",
@@ -124,10 +127,10 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-        res.status(201).json({Msg:"No tournaments are found"})
+       return res.status(201).json({Msg:"No tournaments are found"})
     }
 
-    res.status(200).json({Msg:"Tournament is updated"});
+   return res.status(200).json({Msg:"Tournament is updated"});
 })
 
 
@@ -179,23 +182,13 @@ async(req,res)=>{
 
 
     if (!result || result.length === 0) {
-        res.status(201).json({Msg:"No tournaments are found"})
+       return res.status(201).json({Msg:"No tournaments are found"})
     }
 
-    res.status(200).json({Msg:"Tournament is deleted"});
+   return res.status(200).json({Msg:"Tournament is deleted"});
 })
 
 
-router.post("/extra",async(req,res)=>{
-    const {tournament_id} = req.body
-    
-    const result3 = await querySql({
-        query: "Select match_id from matches where tournament_id = ?" ,
-        values: [tournament_id]
-    });
-
-    res.json(result3)
-})
 
 module.exports = router
 

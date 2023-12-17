@@ -3,40 +3,13 @@ import { useEffect, useState } from "react"
 import ReactDatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 
-const page = (params) => {
+const page = () => {
 
   const [image,setImage] = useState();
   const [name,setName]=useState()
   const [startDate,setStartDate]=useState(new Date());
   const [endingDate,setEndingDate]=useState(new Date());
   const [addingDate,setAddingDate]=useState(new Date());
-
-  console.log(params.params.updatetournament);
-  useEffect(()=>{
-    //Getting the previous info
-        const info = async()=>{
-        let response = await fetch("http://localhost:5005/api/getsingletournaments",{
-            method:'POST',
-            headers:{
-              "Content-Type":"application/json",
-            },
-            body:JSON.stringify({tournament_id:params.params.updatetournament})
-          });
-          response = await response.json();
-          console.log(response);
-
-          const { TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl } = response;
-
-          setImage(ImageUrl);
-          setStartDate(new Date(StartingDate.slice(0,10)))
-          setEndingDate(new Date(EndingDate.slice(0,10)))
-          setAddingDate(new Date(AddingDate.slice(0,10)));
-          setName(TournamentName)
-
-    }
-
-    info();
-    },[]);
 
 
     const handleImageChange = (e)=>{
@@ -71,37 +44,37 @@ const page = (params) => {
 
     const handleClick = async (e) => {
       e.preventDefault();
+    
       const modifiedStartDate = new Date(startDate);
       modifiedStartDate.setDate(modifiedStartDate.getDate() + 1);
-      
+    
       const modifiedEndDate = new Date(endingDate);
       modifiedEndDate.setDate(modifiedEndDate.getDate() + 1);
-      
+    
       const modifiedAddingDate = new Date(addingDate);
       modifiedAddingDate.setDate(modifiedAddingDate.getDate() + 1);
     
-      let response = await fetch("http://localhost:5005/api/updatetournament",{
-        method:'PUT',
-        headers:{
-          "content-type":"application/json",
+      let response = await fetch("http://localhost:5005/api/addtournament", {
+        method: 'POST',
+        headers: {
+          "content-type": "application/json",
         },
         body: JSON.stringify({
-          tournament_id:params.params.updatetournament,
-          TournamentName:name,
+          TournamentName: name,
           StartingDate: modifiedStartDate.toISOString().slice(0, 10),
           EndingDate: modifiedEndDate.toISOString().slice(0, 10),
           AddingDate: modifiedAddingDate.toISOString().slice(0, 10),
-          ImageUrl:image
+          ImageUrl: image,
         }),
       });
       response = await response.json();
       console.log(response);
-      window.location.href="/tournamentsEdit"
+      window.location.href = "/tournamentsEdit";
     }
     
   return (
     <>
-    <h1 className="text-center m-4 bg-slate-400">Update Tournament Details</h1>
+    <h1 className="text-center m-4 bg-slate-400">Add Tournament</h1>
     <div className="container">
       <div className="row">
         <div className="col-md-6">

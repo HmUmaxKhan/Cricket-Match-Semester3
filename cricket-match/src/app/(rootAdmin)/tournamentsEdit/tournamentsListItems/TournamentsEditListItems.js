@@ -56,7 +56,7 @@ export default function TournamentsEditListItems (props) {
         <h3 className="card-title">{tournament.TournamentName}</h3>
         <h5>Starting Date: {tournament.StartingDate.slice(0,10)}</h5>
         <h5>Ending Date: {tournament.EndingDate.slice(0,10)}</h5>
-        <h5>Posting Date: {tournament.AddingDate}</h5>
+        <h5>Posting Date: {tournament.AddingDate.slice(0,10)}</h5>
         <div>
         <Link href={`tournamentsEdit/${tournament.tournament_id}`}>
           <RxUpdate size={20}/>
