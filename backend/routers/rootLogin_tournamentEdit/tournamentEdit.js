@@ -67,11 +67,29 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-        res.status(201).json({Msg:"No tournaments are found"})
+        return res.status(201).json({Msg:"No tournaments are found"})
     }
 
     res.status(200).json(result);
 })
+
+router.post("/getsingletournaments",
+async(req,res)=>{
+
+    const {tournament_id} = req.body;
+
+    const result = await querySql({
+        query:"SELECT * FROM tournament where tournament_id = ? ",
+        values:[tournament_id]
+    });
+
+    if (!result || result.length === 0) {
+        res.status(201).json({Msg:"No tournaments are found"})
+    }
+
+    res.status(200).json(result[0]);
+})
+
 
 router.post("/addtournament",
 async(req,res)=>{
@@ -94,11 +112,15 @@ async(req,res)=>{
 
 router.put("/updatetournament",
 async(req,res)=>{
-    const {tournament_id,TournamentName,StartingDate,EndingDate,AddingDate} = req.body
+    let {tournament_id,TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl} = req.body
+
+    StartingDate = StartingDate.slice(0,10)
+    EndingDate = EndingDate.slice(0,10)
+    AddingDate = AddingDate.slice(0,10)
 
     const result = await querySql({
-        query: "Update tournament Set TournamentName = ?, StartingDate = ?, EndingDate = ?, AddingDate = ? where tournament_id = ?" ,
-        values: [TournamentName, StartingDate, EndingDate, AddingDate,tournament_id]
+        query: "Update tournament Set TournamentName = ?, StartingDate = ?, EndingDate = ?, AddingDate = ?, ImageUrl=? where tournament_id = ?" ,
+        values: [TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl ,tournament_id]
     });
 
     if (!result || result.length === 0) {
@@ -113,17 +135,66 @@ async(req,res)=>{
 router.delete("/deletetournament",
 async(req,res)=>{
     const {tournament_id} = req.body
+    
+    const result3 = await querySql({
+        query: "Select match_id from matches where tournament_id = ?" ,
+        values: [tournament_id]
+    });
+
+    console.log(result3);
+
+    const matchId = result3.map((match)=>{return match.match_id})
+
+    console.log(matchId);
+
+    for(let match of matchId){
+    await querySql({
+        query: "Delete From Booked_Tickets where match_id = ?" ,
+        values: [match]
+    });
+    }
+
+    for(let match of matchId){
+        await querySql({
+            query: "Delete From tickets where match_id = ?" ,
+            values: [match]
+        });
+    }
+
+    for(let match of matchId){
+        
+    await querySql({
+        query: "Delete From matches where tournament_id = ?" ,
+        values: [match]
+    });
+
+    }
+
+    
 
     const result = await querySql({
         query: "Delete From tournament where tournament_id = ?" ,
         values: [tournament_id]
     });
 
+
     if (!result || result.length === 0) {
         res.status(201).json({Msg:"No tournaments are found"})
     }
 
     res.status(200).json({Msg:"Tournament is deleted"});
+})
+
+
+router.post("/extra",async(req,res)=>{
+    const {tournament_id} = req.body
+    
+    const result3 = await querySql({
+        query: "Select match_id from matches where tournament_id = ?" ,
+        values: [tournament_id]
+    });
+
+    res.json(result3)
 })
 
 module.exports = router
