@@ -13,19 +13,19 @@ export default function MatchEditListItems (props) {
     }
 
     const handleDelete=async()=>{
-      let response = await fetch("http://localhost:5005/api/deletetournament",{
+      let response = await fetch("http://localhost:5005/api/deletematch",{
         method:"DELETE",
         headers:{
           "Content-Type":"application/json"
         },
-        body:JSON.stringify({tournament_id:match.tournament_id})
+        body:JSON.stringify({match_id:match.match_id})
       })
 
       response = await response.json();
 
       console.log(response);
 
-      onDelete(match.tournament_id)
+      onDelete(match.match_id)
     }
 
     return (

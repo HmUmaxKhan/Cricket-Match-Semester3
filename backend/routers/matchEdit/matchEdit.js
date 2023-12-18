@@ -11,7 +11,7 @@ async(req,res)=>{
     const {tournament_id} = req.body
 
     const result = await querySql({
-        query:"Select  * from venues v Join matches m on m.match_id = m.match_id where tournament_id = ?",
+        query:"Select  * from venues v Join matches m on v.match_id = m.match_id where tournament_id = ?",
         values:[tournament_id]
     });
 
@@ -101,7 +101,7 @@ async(req,res)=>{
     const {match_id} = req.body
     
     const result1 = await querySql({
-        query: "Delete From venues where venue_id = ?" ,
+        query: "Delete From venues where match_id = ?" ,
         values: [match_id]
     });
 

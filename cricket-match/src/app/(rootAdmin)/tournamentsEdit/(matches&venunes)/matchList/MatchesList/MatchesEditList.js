@@ -22,6 +22,8 @@ function MatchesEditList(props) {
       Setmatches(response);
     };
 
+    setRender(false);
+
     info();
   }, [render]);
 
@@ -38,7 +40,7 @@ function MatchesEditList(props) {
             {key : index},
             <MatchEditListItems match = {item}  onDelete={handleDelete}/>
         )
-    }):(<h2 className="text-center mb-3">No Tournaments are added</h2>)
+    }):(<h2 className="text-center mb-3">No Matches are here</h2>)
 }
     </div>;
 }

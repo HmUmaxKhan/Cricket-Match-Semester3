@@ -30,7 +30,6 @@ const page = (params) => {
           setImage(ImageUrl);
           setStartDate(new Date(StartingDate.slice(0,10)))
           setEndingDate(new Date(EndingDate.slice(0,10)))
-          setAddingDate(new Date(AddingDate.slice(0,10)));
           setName(TournamentName)
 
     }
@@ -55,11 +54,6 @@ const page = (params) => {
       // Ensure to read the file as data URL
       reader.readAsDataURL(file);
     };
-
-    const handleAdding = (date)=>{
-      const modifiedDate = new Date(date);
-      setAddingDate(modifiedDate);
-    }
     const handleEnding = (date)=>{
       const modifiedDate = new Date(date);
       setEndingDate(modifiedDate);
@@ -77,8 +71,6 @@ const page = (params) => {
       const modifiedEndDate = new Date(endingDate);
       modifiedEndDate.setDate(modifiedEndDate.getDate() + 1);
       
-      const modifiedAddingDate = new Date(addingDate);
-      modifiedAddingDate.setDate(modifiedAddingDate.getDate() + 1);
     
       let response = await fetch("http://localhost:5005/api/updatetournament",{
         method:'PUT',
@@ -90,7 +82,7 @@ const page = (params) => {
           TournamentName:name,
           StartingDate: modifiedStartDate.toISOString().slice(0, 10),
           EndingDate: modifiedEndDate.toISOString().slice(0, 10),
-          AddingDate: modifiedAddingDate.toISOString().slice(0, 10),
+          AddingDate: addingDate.toISOString().slice(0, 10),
           ImageUrl:image
         }),
       });
@@ -145,20 +137,6 @@ const page = (params) => {
               className="form-control ml-3"
               id="endingDate"
               name="EndingDate"
-            />
-            </div>
-
-            <div className="mb-3">
-            <label htmlFor="addingDate" className="form-label mr-3">
-              Adding Date:  
-            </label>
-            <ReactDatePicker
-             selected={addingDate}
-              onChange={handleAdding}
-              dateFormat="yyyy-MM-dd"
-              className="form-control ml-3"
-              id="addingDate"
-              name="AddingDate"
             />
             </div>
 

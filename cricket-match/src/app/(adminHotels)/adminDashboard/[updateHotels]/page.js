@@ -1,9 +1,12 @@
 "use client"
 import { useEffect, useState } from "react"
+import ReactDatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
 
 const page = (params) => {
 
   const [image,setImage] = useState();
+  const [addingDate,setAddingDate]=useState(new Date());
 
   useEffect(()=>{
     //Getting the previous info
@@ -18,7 +21,7 @@ const page = (params) => {
           response = await response.json();
           console.log(response);
 
-          const { Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl } = response;
+          const { Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl,AddingDate } = response;
 
           setImage(ImageUrl);
           setReg({
@@ -32,6 +35,8 @@ const page = (params) => {
             RoomCapacity,
             WebUrl,
             });
+
+          setAddingDate(new Date(AddingDate.slice(0,10)));
 
     }
 
@@ -75,6 +80,7 @@ const page = (params) => {
   const handleClick =async (e) =>{
     e.preventDefault();
     console.log(reg);
+
     let response = await fetch("http://localhost:5005/api/updatehotelinfo",{
       method:'PUT',
       headers:{
@@ -92,7 +98,8 @@ const page = (params) => {
         Description: reg.Description,
         RoomPrice: reg.RoomPrice,
         WebUrl: reg.WebUrl,
-        ImageUrl:image
+        ImageUrl:image,
+        AddingDate:addingDate.toISOString().slice(0,10)
       }),
     });
     response = await response.json();

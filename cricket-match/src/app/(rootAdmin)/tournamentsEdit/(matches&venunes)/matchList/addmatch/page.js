@@ -3,47 +3,12 @@ import { useEffect, useState } from "react"
 import ReactDatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 
-const page = ({params}) => {
+const page = () => {
 
   const [image,setImage] = useState();
   const [matchDate,setMatchDate] = useState(new Date());
   const [addingDate,setAddingDate] = useState(new Date());
   const [tournament_id,setTournamentId] = useState();
-
-  useEffect(()=>{
-    //Getting the previous info
-        const info = async()=>{
-        let response = await fetch("http://localhost:5005/api/getsinglematch",{
-            method:'POST',
-            headers:{
-              "Content-Type":"application/json",
-            },
-            body:JSON.stringify({match_id:params.updatematches})
-          });
-          response = await response.json();
-          console.log(response);
-
-          const { tournament_id,match_id,match_date,match_time,team1,team2,img,AddingDate,venue_name,location } = response;
-
-          setImage(img);
-          setAddingDate(new Date(AddingDate));
-          setMatchDate(new Date(match_date))
-
-          setTournamentId(tournament_id)
-
-          setReg({
-            match_time,
-            team1,
-            team2,
-            img,
-            venue_name,
-            location
-            });
-
-    }
-
-    info();
-    },[]);
 
       const handleMatchDate = (date)=>{
         const modifiedDate = new Date(date);
@@ -93,7 +58,6 @@ const page = ({params}) => {
         "content-type":"application/json",
       },
       body: JSON.stringify({
-        match_id:params.updatematches,
         match_date:modifiedMatchDate.toISOString().slice(0,10),
         match_time:reg.match_time,
         team1:reg.team1,
@@ -111,7 +75,7 @@ const page = ({params}) => {
 
   return (
     <>
-    <h1 className="text-center m-4 bg-slate-400">Match Update</h1>
+    <h1 className="text-center m-4 bg-slate-400">Add Match</h1>
     <div className="container">
       <div className="row">
         <div className="col-md-6">
