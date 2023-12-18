@@ -25,6 +25,8 @@ function TournamentsEditList() {
       Settournaments(response);
     };
 
+    setRender(false);
+
     info();
   }, [render]);
 

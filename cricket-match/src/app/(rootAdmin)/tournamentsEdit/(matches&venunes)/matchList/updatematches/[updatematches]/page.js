@@ -1,54 +1,65 @@
 "use client"
-import Link from "next/link";
+import { withRouter } from "next/router";
 import { useEffect, useState } from "react"
+import ReactDatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
 
-const page = () => {
+const page = ({router,params}) => {
 
-  const [token,SetToken] = useState({});
+   const handleRedirect = () => {
+    // Use the router to navigate to the desired URL with a leading slash
+    router.push(`/tournamentsEdit/matchList/${tournament_id}`);
+  };
+
   const [image,setImage] = useState();
+  const [matchDate,setMatchDate] = useState(new Date());
+  const [addingDate,setAddingDate] = useState(new Date());
+  const [tournament_id,setTournamentId] = useState();
 
   useEffect(()=>{
     //Getting the previous info
-
-    let details = localStorage.getItem("adminLogin");
-    if (!details && details===null) {
-        window.location.href="/hotelloginAdmin"
-    }
-    details = JSON.parse(details)
-    console.log(details.token);
-    const token1 = details.token
-
-    console.log(token1);
-    const info = async()=>{
-        let response = await fetch("http://localhost:5005/api/allhotelinfo",{
+        const info = async()=>{
+        let response = await fetch("http://localhost:5005/api/getsinglematch",{
             method:'POST',
             headers:{
               "Content-Type":"application/json",
             },
-            body:JSON.stringify({user_id:details.user_id})
+            body:JSON.stringify({match_id:params.updatematches})
           });
           response = await response.json();
           console.log(response);
 
-          const { Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl } = response.result;
+          const { tournament_id,match_id,match_date,match_time,team1,team2,img,AddingDate,venue_name,location } = response;
 
-          setImage(ImageUrl);
+          setImage(img);
+          setAddingDate(new Date(AddingDate));
+          setMatchDate(new Date(match_date))
+
+          setTournamentId(tournament_id)
+
           setReg({
-            Email,
-            Name,
-            City,
-            PhoneNumber,
-            Address,
-            Description,
-            RoomPrice,
-            RoomCapacity,
-            WebUrl,
+            match_time,
+            team1,
+            team2,
+            img,
+            venue_name,
+            location
             });
 
     }
 
     info();
     },[]);
+
+
+    const handleAdding = (date)=>{
+        const modifiedDate = new Date(date);
+        setAddingDate(modifiedDate);
+      }
+      const handleMatchDate = (date)=>{
+        const modifiedDate = new Date(date);
+        setMatchDate(modifiedDate);
+      }
 
 
     const handleImageChange = (e)=>{
@@ -69,15 +80,12 @@ const page = () => {
     };
 
   const [reg, setReg] = useState({
-    Email: "",
-    Name: "",
-    City: "",
-    PhoneNumber: "",
-    Address: "",
-    Description: "",
-    RoomPrice: "",
-    RoomCapacity: "",
-    WebUrl: "",
+
+        match_time :"",
+        team1  :"",
+        team2  :"",
+        venue_name  :"",
+        location  :""
   });
 
   const Change = (e)=>{
@@ -86,164 +94,141 @@ const page = () => {
 
   const handleClick =async (e) =>{
     e.preventDefault();
-    console.log(reg);
-    let response = await fetch("http://localhost:5005/api/auth/update",{
+    
+    const modifiedMatchDate = new Date(matchDate);
+    modifiedMatchDate.setDate(modifiedMatchDate.getDate() + 1);
+      
+    const modifiedAddingDate = new Date(addingDate);
+    modifiedAddingDate.setDate(modifiedAddingDate.getDate() + 1);    
+
+    let response = await fetch("http://localhost:5005/api/updatematch",{
       method:'PUT',
       headers:{
         "content-type":"application/json",
-        "auth-token":""
       },
       body: JSON.stringify({
-        Email: reg.Email,
-        Name: reg.Name,
-        PhoneNumber: reg.PhoneNumber,
-        City: reg.City,
-        Address: reg.Address,
-        RoomCapacity: reg.RoomCapacity,
-        Description: reg.Description,
-        RoomPrice: reg.RoomPrice,
-        WebUrl: reg.WebUrl,
-        admin_id: adminId,
-        ImageUrl:image
+        match_id:params.updatematches,
+        match_date:modifiedMatchDate.toISOString().slice(0,10),
+        match_time:reg.match_time,
+        team1:reg.team1,
+        team2:reg.team2,
+        img:image,
+        AddingDate:modifiedAddingDate.toISOString().slice(0,10),
+        venue_name:reg.venue_name,
+        location:reg.location
       }),
     });
     response = await response.json();
     console.log(response);
+    handleRedirect();
   }
 
   return (
     <>
-    <h1 className="text-center m-4 bg-slate-400">Hotel Registration</h1>
+    <h1 className="text-center m-4 bg-slate-400">Match Update</h1>
     <div className="container">
       <div className="row">
         <div className="col-md-6">
           <form>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">
-                Name of Hotel
+                Team1 Name:
               </label>
               <input
                 type="text"
                 className="form-control"
                 id="name"
-                name="Name"
+                name="team1"
                 onChange={Change}
-                value={reg.Name}
+                value={reg.team1}
               />
             </div>
 
             <div className="mb-3">
               <label htmlFor="city" className="form-label">
-                City
+                Team2 Name:
               </label>
               <input
                 type="text"
                 className="form-control"
                 id="city"
-                name="City"
+                name="team2"
                 onChange={Change}
-                value={reg.City}
+                value={reg.team2}
               />
             </div>
 
             <div className="mb-3">
               <label htmlFor="address" className="form-label">
-                Address
+                Stadium Name:
               </label>
               <input
                 type="text"
                 className="form-control"
                 id="address"
-                name="Address"
+                name="venue_name"
                 onChange={Change}
-                value={reg.Address}
-              />
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="phoneNumber" className="form-label">
-                Phone Number
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="phoneNumber"
-                name="PhoneNumber"
-                onChange={Change}
-                value={reg.PhoneNumber}
+                value={reg.venue_name}
               />
             </div>
 
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
-                Email of Hotel
+                City: 
               </label>
               <input
-                type="email"
+                type="text"
                 className="form-control"
                 id="email"
-                name="Email"
+                name="location"
                 onChange={Change}
-                value={reg.Email}
+                value={reg.location}
               />
             </div>
 
             <div className="mb-3">
               <label htmlFor="description" className="form-label">
-                Description
+                Time for Match: 
               </label>
               <input
-                type="text"
+                type="time"
                 className="form-control"
                 id="description"
-                name="Description"
+                name="match_time"
                 onChange={Change}
-                value={reg.Description}
+                value={reg.match_time}
               />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="roomCapacity" className="form-label">
-                No. of Rooms
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="roomCapacity"
-                name="RoomCapacity"
-                onChange={Change}
-                value={reg.RoomCapacity}
-              />
+            <label htmlFor="endingDate" className="form-label mr-3">
+              Ending Date:  
+            </label>
+            <ReactDatePicker
+             selected={matchDate}
+              onChange={handleMatchDate}
+              dateFormat="yyyy-MM-dd"
+              className="form-control ml-3"
+              id="endingDate"
+              name="match_date"
+            />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="roomPrice" className="form-label">
-                Price
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="roomPrice"
-                name="RoomPrice"
-                onChange={Change}
-                value={reg.RoomPrice}
-              />
+            <label htmlFor="addingDate" className="form-label mr-3">
+              Adding Date:  
+            </label>
+            <ReactDatePicker
+             selected={addingDate}
+              onChange={handleAdding}
+              dateFormat="yyyy-MM-dd"
+              className="form-control ml-3"
+              id="addingDate"
+              name="AddingDate"
+            />
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="webUrl" className="form-label">
-                Website Link
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="webUrl"
-                name="WebUrl"
-                onChange={Change}
-                value={reg.WebUrl}
-              />
-            </div>
-          </form>
+           </form>
         </div>
 
         <div className="col-md-6">
@@ -276,7 +261,6 @@ const page = () => {
         Submit
       </button>
 
-      <Link style={{marginLeft:"30px"}} href="/paymenthotel">Hotel Payment</Link>
     </div>
     </>
   );

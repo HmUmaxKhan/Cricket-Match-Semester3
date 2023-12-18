@@ -62,25 +62,15 @@ router.post('/hotelreg', async (req, res) => {
       RoomCapacity,
       WebUrl,
       admin_id,
-      ImageUrl
+      ImageUrl,
+      AddingDate
     } = req.body;
 
-
-    const venue = await querySql({
-      query: `
-      Select venue_id from venues where location = ?
-      `,
-      values: [
-        City
-      ],
-    });
-
-    console.log(venue[0].venue_id);
 
     // Insert data into the database
     const result = await querySql({
       query: `
-        INSERT INTO Hotels (Email, Name, City, PhoneNumber, Address, Description, RoomPrice, RoomCapacity, WebUrl, admin_id,venue_id,ImageUrl)
+        INSERT INTO Hotels (Email, Name, City, PhoneNumber, Address, Description, RoomPrice, RoomCapacity, WebUrl, admin_id,ImageUrl,AddingDate)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)
       `,
       values: [
@@ -94,8 +84,8 @@ router.post('/hotelreg', async (req, res) => {
         RoomCapacity,
         WebUrl,
         admin_id,
-        venue[0].venue_id,
-        ImageUrl
+        ImageUrl,
+        AddingDate
       ],
     });
 
@@ -248,15 +238,15 @@ async(req,res)=>{
 
 router.put("/updatehotelinfo",
 async(req,res)=>{
-    let  { hotel_id,Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl } = req.body;
+    let  { hotel_id,Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl,AddingDate } = req.body;
 
     try {
 
           
         // check if user is authenticated or not
         let user = await querySql({
-            query: "Update Hotels Set Email = ?,Name = ?,City = ?,PhoneNumber = ?,Address = ?,Description = ?,RoomPrice = ?,RoomCapacity = ?,WebUrl = ?,ImageUrl = ? Where hotel_id = ?",
-            values: [Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl,hotel_id],
+            query: "Update Hotels Set Email = ?,Name = ?,City = ?,PhoneNumber = ?,Address = ?,Description = ?,RoomPrice = ?,RoomCapacity = ?,WebUrl = ?,ImageUrl = ? AddingDate=? Where hotel_id = ?",
+            values: [Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl,AddingDate,hotel_id],
           });
 
           if(user){
@@ -266,6 +256,19 @@ async(req,res)=>{
     } catch (error) {
         res.status(600).json({ERROR:"You are gettinhg error"});
     }
+});
+
+
+router.delete("/deleteHotel",
+async(req,res)=>{
+  const {hotel_id} = req.body;
+
+  let user = await querySql({
+    query: "DELETE FROM Hotels where hotel_id = ?",
+    values: [hotel_id],
+  });
+
+
 })
 
 module.exports = router;

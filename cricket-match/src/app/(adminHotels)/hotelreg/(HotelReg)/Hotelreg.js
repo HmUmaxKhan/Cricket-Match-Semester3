@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ReactDatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+
 
 function Hotelreg() {
   const [adminId, setAdminId] = useState();
   const [image, setImage] = useState();
+  const [addingDate,setAddingDate]=useState(new Date());
 
   useEffect(() => {
     const details = async () => {
@@ -44,6 +48,11 @@ function Hotelreg() {
     reader.readAsDataURL(file);
   };
 
+  const handleAdding = (date)=>{
+    const modifiedDate = new Date(date);
+    setAddingDate(modifiedDate);
+  }
+
   const [reg, setReg] = useState({
     Email: "",
     Name: "",
@@ -62,6 +71,10 @@ function Hotelreg() {
 
   const handleClick = async (e) => {
     e.preventDefault();
+
+    const modifiedAddingDate = new Date(addingDate);
+    modifiedAddingDate.setDate(modifiedAddingDate.getDate() + 1);
+
     let response = await fetch("http://localhost:5005/api/hotelreg", {
       method: "POST",
       headers: {
@@ -78,7 +91,8 @@ function Hotelreg() {
         RoomPrice: reg.RoomPrice,
         WebUrl: reg.WebUrl,
         admin_id: adminId,
-        ImageUrl:image
+        ImageUrl:image,
+        AddingDate:modifiedAddingDate.toISOString().slice(0,10)
       }),
     });
     response = await response.json();
@@ -216,6 +230,21 @@ function Hotelreg() {
                 onChange={Change}
               />
             </div>
+
+            <div className="mb-3">
+            <label htmlFor="addingDate" className="form-label mr-3">
+              Adding Date:  
+            </label>
+            <ReactDatePicker
+             selected={addingDate}
+              onChange={handleAdding}
+              dateFormat="yyyy-MM-dd"
+              className="form-control ml-3"
+              id="addingDate"
+              name="AddingDate"
+            />
+            </div>
+
           </form>
         </div>
 

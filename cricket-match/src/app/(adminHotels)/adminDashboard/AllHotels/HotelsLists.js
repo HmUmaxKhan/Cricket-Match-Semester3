@@ -4,6 +4,7 @@ import HotelListItems from "./HostelListItems";
 function HotelsLists() {
 
     const [hotel,setHotel] = useState({});
+    const [render,setRender] = useState();
   useEffect(() => {
     //Getting the previous info
 
@@ -26,15 +27,22 @@ function HotelsLists() {
       setHotel(response.result);
     };
 
+    setRender(false);
+
     info();
-  }, []);
+  }, [render]);
+
+
+  const handleDelete=(tournament_id)=>{
+    setRender(true)
+  }
 
   return <div>
   {
     Array.isArray(hotel) && hotel.map((item, index) => {
         return(
             {key : index},
-            <HotelListItems hotel = {item} />
+            <HotelListItems hotel = {item} onDelete={handleDelete}/>
         )
     })
 }

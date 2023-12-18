@@ -165,6 +165,13 @@ async(req,res)=>{
     }
 
     for(let match of matchId){
+        await querySql({
+            query: "Delete From venues where match_id = ?" ,
+            values: [match]
+        });
+    }
+
+    for(let match of matchId){
         
     await querySql({
         query: "Delete From matches where tournament_id = ?" ,
