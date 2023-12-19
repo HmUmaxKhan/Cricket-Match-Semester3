@@ -23,7 +23,8 @@ function page() {
   return (
     <div>
         <h1>Root Login</h1>
-        <Link href="/tournamentsEdit">Tournaments</Link>
+        <Link href="/tournamentsEdit">Tournaments</Link><br></br>
+        <Link href="/packages">Packages</Link>
     </div>
   )
 }

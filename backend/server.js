@@ -20,6 +20,7 @@ app.use('/api',require("./routers/payments/payments"));
 app.use('/api',require("./routers/hotelOwnersReg/hotelReg"));
 app.use('/api',require("./routers/rootLogin_tournamentEdit/tournamentEdit"));
 app.use('/api',require("./routers/matchEdit/matchEdit"));
+app.use('/api',require("./routers/ticket_package/tickets"));
 
 
 

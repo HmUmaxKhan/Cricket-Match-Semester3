@@ -2,9 +2,11 @@
 import { useEffect, useState } from "react"
 import ReactDatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
+import { useSelector } from "react-redux";
 
 const page = () => {
 
+  const tournamentId = useSelector((state)=>state.tournamentId.tournament_id);
   const [image,setImage] = useState();
   const [matchDate,setMatchDate] = useState(new Date());
   const [addingDate,setAddingDate] = useState(new Date());
@@ -52,12 +54,13 @@ const page = () => {
     const modifiedMatchDate = new Date(matchDate);
     modifiedMatchDate.setDate(modifiedMatchDate.getDate() + 1);
       
-    let response = await fetch("http://localhost:5005/api/updatematch",{
-      method:'PUT',
+    let response = await fetch("http://localhost:5005/api/addmatches",{
+      method:'POST',
       headers:{
         "content-type":"application/json",
       },
       body: JSON.stringify({
+        tournament_id:tournamentId,
         match_date:modifiedMatchDate.toISOString().slice(0,10),
         match_time:reg.match_time,
         team1:reg.team1,
@@ -70,7 +73,7 @@ const page = () => {
     });
     response = await response.json();
     console.log(response);
-    window.location.href=`/tournamentsEdit//matchList/${tournament_id}`
+    window.location.href=`/tournamentsEdit//matchList/${tournamentId}`
   }
 
   return (
@@ -152,7 +155,7 @@ const page = () => {
 
             <div className="mb-3">
             <label htmlFor="endingDate" className="form-label mr-3">
-              Ending Date:  
+              Match Date:  
             </label>
             <ReactDatePicker
              selected={matchDate}

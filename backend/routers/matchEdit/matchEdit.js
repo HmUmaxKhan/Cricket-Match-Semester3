@@ -51,7 +51,7 @@ async(req,res)=>{
 
     const result = await querySql({
         query: "INSERT INTO matches (tournament_id,match_date,match_time, team1, team2, AddingDate,img) VALUES (?, ?, ?, ?,?,?,?)",
-        values: [tournament_id,venue_id,match_date,match_time, team1, team2, AddingDate,img]
+        values: [tournament_id,match_date,match_time, team1, team2, AddingDate,img]
     });
 
     const match_id = result.insertId;
@@ -102,6 +102,16 @@ async(req,res)=>{
     
     const result1 = await querySql({
         query: "Delete From venues where match_id = ?" ,
+        values: [match_id]
+    });
+
+    const result2 = await querySql({
+        query: "Delete From tickets where match_id = ?" ,
+        values: [match_id]
+    });
+
+    const result3 = await querySql({
+        query: "Delete From Booked_Tickets where match_id = ?" ,
         values: [match_id]
     });
 

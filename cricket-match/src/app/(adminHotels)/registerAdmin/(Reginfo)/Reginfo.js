@@ -10,6 +10,10 @@ import { useDispatch } from "react-redux";
         const [cnfrm,setCnfrm] = useState();
         const dispatch = useDispatch();
 
+        const cardStyle={
+          boxShadow:"0 0 10px 8px"
+        }
+
       const [reg, setReg] = useState({
         EmailAddress:"",
         Fname:"",
@@ -53,7 +57,7 @@ import { useDispatch } from "react-redux";
     
       return (
         <div className="container d-flex justify-content-center align-items-center flex-column p-5">
-          <div className="card p-4">
+          <div className="card p-4"  style={cardStyle}>
             <h3 className=" py-3 text-center">Registration Information for Hostel Admin</h3>
     
             <div className="mb-3">

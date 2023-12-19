@@ -9,7 +9,7 @@ const tournamentIdSlice = createSlice({
     reducers:{
         tournamentIdaction(state,action){
             console.log(action.payload);
-            state.ticketInfo = action.payload
+            state.tournament_id = action.payload
         }
     }
 })

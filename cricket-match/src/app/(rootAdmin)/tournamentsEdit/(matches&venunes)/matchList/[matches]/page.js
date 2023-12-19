@@ -12,7 +12,7 @@ function page(params) {
   return (
     <div>
     <h1 className='text-center'>Matches</h1>
-    <Link className='text-center btn btn-primary' style={{margin:"20px 0 20px 0",display:"flex",justifyContent:"center"}} href={`/tournamentsEdit/matchList/${params.params.matches}/addmatch`}>Add Match</Link>
+    <Link className='text-center btn btn-primary' style={{margin:"20px 0 20px 0",display:"flex",justifyContent:"center"}} href={`addmatch`}>Add Match</Link>
     <MatchesEditList t_id = {params.params.matches}/>
 </div>
   )
