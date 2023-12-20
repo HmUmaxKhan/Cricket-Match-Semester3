@@ -68,7 +68,7 @@ async(req,res)=>{
     const {ticket_id,Category,AddingDate,price,total_seats} = req.body
 
     const result = await querySql({
-        query: "Update tickets Set Category = ?, price= ? total_seats = ?, AddingDate = ? where ticket_id = ?",
+        query: "Update tickets Set Category = ?, price= ?,total_seats = ?, AddingDate = ? where ticket_id = ?",
         values: [Category,price,total_seats,AddingDate,ticket_id]
     });
 
@@ -88,7 +88,7 @@ async(req,res)=>{
     const {ticket_id} = req.body
 
     const result3 = await querySql({
-        query: "Delete From Booked_Tickets where tickets_id = ?" ,
+        query: "Delete From Booked_Tickets where ticket_id = ?" ,
         values: [ticket_id]
     });
 

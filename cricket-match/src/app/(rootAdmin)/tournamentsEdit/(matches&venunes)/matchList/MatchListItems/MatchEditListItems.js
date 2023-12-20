@@ -30,6 +30,7 @@ export default function MatchEditListItems (props) {
 
     return (
       <div className="card mb-3 mt-5 " style={cardStyle}>
+      <Link href={`/tournamentsEdit/matchList/tickets/${match.match_id}`} style={{style:"none"}}>
   <div className="row g-0">
     <div className="col-md-6" style={{ overflow: "hidden", transition: "width 0.3s ease" }}> 
           {match.img !==null ? (
@@ -70,6 +71,7 @@ export default function MatchEditListItems (props) {
       </div>
     </div>
   </div>
+  </Link>
 </div>
 
   )
