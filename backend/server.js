@@ -1,11 +1,13 @@
 const express= require('express');
 var cors = require('cors')
+const compression = require("compression");
 const update = require("./routers/auth/update");
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(compression());
 
 
 app.use('/api/auth',require('./routers/auth/reg'));
@@ -21,6 +23,7 @@ app.use('/api',require("./routers/hotelOwnersReg/hotelReg"));
 app.use('/api',require("./routers/rootLogin_tournamentEdit/tournamentEdit"));
 app.use('/api',require("./routers/matchEdit/matchEdit"));
 app.use('/api',require("./routers/ticket_package/tickets"));
+app.use('/api',require("./routers/transport_admin/transport"));
 
 
 

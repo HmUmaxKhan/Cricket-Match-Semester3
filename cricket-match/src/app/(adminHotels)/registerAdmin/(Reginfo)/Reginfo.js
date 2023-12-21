@@ -10,9 +10,28 @@ import { useDispatch } from "react-redux";
         const [cnfrm,setCnfrm] = useState();
         const dispatch = useDispatch();
 
+        const [image,setImage] = useState();
+
         const cardStyle={
           boxShadow:"0 0 10px 8px"
         }
+
+        const handleImageChange = (e)=>{
+          const file = e.target.files[0];
+          convertToBase64(file);
+        }
+      
+        const convertToBase64 = (file) => {
+          const reader = new FileReader();
+        
+          reader.onloadend = () => {
+            const base64String = reader.result.split(',')[1];
+            setImage(base64String);
+          };
+        
+          // Ensure to read the file as data URL
+          reader.readAsDataURL(file);
+        };
 
       const [reg, setReg] = useState({
         EmailAddress:"",
@@ -27,6 +46,9 @@ import { useDispatch } from "react-redux";
       const Change = (e)=>{
         setReg({...reg,[e.target.name]:e.target.value})
       }
+
+
+  
 
       const handleClick =async (e) =>{
         e.preventDefault();
@@ -44,7 +66,8 @@ import { useDispatch } from "react-redux";
                 Contact:reg.Contact,
                 CNIC : reg.CNIC,
                 Address:reg.Address,
-                usertype:'hosteladmin'
+                usertype:'hosteladmin',
+                ProfilePhoto: image
           })
         });
         response = await response.json();
@@ -171,7 +194,32 @@ import { useDispatch } from "react-redux";
                 onChange={Change}
               />
             </div>
-    
+
+            <div className="col-md-6">
+          <div className="mb-3">
+            <label htmlFor="image" className="form-label">
+              Upload Image
+            </label>
+            <input
+              type="file"
+              className="form-control"
+              accept=".jpeg, .jpg, .png"
+              onChange={handleImageChange}
+            />
+          </div>
+
+          {image && (
+            <div className="mb-3">
+              <label className="form-label">Image Preview</label>
+              <img
+                src={`data:image/png;base64,${image}`}
+                alt="Preview"
+                className="img-thumbnail"
+              />
+            </div>
+          )}
+        </div>
+      
             <button type="button" className="btn btn-success" onClick={handleClick}>
               Submit
             </button>
