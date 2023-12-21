@@ -91,14 +91,14 @@ router.post("/transportloginadmin", async(req,res)=>{
   const token = JWT.sign({EmailAddress:results[0].EmailAddress,userId:userid},"Hello World , My life is js");
 
   let admin_id = await querySql({
-    query:"SELECT admin_id FROM Admins WHERE user_id = ?",
+    query:"SELECT admin_id,blocked FROM Admins WHERE user_id = ?",
     values:[userid]
 });
 
-console.log(admin_id[0].admin_id);
+console.log(admin_id[0]);
 
   // Last response 
-  return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,usertype:results[0].usertype,admin_id:admin_id[0].admin_id});
+  return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,usertype:results[0].usertype,admin_id:admin_id[0].admin_id,blocked:admin_id[0].blocked});
   }
 
 } catch (error) {
@@ -106,12 +106,6 @@ console.log(error);
 }
   
 })
-
-
-
-
-
-
 
 
 // Handle POST request for transport registration
@@ -122,7 +116,7 @@ router.post('/transportreg', async (req, res) => {
         model,
         numberPlate,
         capacity,
-        destination,
+        city,
         email,
         website,
         contact,
@@ -135,7 +129,7 @@ router.post('/transportreg', async (req, res) => {
     // Insert data into the database
     const result = await querySql({
       query: `
-        INSERT INTO Transport (transportName, model, numberPlate, capacity, destination, email, website, contact, ImageUrl, admin_id,AddingDate)
+        INSERT INTO Transport (transportName, model, numberPlate, capacity, city, email, website, contact, ImageUrl, admin_id,AddingDate)
         VALUES (?,?,?,?,?,?,?,?,?,?,?)
       `,
       values: [
@@ -143,13 +137,13 @@ router.post('/transportreg', async (req, res) => {
         model,
         numberPlate,
         capacity,
-        destination,
+        city,
         email,
         website,
         contact,
         ImageUrl,
+        admin_id,
         AddingDate,
-        admin_id
       ],
     });
 
@@ -182,7 +176,7 @@ async(req,res)=>{
 
   let result = await querySql({
       query: `
-      Select package_id ,packageFee,DurationInDays from Packages where packageName = ?'
+      Select package_id ,packageFee,DurationInDays from Packages where packageName = ?
       `,
       values: [packageName],
     });
@@ -195,6 +189,7 @@ async(req,res)=>{
 router.post('/paymentadmin', async (req, res) => {
   try {
     const { Name, amount, package_id, startingDate, expiringDate, admin_id } = req.body;
+    console.log(Name,amount,package_id,startingDate,expiringDate,admin_id);
 
     // Insert payment details into the database
     const result = await querySql({
@@ -205,6 +200,11 @@ router.post('/paymentadmin', async (req, res) => {
       values: [Name, amount, package_id, startingDate, expiringDate, admin_id],
     });
 
+    const result1 = querySql({
+      query:`Update Admins Set blocked = 1 where admin_id = ?`,
+      values:[admin_id]
+    })
+
     // Respond with success
     res.json({ success: true, message: 'Payment details saved successfully' });
   } catch (error) {
@@ -214,33 +214,30 @@ router.post('/paymentadmin', async (req, res) => {
 });
 
 
-router.post("/allhotelinfo",
+router.post("/alltransportinfo",
 async(req,res)=>{
-  const {user_id} = req.body;
-  console.log(user_id);
-
+  const {admin_id} = req.body;
   let result = await querySql({
     query: `
-      SELECT * FROM Hotels WHERE admin_id = (SELECT admin_id FROM Admins WHERE user_id = ?)
+      SELECT * FROM Transport WHERE admin_id = ?
     `,
-    values: [user_id],
+    values: [admin_id],
   });
 
-  res.status(200).json({result})
+  res.status(200).json(result)
   
 })
 
 
-router.post("/updatehotelinfo",
+router.post("/getupdatetransportinfo",
 async(req,res)=>{
-  const {hotel_id} = req.body;
-  console.log(hotel_id);
+  const {transport_id} = req.body;
 
   let result = await querySql({
     query: `
-      SELECT * FROM Hotels WHERE hotel_id = ?
+      SELECT * FROM Transport WHERE transport_id = ?
     `,
-    values: [hotel_id],
+    values: [transport_id],
   });
 
   res.status(200).json(result[0])
@@ -248,21 +245,48 @@ async(req,res)=>{
 })
 
 
-router.put("/updatehotelinfo",
+router.put("/updatetransportinfo",
 async(req,res)=>{
-    let  { hotel_id,Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl,AddingDate } = req.body;
+
+  let {
+    transport_id,
+    transportName,
+    model,
+    numberPlate,
+    capacity,
+    city,
+    email,
+    website,
+    contact,
+    ImageUrl,
+    AddingDate,
+    admin_id
+} = req.body;
 
     try {
 
           
         // check if user is authenticated or not
         let user = await querySql({
-            query: "Update Hotels Set Email = ?,Name = ?,City = ?,PhoneNumber = ?,Address = ?,Description = ?,RoomPrice = ?,RoomCapacity = ?,WebUrl = ?,ImageUrl = ? AddingDate=? Where hotel_id = ?",
-            values: [Email,Name,City,PhoneNumber,Address,Description,RoomPrice,RoomCapacity,WebUrl,ImageUrl,AddingDate,hotel_id],
+            query: "Update Transport Set transportName = ?,model = ?,numberPlate = ?,capacity = ?,city = ?,email = ?,website = ?,contact = ?,ImageUrl = ?,admin_id = ?, AddingDate=? Where transport_id = ?",
+            values: [
+              transportName,
+              model,
+              numberPlate,
+              capacity,
+              city,
+              email,
+              website,
+              contact,
+              ImageUrl,
+              admin_id,
+              AddingDate,
+              transport_id
+            ],
           });
 
           if(user){
-            res.status(200).json({Details:"Your Info has been updated"});
+            res.status(200).json({success:true,Msg:"Transport Info has been updated"});
           }
         
     } catch (error) {
@@ -271,15 +295,22 @@ async(req,res)=>{
 });
 
 
-router.delete("/deleteHotel",
+router.delete("/deletetransport",
 async(req,res)=>{
-  const {hotel_id} = req.body;
 
-  let user = await querySql({
-    query: "DELETE FROM Hotels where hotel_id = ?",
-    values: [hotel_id],
+  const {transport_id} = req.body;
+
+  let user1 = await querySql({
+    query: "DELETE FROM Route where transport_id = ?",
+    values: [transport_id],
   });
 
+  let user = await querySql({
+    query: "DELETE FROM Transport where transport_id = ?",
+    values: [transport_id],
+  });
+
+  return res.status(200).json({success:true,Msg:"Transport is deleted"})
 
 })
 

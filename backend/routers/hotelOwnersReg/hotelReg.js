@@ -108,26 +108,6 @@ router.post('/hotelreg', async (req, res) => {
   }
 });
 
-router.post('/paymentadmin', async (req, res) => {
-  try {
-    const { Name, amount, package_id, startingDate, expiringDate, admin_id } = req.body;
-
-    // Insert payment details into the database
-    const result = await querySql({
-      query: `
-        INSERT INTO PaymentAdmin (Name, amount, package_id, startingDate, expiringDate, admin_id)
-        VALUES (?, ?, ?, ?, ?, ?)
-      `,
-      values: [Name, amount, package_id, startingDate, expiringDate, admin_id],
-    });
-
-    // Respond with success
-    res.json({ success: true, message: 'Payment details saved successfully' });
-  } catch (error) {
-    console.error('Error saving payment details:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
-  }
-});
 
 router.get("/pricehostel",
 async(req,res)=>{

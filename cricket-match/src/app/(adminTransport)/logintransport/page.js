@@ -36,7 +36,7 @@ function page() {
       });
 
       // Log raw response for troubleshooting
-      console.log(response);
+      console.log(login);
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -46,8 +46,8 @@ function page() {
       console.log(responseData);
 
       if (responseData) {
-        localStorage.setItem("adminTransdLogin", JSON.stringify(responseData));
-        router.push("/");
+        localStorage.setItem("adminTransLogin", JSON.stringify(responseData));
+        router.push("/transportdashboard");
       } else {
         console.error("Login failed. No token in the response.");
       }
