@@ -1,14 +1,22 @@
 import Link from "next/link";
+import Navbar from "./(shared components)/Navbar";
+import Carousel from "./(shared components)/Carousel";
+import MidSec from "./(shared components)/MidSec";
+import MidSec2 from "./(shared components)/MidSec2";
+import Pricing from "./(shared components)/(Pricing)/Pricing";
+import Footer from "./(shared components)/Footer";
+
 
 export default function Home() {
   // /registerAdmin === /adminDashboard
   return (
     <main>
-      <Link href="/update">Update</Link>
-      <br></br>
-      <Link href="/tournaments">Tournaments</Link>
-      <br></br>
-      <Link href="/adminDashboard">Admin Hotels</Link> 
+    <Navbar />
+    <Carousel />
+    <MidSec/>
+    <MidSec2 />
+    <Pricing />
+    <Footer />
     </main>
   );
 }

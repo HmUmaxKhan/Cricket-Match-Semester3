@@ -2,8 +2,8 @@
 
 import styles from "./login.module.css";
 import { useState } from "react";
-import NavBar from "../components/shared/NavBar/NavBar";
 import Link from "next/link";
+import Navbar from "../(shared components)/Navbar";
 
 function Login() {
   const [login, setLogin] = useState({
@@ -53,7 +53,7 @@ function Login() {
 
   return (
     <div>
-      <NavBar />
+      <Navbar />
       <div
         className={`container flex justify-center items-center ${styles.loginContainer}`}
         style={{ height: "100vh" }}

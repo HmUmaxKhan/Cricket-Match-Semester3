@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import 'bootstrap/dist/css/bootstrap.css';
 import './globals.css';
 import Providers from './redux/Providers';
+import BootstrapClient from './BootstrapClient';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
         <body className={inter.className}>
           <Providers>
             {children}
+            <BootstrapClient />
           </Providers>
           <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
           <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

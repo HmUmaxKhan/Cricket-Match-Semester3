@@ -1,48 +1,40 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 
-const page = ({ params }) => {
+const page = ({params}) => {
   const router = useRouter();
-
-  const [tournament_id, setTournamentId] = useState();
   const cardStyle = {
     boxShadow: "0 0 10px 8px",
   };
 
-  console.log(params.updatetickets);
+  const [reg, setReg] = useState({
+    stop: "",
+    arrival_time: "",
+    fare: "",
+    stop_number: "",
+  });
 
   useEffect(() => {
     //Getting the previous info
     const info = async () => {
-      let response = await fetch("http://localhost:5005/api/getsingletickets", {
+      let response = await fetch("http://localhost:5005/api/getupdaterouteinfo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ticket_id: params.updatetickets }),
+        body: JSON.stringify({ route_id: params.updateroute}),
       });
       response = await response.json();
-      console.log(response);
 
-      const { Category, price, total_seats } = response;
+      const { stop,stop_number,arrival_time,fare } = response;
 
       setReg({
-        Category,
-        price,
-        total_seats,
+        stop,stop_number,arrival_time,fare
       });
     };
-
     info();
   }, []);
-
-  const [reg, setReg] = useState({
-    Category: "",
-    price: "",
-    total_seats: "",
-  });
 
   const Change = (e) => {
     setReg({ ...reg, [e.target.name]: e.target.value });
@@ -50,19 +42,17 @@ const page = ({ params }) => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const modifiedadd = new Date();
-    modifiedadd.setDate(modifiedadd.getDate() + 1);
-    let response = await fetch("http://localhost:5005/api/updatetickets", {
-      method: "PUT",
+
+    let response = await fetch("http://localhost:5005/api/addroute", {
+      method: "POST",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        ticket_id: params.updatetickets,
-        Category: reg.Category,
-        price: reg.price,
-        total_seats: reg.total_seats,
-        AddingDate: modifiedadd.toISOString().slice(0, 10),
+        stop: reg.stop,
+        arrival_time: reg.arrival_time,
+        fare: reg.fare,
+        stop_number: reg.stop_number,
       }),
     });
     response = await response.json();
@@ -73,49 +63,65 @@ const page = ({ params }) => {
   return (
     <div className="container d-flex justify-content-center align-items-center flex-column p-5">
       <div className="card p-4" style={cardStyle}>
-        <h3 className=" py-3 text-center">Update the Ticket Details</h3>
+        <h3 className=" py-3 text-center">Update route details </h3>
         <div className="mb-3">
           <label htmlFor="Fname" className="form-label">
-            Category
+            Stop Name
           </label>
           <input
             type="text"
             className="form-control"
             id="Fname"
-            placeholder="Enter your first name"
-            name="Category"
+            placeholder="Enter Stop Name"
+            name="stop"
             onChange={Change}
-            value={reg.Category}
+            value={reg.stop}
           />
         </div>
 
         <div className="mb-3">
-          <label htmlFor="Lname" className="form-label">
-            Price of ticket
+          <label htmlFor="Fname" className="form-label">
+            Arrival TIme
           </label>
           <input
-            type="number"
+            type="time"
             className="form-control"
-            id="Lname"
-            placeholder="Enter your last name"
-            name="price"
-            value={reg.price}
+            id="Fname"
+            placeholder="Enter Arrival Time"
+            name="arrival_time"
             onChange={Change}
+            value={reg.arrival_time}
           />
         </div>
 
         <div className="mb-3">
           <label htmlFor="UserName" className="form-label">
-            Total Seats
+            Fare From This Stop
           </label>
           <input
             type="number"
             className="form-control"
             id="UserName"
-            placeholder="Choose a username"
-            name="total_seats"
-            value={reg.total_seats}
+            placeholder="Ente rhte Fare"
+            name="fare"
+            min="100"
             onChange={Change}
+            value={reg.fare}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="UserName" className="form-label">
+            Stop Number
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="UserName"
+            placeholder="Ente rhte Fare"
+            name="stop_number"
+            min="1"
+            onChange={Change}
+            value={reg.stop_number}
           />
         </div>
         <button type="button" className="btn btn-success" onClick={handleClick}>

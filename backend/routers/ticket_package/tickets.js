@@ -151,12 +151,12 @@ async(req,res)=>{
 router.post("/addpackages",
 async(req,res)=>{
 
-    const {DurationInDays,packageName,packageFee,AddingDate} = req.body
+    const {DurationInDays,packageName,packageFee,AddingDate,category} = req.body
 
 
     const result = await querySql({
-        query: "INSERT INTO Packages (DurationInDays,packageName,packageFee,AddingDate) values (?,?,?,?)",
-        values: [DurationInDays,packageName,packageFee,AddingDate]
+        query: "INSERT INTO Packages (DurationInDays,packageName,packageFee,AddingDate,category) values (?,?,?,?,?)",
+        values: [DurationInDays,packageName,packageFee,AddingDate,category]
     });
 
     if (!result || result.length === 0) {

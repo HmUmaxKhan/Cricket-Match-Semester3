@@ -66,7 +66,7 @@ export default function ListItemsofTransport(props) {
           <RxUpdate size={20}/>
         </Link>
 
-        <Link style={{border:"none",background:"none",marginLeft:"20px"}} href={`adminDashboard/${transport.hotel_id}`}>
+        <Link style={{border:"none",background:"none",marginLeft:"20px"}} href={`/transportdashboard/route/${transport.transport_id}`}>
           <LiaRouteSolid size={30}/>
         </Link>
 

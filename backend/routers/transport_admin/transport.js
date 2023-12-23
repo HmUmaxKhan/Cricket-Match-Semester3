@@ -167,8 +167,6 @@ router.post('/transportreg', async (req, res) => {
 });
 
 
-// Packages
-
 router.post("/pricetransport",
 async(req,res)=>{
 
@@ -314,5 +312,150 @@ async(req,res)=>{
 
 })
 
-module.exports = router;
 
+/********************************************Route List*****************************************/
+
+
+router.post('/addroute', async (req, res) => {
+  try {
+    const {
+        stop,
+        arrival_time,
+        fare,
+        stop_number,
+        transport_id
+    } = req.body;
+
+    // Insert data into the database
+    const result = await querySql({
+      query: `
+        INSERT INTO Route (
+          stop,
+          arrival_time,
+          fare,
+          stop_number,
+          transport_id)
+        VALUES (?,?,?,?,?)
+      `,
+      values: [
+        stop,
+        arrival_time,
+        fare,
+        stop_number,
+        transport_id
+      ],
+    });
+
+    // Respond with success
+    return res.status(200).json({ success: true, Msg: 'Route has been added.', result });
+
+  } catch (error) {
+    console.error('Error registering hotel:', error);
+    return res.status(500).json({ success: false, Msg: 'Internal server error' });
+  }
+});
+
+
+
+router.post("/allrouteinfo",
+async(req,res)=>{
+  const {transport_id} = req.body;
+  let result = await querySql({
+    query: `
+      SELECT * FROM Route WHERE transport_id = ?
+    `,
+    values: [transport_id],
+  });
+
+   return res.status(200).json(result)
+  
+})
+
+
+router.post("/getupdaterouteinfo",
+async(req,res)=>{
+  const {route_id} = req.body;
+  console.log(route_id);
+  let result = await querySql({
+    query: `
+      SELECT * FROM Route WHERE route_id = ?
+    `,
+    values: [route_id],
+  });
+
+  return res.status(200).json(result[0])
+  
+})
+
+
+router.put("/updatetransportinfo",
+async(req,res)=>{
+
+  let {
+    route_id,
+    stop,
+    arrival_time,
+    fare,
+    stop_number,
+} = req.body;
+
+    try {
+
+          
+        // check if user is authenticated or not
+        let user = await querySql({
+            query: "Update Route Set stop = ?,arrival_time = ?,fare = ?,stop_number = ?, Where route_id = ?",
+            values: [
+              stop,
+              arrival_time,
+              fare,
+              stop_number,
+              route_id,
+            ],
+          });
+
+          if(user){
+           return res.status(200).json({success:true,Msg:"Transport Info has been updated"});
+          }
+        
+    } catch (error) {
+       return res.status(600).json({ERROR:"You are gettinhg error"});
+    }
+});
+
+
+router.delete("/deleteroute",
+async(req,res)=>{
+
+  const {route_id} = req.body;
+
+  let user1 = await querySql({
+    query: "DELETE FROM Route Where route_id = ?",
+    values: [route_id],
+  });
+
+
+  return res.status(200).json({success:true,Msg:"Route is deleted"})
+
+})
+
+
+
+router.get("/getallpackages",
+async(req,res)=>{
+
+  let result = await querySql({
+    query: `
+      SELECT * FROM Packages
+    `,
+    values: [],
+  });
+
+  return res.status(200).json(result)
+  
+})
+
+
+
+
+module.exports = router;
