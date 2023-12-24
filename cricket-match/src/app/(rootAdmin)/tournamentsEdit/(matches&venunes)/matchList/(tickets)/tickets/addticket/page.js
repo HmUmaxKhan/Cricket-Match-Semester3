@@ -7,11 +7,20 @@ import { useSelector } from "react-redux";
 const page = () => {
 
   const [tournament_id,setTournamentId] = useState();
+  const [user_id,setUserId] = useState();
 
   const router = useRouter()
   const cardStyle={
     boxShadow:"0 0 10px 8px"
   }
+
+  useEffect(()=>{
+    let details = localStorage.getItem("rootLogin");
+    details = JSON.parse(details);
+    console.log(details.user_id);
+    setUserId(details.user_id)
+  },[])
+
 
   const [reg, setReg] = useState({
 
@@ -42,7 +51,8 @@ const page = () => {
         Category : reg.Category,
         price:reg.price,
         total_seats:reg.total_seats,
-        AddingDate: modifiedadd.toISOString().slice(0,10)
+        AddingDate: modifiedadd.toISOString().slice(0,10),
+        user_id:user_id
       }),
     });
     response = await response.json();

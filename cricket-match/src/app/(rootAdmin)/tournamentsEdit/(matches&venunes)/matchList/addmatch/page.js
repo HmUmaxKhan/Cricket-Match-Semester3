@@ -10,12 +10,19 @@ const page = () => {
   const [image,setImage] = useState();
   const [matchDate,setMatchDate] = useState(new Date());
   const [addingDate,setAddingDate] = useState(new Date());
-  const [tournament_id,setTournamentId] = useState();
+  const [user_id,setUserId] = useState();
 
       const handleMatchDate = (date)=>{
         const modifiedDate = new Date(date);
         setMatchDate(modifiedDate);
       }
+
+      useEffect(()=>{
+        let details = localStorage.getItem("rootLogin");
+        details = JSON.parse(details);
+        console.log(details.user_id);
+        setUserId(details.user_id)
+      },[])
 
 
     const handleImageChange = (e)=>{
@@ -34,6 +41,7 @@ const page = () => {
       // Ensure to read the file as data URL
       reader.readAsDataURL(file);
     };
+    console.log(tournamentId);
 
   const [reg, setReg] = useState({
 
@@ -68,7 +76,8 @@ const page = () => {
         img:image,
         AddingDate:addingDate.toISOString().slice(0,10),
         venue_name:reg.venue_name,
-        location:reg.location
+        location:reg.location,
+        user_id:user_id
       }),
     });
     response = await response.json();

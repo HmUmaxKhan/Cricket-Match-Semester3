@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import 'react-datepicker/dist/react-datepicker.css';
 import { useSelector } from "react-redux";
 
@@ -9,9 +9,17 @@ const page = () => {
 
 
   const router = useRouter()
+  const [user_id,setUserId] = useState();
   const cardStyle={
     boxShadow:"0 0 10px 8px"
   }
+
+  useEffect(()=>{
+    let details = localStorage.getItem("rootLogin");
+    details = JSON.parse(details);
+    console.log(details.user_id);
+    setUserId(details.user_id)
+  },[])
 
   const [reg, setReg] = useState({
     stop:"",
@@ -24,10 +32,13 @@ const page = () => {
     setReg({...reg,[e.target.name]:e.target.value})
   }
 
-  const tansport_id = useSelector((state)=>state.transportId.transport_id)
+  const transport_id = useSelector((state)=>state.transportId.transport_id)
+
 
   const handleClick =async (e) =>{
     e.preventDefault();
+
+    console.log(transport_id);
     
     let response = await fetch("http://localhost:5005/api/addroute",{
       method:'POST',
@@ -35,11 +46,12 @@ const page = () => {
         "content-type":"application/json",
       },
       body: JSON.stringify({
-        transport_id:tansport_id,
+        transport_id:transport_id,
         stop:reg.stop,
         arrival_time:reg.arrival_time,
         fare:reg.fare,
         stop_number:reg.stop_number,
+        user_id:user_id
       }),
     });
     response = await response.json();

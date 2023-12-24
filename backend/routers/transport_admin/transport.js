@@ -122,15 +122,16 @@ router.post('/transportreg', async (req, res) => {
         contact,
         ImageUrl,
         AddingDate,
-        admin_id
+        admin_id,
+        user_id
     } = req.body;
 
 
     // Insert data into the database
     const result = await querySql({
       query: `
-        INSERT INTO Transport (transportName, model, numberPlate, capacity, city, email, website, contact, ImageUrl, admin_id,AddingDate)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?)
+        INSERT INTO Transport (transportName, model, numberPlate, capacity, city, email, website, contact, ImageUrl, admin_id,AddingDate,user_id)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
       `,
       values: [
         transportName,
@@ -144,6 +145,7 @@ router.post('/transportreg', async (req, res) => {
         ImageUrl,
         admin_id,
         AddingDate,
+        user_id
       ],
     });
 
@@ -323,7 +325,8 @@ router.post('/addroute', async (req, res) => {
         arrival_time,
         fare,
         stop_number,
-        transport_id
+        transport_id,
+        user_id
     } = req.body;
 
     // Insert data into the database
@@ -334,15 +337,17 @@ router.post('/addroute', async (req, res) => {
           arrival_time,
           fare,
           stop_number,
-          transport_id)
-        VALUES (?,?,?,?,?)
+          transport_id,
+          user_id)
+        VALUES (?,?,?,?,?,?)
       `,
       values: [
         stop,
         arrival_time,
         fare,
         stop_number,
-        transport_id
+        transport_id,
+        user_id
       ],
     });
 

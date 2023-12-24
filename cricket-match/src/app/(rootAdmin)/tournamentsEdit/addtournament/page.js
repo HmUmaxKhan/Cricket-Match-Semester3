@@ -1,15 +1,18 @@
 "use client"
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import ReactDatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 
 const page = () => {
 
+  const router = useRouter();
   const [image,setImage] = useState();
   const [name,setName]=useState()
   const [startDate,setStartDate]=useState(new Date());
   const [endingDate,setEndingDate]=useState(new Date());
   const [addingDate,setAddingDate]=useState(new Date());
+  const [user_id,setUserId] = useState();
 
 
     const handleImageChange = (e)=>{
@@ -17,6 +20,13 @@ const page = () => {
       convertToBase64(file);
     }
   
+    useEffect(()=>{
+      let details = localStorage.getItem("rootLogin");
+      details = JSON.parse(details);
+      console.log(details.user_id);
+      setUserId(details.user_id)
+    },[])
+
     const convertToBase64 = (file) => {
       const reader = new FileReader();
     
@@ -58,11 +68,12 @@ const page = () => {
           EndingDate: modifiedEndDate.toISOString().slice(0, 10),
           AddingDate: addingDate.toISOString().slice(0, 10),
           ImageUrl: image,
+          user_id:user_id
         }),
       });
       response = await response.json();
       console.log(response);
-      window.location.href = "/tournamentsEdit";
+      router.push("/tournamentsEdit");
     }
     
   return (

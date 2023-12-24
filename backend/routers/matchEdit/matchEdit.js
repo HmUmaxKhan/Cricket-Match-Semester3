@@ -46,12 +46,12 @@ async(req,res)=>{
 router.post("/addmatches",
 async(req,res)=>{
 
-    const {tournament_id,match_date,match_time,team1,team2,img,AddingDate,venue_name,location} = req.body
+    const {tournament_id,match_date,match_time,team1,team2,img,AddingDate,venue_name,location,user_id} = req.body
 
 
     const result = await querySql({
-        query: "INSERT INTO matches (tournament_id,match_date,match_time, team1, team2, AddingDate,img) VALUES (?, ?, ?, ?,?,?,?)",
-        values: [tournament_id,match_date,match_time, team1, team2, AddingDate,img]
+        query: "INSERT INTO matches (tournament_id,match_date,match_time, team1, team2, AddingDate,img,user_id) VALUES (?, ?, ?, ?,?,?,?,?)",
+        values: [tournament_id,match_date,match_time, team1, team2, AddingDate,img,user_id]
     });
 
     const match_id = result.insertId;

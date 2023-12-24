@@ -94,15 +94,15 @@ async(req,res)=>{
 router.post("/addtournament",
 async(req,res)=>{
 
-    let {TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl} = req.body
+    let {TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl,user_id} = req.body
 
     StartingDate = StartingDate.slice(0,10)
     EndingDate = EndingDate.slice(0,10)
     AddingDate = AddingDate.slice(0,10)
 
     const result = await querySql({
-        query: "INSERT INTO tournament (TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl) VALUES (?, ?, ?, ?,?)",
-        values: [TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl]
+        query: "INSERT INTO tournament (TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl,user_id) VALUES (?,?,?,?,?,?)",
+        values: [TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl,user_id]
     });
     
 
@@ -198,4 +198,3 @@ async(req,res)=>{
 
 
 module.exports = router
-

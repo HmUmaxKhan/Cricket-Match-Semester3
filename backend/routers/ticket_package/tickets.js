@@ -46,12 +46,12 @@ async(req,res)=>{
 router.post("/addtickets",
 async(req,res)=>{
 
-    const {match_id,Category,AddingDate,price,total_seats} = req.body
+    const {match_id,Category,AddingDate,price,total_seats,user_id} = req.body
 
 
     const result = await querySql({
-        query: "INSERT INTO tickets (match_id,Category,price,total_seats,AddingDate) values (?,?,?,?,?)",
-        values: [match_id,Category,price,total_seats,AddingDate]
+        query: "INSERT INTO tickets (match_id,Category,price,total_seats,AddingDate,user_id) values (?,?,?,?,?,?)",
+        values: [match_id,Category,price,total_seats,AddingDate,user_id]
     });
 
     if (!result || result.length === 0) {
@@ -151,12 +151,12 @@ async(req,res)=>{
 router.post("/addpackages",
 async(req,res)=>{
 
-    const {DurationInDays,packageName,packageFee,AddingDate,category} = req.body
+    const {DurationInDays,packageName,packageFee,AddingDate,category,user_id} = req.body
 
 
     const result = await querySql({
-        query: "INSERT INTO Packages (DurationInDays,packageName,packageFee,AddingDate,category) values (?,?,?,?,?)",
-        values: [DurationInDays,packageName,packageFee,AddingDate,category]
+        query: "INSERT INTO Packages (DurationInDays,packageName,packageFee,AddingDate,category,user_id) values (?,?,?,?,?,?)",
+        values: [DurationInDays,packageName,packageFee,AddingDate,category,user_id]
     });
 
     if (!result || result.length === 0) {

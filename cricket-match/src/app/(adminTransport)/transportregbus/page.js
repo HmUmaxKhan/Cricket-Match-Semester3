@@ -11,6 +11,7 @@ function Hotelreg() {
   const [adminId, setAdminId] = useState();
   const [image, setImage] = useState();
   const [addingDate,setAddingDate]=useState(new Date());
+  const [user_id, setUserId] = useState();
 
   useEffect(() => {
     const details = async () => {
@@ -22,7 +23,9 @@ function Hotelreg() {
   
       detail = JSON.parse(detail);
   
-      console.log(detail);
+      setUserId(detail.user_id);
+
+
   
       if (detail.usertype!=='transportadmin') {
         router.push("/paymenttransport")
@@ -97,7 +100,8 @@ function Hotelreg() {
         city: reg.city,
         admin_id: adminId,
         ImageUrl:image,
-        AddingDate:modifieddate.toISOString().slice(0,10)
+        AddingDate:modifieddate.toISOString().slice(0,10),
+        user_id:user_id
       }),
     });
     response = await response.json();

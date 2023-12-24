@@ -8,27 +8,27 @@ function Hotelreg() {
   const [adminId, setAdminId] = useState();
   const [image, setImage] = useState();
   const [addingDate,setAddingDate]=useState(new Date());
+  const [user_id,setUserId] = useState();
 
   useEffect(() => {
-    const details = async () => {
+    
       let detail = localStorage.getItem("adminLogin");
 
       if (!detail) {
         window.location.href = "/registerAdmin";
       }
-      detail = await JSON.parse(detail);
-      console.log("detail-- ", detail);
+      detail = JSON.parse(detail);
+      console.log(detail);
 
       if (detail.admin_id) {
-        setAdminId(detail.admin_id);
+        setAdminId(detail.admin_id[0].admin_id);
       }
-    };
-
-    details();
+      setUserId(detail.userId);
     
   }, []);
 
   console.log(adminId);
+  console.log(user_id);
   const handleImageChange = (e)=>{
     const file = e.target.files[0];
     convertToBase64(file);
@@ -83,7 +83,8 @@ function Hotelreg() {
         WebUrl: reg.WebUrl,
         admin_id: adminId,
         ImageUrl:image,
-        AddingDate:addingDate.toISOString().slice(0,10)
+        AddingDate:addingDate.toISOString().slice(0,10),
+        user_id:user_id
       }),
     });
     response = await response.json();

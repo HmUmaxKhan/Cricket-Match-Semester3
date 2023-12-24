@@ -5,14 +5,19 @@ function HotelsLists() {
 
     const [hotel,setHotel] = useState({});
     const [render,setRender] = useState();
+    const [userId,setUserId] = useState();
   useEffect(() => {
     //Getting the previous info
 
     let details = localStorage.getItem("adminLogin");
-    if (!details && details === null) {
+    if (!details || details === null) {
       window.location.href = "/hotelloginAdmin";
     }
     details = JSON.parse(details);
+
+    console.log(details.admin_id[0].admin_id);
+
+   
 
     const info = async () => {
       let response = await fetch("http://localhost:5005/api/allhotelinfo", {
@@ -20,11 +25,11 @@ function HotelsLists() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_id: details.user_id }),
+        body: JSON.stringify({ admin_id:details.admin_id[0].admin_id}),
       });
       response = await response.json();
       console.log(response);
-      setHotel(response.result);
+      setHotel(response);
     };
 
     setRender(false);
@@ -39,12 +44,12 @@ function HotelsLists() {
 
   return <div>
   {
-    Array.isArray(hotel) && hotel.map((item, index) => {
+    Array.isArray(hotel) && hotel!=[] ? hotel.map((item, index) => {
         return(
             {key : index},
             <HotelListItems hotel = {item} onDelete={handleDelete}/>
         )
-    })
+    }):<h3 className="text-center">No Hotels are here</h3>
 }
     </div>;
 }

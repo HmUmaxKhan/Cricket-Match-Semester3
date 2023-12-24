@@ -63,15 +63,16 @@ router.post('/hotelreg', async (req, res) => {
       WebUrl,
       admin_id,
       ImageUrl,
-      AddingDate
+      AddingDate,
+      user_id
     } = req.body;
 
 
     // Insert data into the database
     const result = await querySql({
       query: `
-        INSERT INTO Hotels (Email, Name, City, PhoneNumber, Address, Description, RoomPrice, RoomCapacity, WebUrl, admin_id,ImageUrl,AddingDate)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)
+        INSERT INTO Hotels (Email, Name, City, PhoneNumber, Address, Description, RoomPrice, RoomCapacity, WebUrl, admin_id,ImageUrl,AddingDate,user_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)
       `,
       values: [
         Email,
@@ -85,7 +86,8 @@ router.post('/hotelreg', async (req, res) => {
         WebUrl,
         admin_id,
         ImageUrl,
-        AddingDate
+        AddingDate,
+        user_id
       ],
     });
 
@@ -114,7 +116,7 @@ async(req,res)=>{
 
   let result = await querySql({
       query: `
-      Select package_id ,packageFee,DurationInDays from Packages where packageName = 'hotel'
+      Select package_id ,packageFee,DurationInDays from Packages where category = 'hotel'
       `,
       values: [],
     });
@@ -184,17 +186,17 @@ router.post("/hotelloginadmin", async(req,res)=>{
 
 router.post("/allhotelinfo",
 async(req,res)=>{
-  const {user_id} = req.body;
-  console.log(user_id);
+  const {admin_id} = req.body;
+  console.log(admin_id);
 
   let result = await querySql({
     query: `
-      SELECT * FROM Hotels WHERE admin_id = (SELECT admin_id FROM Admins WHERE user_id = ?)
+      SELECT * FROM Hotels WHERE admin_id = ?
     `,
-    values: [user_id],
+    values: [admin_id],
   });
 
-  res.status(200).json({result})
+  return res.status(200).json(result)
   
 })
 
@@ -252,4 +254,3 @@ async(req,res)=>{
 })
 
 module.exports = router;
-

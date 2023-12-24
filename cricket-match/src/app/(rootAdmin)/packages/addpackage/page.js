@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const page = () => {
   const [tournament_id, setTournamentId] = useState();
+  const [user_id,setUserId] = useState();
 
   const cardStyle = {
     boxShadow: "0 0 10px 8px",
@@ -21,6 +22,13 @@ const page = () => {
     setReg({ ...reg, [e.target.name]: e.target.value });
   };
 
+  useEffect(()=>{
+    let details = localStorage.getItem("rootLogin");
+    details = JSON.parse(details);
+    console.log(details.user_id);
+    setUserId(details.user_id)
+  },[])
+
   const handleClick = async (e) => {
     e.preventDefault();
     const modifiedadd = new Date();
@@ -36,6 +44,7 @@ const page = () => {
         packageFee: reg.packageFee,
         category:reg.category,
         AddingDate: modifiedadd.toISOString().slice(0, 10),
+        user_id:user_id
       }),
     });
     response = await response.json();
