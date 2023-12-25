@@ -10,6 +10,10 @@ function Login() {
     Password: "",
   });
 
+  const cardStyle = {
+    boxShadow: "0 0 10px 8px",
+  };
+
   const Change = (e) => {
     setLogin({ ...login, [e.target.name]: e.target.value });
   };
@@ -51,47 +55,47 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login Admins</h1>
-      <div
-        className={`container flex justify-center items-center ${styles.loginContainer}`}
-        style={{ height: "100vh" }}
-      >
-        <div className={`form-floating mb-3 ${styles.formElement}`}>
+    <div className="container d-flex justify-content-center align-items-center flex-column p-5">
+      <div className="card p-4" style={cardStyle}>
+        <h3 className=" py-3 text-center">
+        Hotel Admin Login
+        </h3>
+
+        <div className="mb-3">
+          <label htmlFor="Fname" className="form-label">
+            Username
+          </label>
           <input
-            type="email"
-            className={`form-control ${styles.input}`}
-            id="floatingInput"
-            placeholder="name@example.com"
+            type="text"
+            className="form-control"
+            id="Fname"
+            placeholder="Enter your username"
             name="UserName"
             onChange={Change}
           />
-          <label htmlFor="floatingInput" className={`${styles.label} ${styles.main}`}>
-            Username
-          </label>
         </div>
-        <br />
-        <div className={`form-floating ${styles.formElement}`}>
+
+        <div className="mb-3">
+          <label htmlFor="Lname" className="form-label">
+            Password
+          </label>
           <input
             type="password"
-            className={`form-control ${styles.input}`}
-            id="floatingPassword"
-            placeholder="Password"
+            className="form-control"
+            id="Lname"
+            placeholder="Enter your password"
             name="Password"
             onChange={Change}
           />
-          <label htmlFor="floatingPassword" className={styles.label}>
-            Password
-          </label>
         </div>
-        <br />
-        <button
-          className={`text-center ${styles.button}`}
-          onClick={handleClick}
-        >
+
+        <button type="button" className="btn btn-success" onClick={handleClick}>
           Submit
         </button>
-        <Link href="/registerAdmin"> Registration</Link>
+
+        <Link href="/registerAdmin" className="link  mt-3">
+          SignUp
+        </Link>
       </div>
     </div>
   );

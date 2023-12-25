@@ -74,7 +74,7 @@ import { useDispatch } from "react-redux";
         localStorage.setItem("adminLogin",JSON.stringify(response));
        
 
-        window.location.href="/paymenthotel"
+        window.location.href="/hotelloginAdmin"
         
       }
     
@@ -224,8 +224,8 @@ import { useDispatch } from "react-redux";
               Submit
             </button>
     
-            <Link href="/paymentHotel" className="link  mt-3">
-              Hotel Payment
+            <Link href="/hotelloginAdmin" className="link  mt-3">
+              Login
             </Link>
           </div>
         </div>

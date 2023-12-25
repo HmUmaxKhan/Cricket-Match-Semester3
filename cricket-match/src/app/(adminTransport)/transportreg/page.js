@@ -64,9 +64,10 @@ function page() {
       }),
     });
     response = await response.json();
+    console.log(response);
     localStorage.setItem("adminTransLogin", JSON.stringify(response));
 
-    router.push("/paymenthotel");
+    router.push("/logintransport");
   };
 
   return (
@@ -217,8 +218,8 @@ function page() {
           Submit
         </button>
 
-        <Link href="/paymentHotel" className="link  mt-3">
-          Hotel Payment
+        <Link href="/logintransport" className="link  mt-3">
+          Login
         </Link>
       </div>
     </div>

@@ -1,5 +1,6 @@
+import PricingList from '@/app/(shared components)/(PricingBus)/PricingListBus'
 import React from 'react'
-import PricingList from './PricingList'
+
 
 function Pricing() {
   return (

@@ -19,16 +19,34 @@ function page() {
 
     details = JSON.parse(details);
 
-    console.log(details);
+    console.log(details.admin_id);
 
     if (details.usertype!=='transportadmin') {
-      router.push("/paymenttransport")
+      console.log("no usertype");
+      router.push("/transportreg")
     }
 
-    if(details.blocked===0) {
-      router.push("/paymenttransport")
+
+
+    const getBlock = async()=>{
+      let response = await fetch ("http://localhost:5005/api/getblocked",{
+        method:"POST",
+        headers:{
+          "content-type":"application/json"
+        },
+        body:JSON.stringify({admin_id:details.admin_id})
+      });
+
+      response =await response.json();
+
+      console.log(response);
+
+      if (response===0) {
+        router.push("/paymenttransport");
+      }
     }
 
+    getBlock();
   })
 
   return (

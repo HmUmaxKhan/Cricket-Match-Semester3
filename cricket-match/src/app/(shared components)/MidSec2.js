@@ -16,7 +16,7 @@ function MidSec2() {
     <h1 className='text-center mb-5 container'><b><i>Provider Hub</i></b></h1>
     <p className="text-center mb-5">
     Maximize Your Profits: Elevate your business by showcasing your hotels and transport facilities with us. Our platform opens the door to a broader audience, allowing you to increase bookings and revenue. Whether you own a hotel or provide transport services, becoming a featured partner ensures heightened visibility and accessibility. With our one-stop solution, customers can seamlessly book prime seats, accommodations, and hassle-free transport—all contributing to an enhanced match-day experience. Don't miss the chance to boost your profits; join us today and witness the financial benefits of showcasing your services to a cricket-loving audience!</p>
-    <hr class="featurette-divider" style={{margin:"5rem 0"}} />
+    <hr class="featurette-divider" style={{margin:"3rem 0"}} />
     <div class="row featurette">
       <div class="col-md-7">
         <h2 class="featurette-heading fw-normal lh-1 text-center"> Showcase Your Hotels</h2>

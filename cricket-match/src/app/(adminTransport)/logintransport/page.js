@@ -96,7 +96,7 @@ function page() {
         </button>
 
         <Link href="/transportreg" className="link  mt-3">
-          Hotel Payment
+          SignUp
         </Link>
       </div>
     </div>

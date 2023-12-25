@@ -41,7 +41,7 @@ router.post("/transportregown", async(req,res)=> {
     query:"Select admin_id From Admins where user_id = ?",
     values:[user_id]
   })
-  let newUserObj={userId:user_id,admin_id:admin_id,UserName:UserName,token:token}
+  let newUserObj={userId:user_id,admin_id:admin_id[0].admin_id,usertype:usertype,UserName:UserName,token:token}
   
   return res.json(newUserObj);
 
@@ -172,13 +172,13 @@ router.post('/transportreg', async (req, res) => {
 router.post("/pricetransport",
 async(req,res)=>{
 
-  const {packageName} = req.body;
+  const {package_id} = req.body;
 
   let result = await querySql({
       query: `
-      Select package_id ,packageFee,DurationInDays from Packages where packageName = ?
+      Select package_id ,packageFee,DurationInDays from Packages where package_id = ?
       `,
-      values: [packageName],
+      values: [package_id],
     });
 
     res.status(200).json({results:result[0]})
@@ -189,27 +189,55 @@ async(req,res)=>{
 router.post('/paymentadmin', async (req, res) => {
   try {
     const { Name, amount, package_id, startingDate, expiringDate, admin_id } = req.body;
-    console.log(Name,amount,package_id,startingDate,expiringDate,admin_id);
 
-    // Insert payment details into the database
-    const result = await querySql({
+    const adminId = await querySql({
       query: `
-        INSERT INTO PaymentAdmin (Name, amount, package_id, startingDate, expiringDate, admin_id)
-        VALUES (?, ?, ?, ?, ?, ?)
+      Select blocked from Admins WHERE admin_id = ?
       `,
-      values: [Name, amount, package_id, startingDate, expiringDate, admin_id],
+      values: [admin_id],
     });
 
-    const result1 = querySql({
+    if (adminId.length === 0) {
+
+      // Insert payment details into the database
+      const result = await querySql({
+        query: `
+          INSERT INTO PaymentAdmin (Name, amount, package_id, startingDate, expiringDate, admin_id)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `,
+        values: [Name, amount, package_id, startingDate, expiringDate, admin_id],
+      });
+    }
+    else{
+      const result = await querySql({
+        query: `
+          UPDATE PaymentAdmin
+          SET Name = ?,
+              amount = ?,
+              package_id = ?,
+              startingDate = ?,
+              expiringDate = ?
+          WHERE admin_id = ?
+        `,
+        values: [Name, amount, package_id, startingDate, expiringDate, admin_id],
+      });
+    }    
+    const result1 = await querySql({
       query:`Update Admins Set blocked = 1 where admin_id = ?`,
       values:[admin_id]
     })
 
+    const blocked = await querySql({
+      query:`Select blocked from Admins where admin_id = ?`,
+      values:[admin_id]
+    })
+
+
     // Respond with success
-    res.json({ success: true, message: 'Payment details saved successfully' });
+    return res.json({ success: true, Msg: 'Payment details saved successfully', blocked:blocked[0].blocked});
   } catch (error) {
     console.error('Error saving payment details:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    return res.status(500).json({ success: false, Msg: 'Internal server error' });
   }
 });
 
@@ -446,12 +474,12 @@ async(req,res)=>{
 
 
 
-router.get("/getallpackages",
+router.get("/getallpackagesbus",
 async(req,res)=>{
 
   let result = await querySql({
     query: `
-      SELECT * FROM Packages
+      SELECT * FROM Packages where category = 'transport'
     `,
     values: [],
   });

@@ -6,6 +6,8 @@ function HotelsLists() {
     const [hotel,setHotel] = useState({});
     const [render,setRender] = useState();
     const [userId,setUserId] = useState();
+
+
   useEffect(() => {
     //Getting the previous info
 
@@ -15,8 +17,8 @@ function HotelsLists() {
     }
     details = JSON.parse(details);
 
-    console.log(details.admin_id[0].admin_id);
-
+    console.log(details);
+    
    
 
     const info = async () => {
@@ -25,7 +27,7 @@ function HotelsLists() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ admin_id:details.admin_id[0].admin_id}),
+        body: JSON.stringify({ admin_id:details.admin_id}),
       });
       response = await response.json();
       console.log(response);
@@ -35,7 +37,7 @@ function HotelsLists() {
     setRender(false);
 
     info();
-  }, [render]);
+ }, [render]);
 
 
   const handleDelete=(tournament_id)=>{

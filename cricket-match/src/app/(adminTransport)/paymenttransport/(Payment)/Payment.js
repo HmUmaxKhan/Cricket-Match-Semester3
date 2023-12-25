@@ -2,11 +2,14 @@
 import { useEffect, useState } from "react";
 import "./payment.css";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 function Payment() {
   const [packages, setPackages] = useState({});
   const [admin_id,setAdmin] = useState();
   const [name, setname] = useState();
   const router = useRouter();
+
+  const packageId = useSelector((state)=>state.pricingCategory.package_id)
 
   useEffect(() => {
 
@@ -30,6 +33,8 @@ function Payment() {
     
     console.log(detail.admin_id);
 
+    console.log(packageId);
+
     const Price = async () => {
       let response = await fetch("http://localhost:5005/api/pricetransport", {
         method: "POST",
@@ -37,12 +42,11 @@ function Payment() {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          packageName: "Bus Packages",
+          package_id:packageId,
         }),
       });
 
       response = await response.json();
-      console.log("Price", response.results.packageFee);
       setPackages(response.results);
     };
     Price();
@@ -79,8 +83,6 @@ function Payment() {
       },
       body: JSON.stringify(dataObject),
     });
-
-    response = await response.json();
     
     if (response.success) {
       router.push("/transportdashboard");

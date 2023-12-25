@@ -102,27 +102,30 @@ router.post('/hotelreg', async (req, res) => {
 
 
     // Respond with success
-    res.status(200).json({ success: true, message: 'Hotel registration successful', results });
+    return res.status(200).json({ success: true, message: 'Hotel registration successful', results });
 
   } catch (error) {
     console.error('Error registering hotel:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    return res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
 
 
-router.get("/pricehostel",
+router.post("/pricehotel",
 async(req,res)=>{
+
+  const {package_id} = req.body;
 
   let result = await querySql({
       query: `
-      Select package_id ,packageFee,DurationInDays from Packages where category = 'hotel'
+      Select package_id ,packageFee,DurationInDays from Packages where package_id = ?
       `,
-      values: [],
+      values: [package_id],
     });
 
-    res.status(200).json({results:result[0]})
+    return res.status(200).json(result[0])
 })
+
 
 
 // This is login Api
@@ -252,5 +255,25 @@ async(req,res)=>{
 
 
 })
+
+
+router.get("/gethotels",
+async(req,res)=>{
+
+  let user = await querySql({
+    query: `Select * from Packages Where category = 'hotel' `,
+    values: [],
+  });
+
+  if (user.length===0) {
+    return res.status(200).json({Msg:"No Packages are here"});
+  }
+
+  return res.status(200).json(user)
+
+})
+
+
+
 
 module.exports = router;

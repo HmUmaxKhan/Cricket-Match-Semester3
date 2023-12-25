@@ -1,83 +1,93 @@
-"use client"
-import { useEffect, useState } from "react"
-import "../(Payment)/payment.css"
+"use client";
+import { useEffect, useState } from "react";
+import "../(Payment)/payment.css";
+import { useSelector } from "react-redux";
 function Payment() {
+  const [packages, setPackages] = useState({});
+  const [adminId, setAdminId] = useState();
+  const [name, setname] = useState();
 
-    const [packages,setPackages] = useState({});
-    const [adminId,setAdminId] = useState();
-    const [name,setname] = useState();
+  const package_id = useSelector((state)=>state.pricingCategoryHotel.packageId)
 
-    useEffect(()=>{
-        const details= async() =>{
-            let detail = localStorage.getItem("adminLogin");
+  console.log(package_id);
 
-            if (!detail) {
-                window.location.href="/registerAdmin"
-            }
-            detail = await JSON.parse(detail)
-            console.log("detail-- ",detail);
-            
-            if (detail.admin_id && detail.admin_id.length > 0) {
-                setAdminId(detail.admin_id[0].admin_id);
-            }
-        }
+  useEffect(() => {
+    let detail = localStorage.getItem("adminLogin");
 
-        const Price = async() =>{
-            let response = await fetch("http://localhost:5005/api/pricehostel");
-            response = await response.json();
-            console.log("Price",response.results.packageFee);
-            setPackages(response.results);
-        }
-
-        details();
-        Price();
-      },[])
-
-
-    const handleChange = (e) =>{
-        setname(e.target.value)
+    if (!detail) {
+      window.location.href = "/registerAdmin";
     }
+    detail = JSON.parse(detail);
+    console.log("detail-- ", detail);
 
-    const handleSubmit = async()=>{
-        
-const currentDate = new Date();
-const expiringDate = new Date(currentDate);
-expiringDate.setDate(currentDate.getDate() + packages.DurationInDays);
+    setAdminId(detail.admin_id)
 
-const mysqlCurrentDate = currentDate.toISOString().slice(0, 10);
-const mysqlExpiringDate = expiringDate.toISOString().slice(0, 10);
+    console.log(detail.admin_id);
 
-const dataObject = {
-    Name: name,
-    amount: packages.packageFee,
-    package_id: packages.package_id,
-    startingDate: mysqlCurrentDate,
-    expiringDate: mysqlExpiringDate,
-    admin_id:adminId
-};
+    const Price = async () => {
+      let pkg_id = localStorage.getItem("package_id");
+      pkg_id = JSON.parse(pkg_id);
+      console.log(pkg_id);
+      
+      let response = await fetch("http://localhost:5005/api/pricehotel", {
+        method: "POST", 
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          package_id: pkg_id.package_id,
+        }),
+      });
 
-console.log(dataObject);
+      response = await response.json();
+      setPackages(response);
+      console.log(response);
+    };
+    Price();
+  }, []);
 
-let response = await fetch("http://localhost:5005/api/paymentadmin",{
-          method:'POST',
-          headers:{
-            "content-type":"application/json"
-          },
-          body:JSON.stringify(dataObject)
-        });
+  const handleChange = (e) => {
+    setname(e.target.value);
+  };
 
-        response = await response.json();
-        console.log(response);
-        console.log(adminId);
+  const handleSubmit = async () => {
+    const currentDate = new Date();
+    const expiringDate = new Date(currentDate);
+    expiringDate.setDate(currentDate.getDate() + packages.DurationInDays);
 
-        if (response.success) {
-            window.location.href="/adminDashboard"
-        }
-        
-      }
-    
-      return(
-      <div className="container d-flex justify-content-center align-items-center p-0 min-vh-100">
+    const mysqlCurrentDate = currentDate.toISOString().slice(0, 10);
+    const mysqlExpiringDate = expiringDate.toISOString().slice(0, 10);
+
+    const dataObject = {
+      Name: name,
+      amount: packages.packageFee,
+      package_id: packages.package_id,
+      startingDate: mysqlCurrentDate,
+      expiringDate: mysqlExpiringDate,
+      admin_id: adminId,
+    };
+
+    console.log(dataObject);
+
+    let response = await fetch("http://localhost:5005/api/paymentadmin", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(dataObject),
+    });
+
+    response = await response.json();
+    console.log(response);
+    localStorage.setItem("paymentHotel", JSON.stringify(response));
+
+    if (response.success) {
+      window.location.href = "/adminDashboard";
+    }
+  };
+
+  return (
+    <div className="container d-flex justify-content-center align-items-center p-0 min-vh-100">
       <div className="card px-4">
         <p className="h8 py-3">Payment Details</p>
         <div className="row gx-3">
@@ -136,7 +146,10 @@ let response = await fetch("http://localhost:5005/api/paymentadmin",{
             </div>
           </div>
           <div className="col-12 d-flex align-items-center  justify-center">
-            <button onClick={handleSubmit} className="btn btn-primary d-flex align-items-center  justify-center">
+            <button
+              onClick={handleSubmit}
+              className="btn btn-primary d-flex align-items-center  justify-center"
+            >
               <span>{packages.packageFee}</span>
               <span className="fas fa-arrow-right"></span>
             </button>
@@ -147,4 +160,4 @@ let response = await fetch("http://localhost:5005/api/paymentadmin",{
   );
 }
 
-export default Payment
+export default Payment;

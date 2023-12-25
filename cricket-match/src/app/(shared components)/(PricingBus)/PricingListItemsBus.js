@@ -1,10 +1,18 @@
+import { pricingCategoryactions } from '@/app/redux/slice/pricingCategory';
+import { useRouter } from 'next/navigation';
 import React from 'react'
+import { useDispatch } from 'react-redux'
 
 function PricingListItems(props) {
     const {packages} = props
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    const handleClick =  () =>{
+      dispatch(pricingCategoryactions(packages.package_id));
+      router.push("/transportreg")
+    }
   return (
-    
-      
       <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm border-primary">
           <div class="card-header py-3 text-bg-primary border-primary">
@@ -16,7 +24,7 @@ function PricingListItems(props) {
               <li><h4 className='m-4'><b>Category:</b> {packages.category}</h4></li>
               <li><h4 className='m-4'><b>Price:</b> {packages.packageFee}</h4></li>
             </ul>
-            <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
+            <button type="button" class="w-100 btn btn-lg btn-primary" onClick={handleClick}>Buy</button>
           </div>
         </div>
         </div>
