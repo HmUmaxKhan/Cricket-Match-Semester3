@@ -9,8 +9,8 @@ function PricingListItems(props) {
     const router = useRouter();
 
     const handleClick =  () =>{
-      dispatch(pricingCategoryactions(packages.package_id));
-      router.push("/transportreg")
+      localStorage.setItem("package_id",JSON.stringify({package_id:packages.package_id}));
+      router.push("/registerAdmin")
     }
   return (
       <div class="col">

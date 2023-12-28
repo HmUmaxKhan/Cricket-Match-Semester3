@@ -30,9 +30,6 @@ function Payment() {
 
     setAdmin(JSON.stringify(detail.admin_id));
 
-    
-    console.log(detail.admin_id);
-
     console.log(packageId);
 
     const Price = async () => {
@@ -47,6 +44,7 @@ function Payment() {
       });
 
       response = await response.json();
+      console.log(response);
       setPackages(response.results);
     };
     Price();

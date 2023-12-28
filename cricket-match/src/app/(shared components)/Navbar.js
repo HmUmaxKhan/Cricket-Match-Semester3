@@ -1,13 +1,24 @@
+"use client"
 import Link from "next/link";
 import { BiSolidCricketBall } from "react-icons/bi";
 import { MdOutlineEmojiTransportation } from "react-icons/md";
 import { FaHotel } from "react-icons/fa6";
 import Image from "next/image";
-function Navbar() {
+import { useEffect, useState } from "react";
+function Navbar(props) {
+
   const cardStyle = {
     marginLeft: "30px",
     marginRight: "30px",
   };
+
+  const [isLogged, setLogged] = useState(false);
+  
+  const base64image = `data:image/png;base64,${props.img}`
+  useEffect(() => {
+    // Use useEffect to set the initial value of isLogged
+    setLogged(props.val);
+  }, [props.val]);
   return (
     <div className="mb-3">
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -59,7 +70,9 @@ function Navbar() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <Image src={"/login.jpg"} width={40} height={40} alt="login" />
+             {isLogged? <Image src={base64image} width={40} height={40} alt="login" />
+            :<Image src={"/login.jpg"} width={40} height={40} alt="login" />}
+              
               </Link>
 
               <ul className="dropdown-menu">

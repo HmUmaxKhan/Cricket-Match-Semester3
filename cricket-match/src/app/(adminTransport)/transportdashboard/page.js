@@ -3,12 +3,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import ListofTransport from './components of transport/ListofTransport';
+import { useSelector } from 'react-redux';
 
 
 
 function page() {
 
   const router = useRouter();
+  const packageId = useSelector((state)=>state.pricingCategory.package_id);
+  
   useEffect(()=>{
 
     let details = localStorage.getItem("adminTransLogin");
@@ -42,8 +45,13 @@ function page() {
       console.log(response);
 
       if (response===0) {
-        router.push("/paymenttransport");
-      }
+        if(pkg_id==null || pkg_id===undefined){
+         router.push("/pricinghotel")
+        }
+        else{
+        window.location.href='/paymenthotel'
+        }
+       }
     }
 
     getBlock();

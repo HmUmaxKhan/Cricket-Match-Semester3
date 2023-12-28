@@ -10,8 +10,16 @@ function Login() {
     Password: "",
   });
 
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    height:'100vh',
+    width:'100%'
+  }
+
+
   const cardStyle = {
-    boxShadow: "0 0 10px 8px",
+    boxShadow: "0 0 10px 8px rgba(0,0,0,0.01)",
   };
 
   const Change = (e) => {
@@ -43,7 +51,15 @@ function Login() {
       const responseData = await response.json();
       console.log(responseData);
 
-      if (responseData) {
+      if(responseData.Msg==='Invalid Password'){
+        return
+      }
+
+      if (responseData.Msg=='User with this username is not exits') {
+        return
+      }
+
+      if (responseData.success) {
         localStorage.setItem("adminLogin", JSON.stringify(responseData));
         window.location.href = "/adminDashboard";
       } else {
@@ -55,6 +71,7 @@ function Login() {
   };
 
   return (
+    <div style={background}>
     <div className="container d-flex justify-content-center align-items-center flex-column p-5">
       <div className="card p-4" style={cardStyle}>
         <h3 className=" py-3 text-center">
@@ -97,6 +114,7 @@ function Login() {
           SignUp
         </Link>
       </div>
+    </div>
     </div>
   );
 }

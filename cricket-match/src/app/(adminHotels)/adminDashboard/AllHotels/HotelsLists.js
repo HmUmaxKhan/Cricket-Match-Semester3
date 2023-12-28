@@ -46,7 +46,7 @@ function HotelsLists() {
 
   return <div>
   {
-    Array.isArray(hotel) && hotel!=[] ? hotel.map((item, index) => {
+    Array.isArray(hotel) && hotel.length!==0 ? hotel.map((item, index) => {
         return(
             {key : index},
             <HotelListItems hotel = {item} onDelete={handleDelete}/>

@@ -45,7 +45,7 @@ function page() {
       const responseData = await response.json();
       console.log(responseData);
 
-      if (responseData) {
+      if (responseData.success) {
         localStorage.setItem("adminTransLogin", JSON.stringify(responseData));
         router.push("/transportdashboard");
       } else {

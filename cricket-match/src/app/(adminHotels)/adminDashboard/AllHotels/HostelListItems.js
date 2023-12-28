@@ -7,7 +7,7 @@ export default function HotelListItems(props) {
     const {hotel,onDelete} = props
     
     const cardStyle={
-      height:"250px",maxWidth: "70%", marginLeft: "15%", overflow: "hidden",
+      maxWidth: "70%", marginLeft: "15%", overflow: "hidden",
       boxShadow:"0 0 10px 8px"
     }
 

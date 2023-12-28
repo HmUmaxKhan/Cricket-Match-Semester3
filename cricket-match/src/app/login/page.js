@@ -1,6 +1,5 @@
-"use client"
+"use client";
 
-import styles from "./login.module.css";
 import { useState } from "react";
 import Link from "next/link";
 import Navbar from "../(shared components)/Navbar";
@@ -10,6 +9,17 @@ function Login() {
     UserName: "",
     Password: "",
   });
+
+  const cardStyle = {
+    boxShadow: "0 0 10px 8px",
+  };
+
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    height:'100vh',
+    width:'100%'
+  }
 
   const Change = (e) => {
     setLogin({ ...login, [e.target.name]: e.target.value });
@@ -22,7 +32,7 @@ function Login() {
       const response = await fetch("http://localhost:5005/api/auth/login", {
         method: "post",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           UserName: login.UserName,
@@ -42,7 +52,7 @@ function Login() {
 
       if (responseData.token) {
         localStorage.setItem("login", JSON.stringify(responseData));
-        window.location.href = "/";
+        window.location.href = "/tournaments";
       } else {
         console.error("Login failed. No token in the response.");
       }
@@ -52,51 +62,55 @@ function Login() {
   };
 
   return (
-    <div>
+    <div style={background}>
       <Navbar />
-      <div
-        className={`container flex justify-center items-center ${styles.loginContainer}`}
-        style={{ height: "100vh" }}
-      >
-        <div className={`form-floating mb-3 ${styles.formElement}`}>
-          <input
-            type="email"
-            className={`form-control ${styles.input}`}
-            id="floatingInput"
-            placeholder="name@example.com"
-            name="UserName"
-            onChange={Change}
-          />
-          <label htmlFor="floatingInput" className={`${styles.label} ${styles.main}`}>
-            Email address
-          </label>
+      <div className="container d-flex justify-content-center align-items-center flex-column p-5">
+        <div className="card p-4" style={cardStyle}>
+          <h3 className=" py-3 text-center">Login</h3>
+
+          <div className="mb-3">
+            <label htmlFor="Fname" className="form-label">
+              Username
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="Fname"
+              placeholder="Enter your username"
+              name="UserName"
+              onChange={Change}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="Lname" className="form-label">
+              Password
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              id="Lname"
+              placeholder="Enter your password"
+              name="Password"
+              onChange={Change}
+            />
+          </div>
+
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={handleClick}
+          >
+            Submit
+          </button>
+
+          <Link href="/register" className="link  mt-3">
+            SignUp
+          </Link>
         </div>
-        <br />
-        <div className={`form-floating ${styles.formElement}`}>
-          <input
-            type="password"
-            className={`form-control ${styles.input}`}
-            id="floatingPassword"
-            placeholder="Password"
-            name="Password"
-            onChange={Change}
-          />
-          <label htmlFor="floatingPassword" className={styles.label}>
-            Password
-          </label>
-        </div>
-        <br />
-        <button
-          className={`text-center ${styles.button}`}
-          onClick={handleClick}
-        >
-          Submit
-        </button>
-        <Link href="/register"> Registration</Link>
       </div>
     </div>
   );
 }
 
 export default Login;
-

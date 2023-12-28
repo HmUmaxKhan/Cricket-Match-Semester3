@@ -8,6 +8,13 @@ function page() {
 
   const router = useRouter();
 
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    height:'100vh',
+    width:'100%'
+  }
+
   useEffect(() => {
     let details = localStorage.getItem("adminLogin");
 
@@ -37,9 +44,17 @@ function page() {
 
       console.log(response);
 
+      let pkg_id = localStorage.getItem("package_id");
+      pkg_id = JSON.parse(pkg_id);
+      console.log(pkg_id);
+
       if (response===0) {
-       // router.push("/pricinghotel");
+       if(pkg_id==null || pkg_id===undefined){
+        router.push("/pricinghotel")
+       }
+       else{
        window.location.href='/paymenthotel'
+       }
       }
     }
 
@@ -47,7 +62,7 @@ function page() {
   });
   
   return (
-    <div>
+    <div style={background}>
       <h1 className="text-center mt-3">Hotel Management</h1>
       <Link
         className="text-center btn btn-primary"

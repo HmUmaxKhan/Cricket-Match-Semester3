@@ -42,12 +42,13 @@ router.post("/login", async(req,res)=>{
     }else{
 
         let userid = String(results[0].user_id);
+        let img = results[0].ProfilePhoto
 
     // If User is valid then assigning him a token
-    const token = JWT.sign({EmailAddress:results[0].EmailAddress,userId:userid},"Hello World , My life is js");
+    const token = JWT.sign({EmailAddress:results[0].EmailAddress,userId:userid,img:img},"Hello World , My life is js");
 
     // Last response 
-    return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token});
+    return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,img:img});
     }
 
 } catch (error) {

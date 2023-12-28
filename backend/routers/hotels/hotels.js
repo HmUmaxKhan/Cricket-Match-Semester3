@@ -10,18 +10,16 @@ router.post("/hotels", async(req,res)=>{
     try {
     // Taking Data from the Sql
     const results = await querySql({
-        query:"select * from Hotels join RatingOfHotel where Hotels.City  = ? && RatingOfHotel.hotel_id = Hotels.hotel_id",
+        query:"select * from Hotels where City = ( select location from venues where match_id = ?)",
         values:[hotel]
     });
 
     // Checking if the result is present or not
     if (!results || results.length===0) {
-        res.status(204).json({Msg:"There are no Hotels in this City"})
+       return  res.status(204).json({Msg:"There are no Hotels in this City"})
     }
-
-    console.log(results);
-
-    res.status(201).json({result:results})
+    
+    return res.status(201).json({result:results})
 
 } catch (error) {
  console.log(error);       

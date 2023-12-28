@@ -1,104 +1,231 @@
 "use client"
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 function Login() {
 
+  const router = useRouter();
+  
+  const [image, setImage] = useState();
+
+  const cardStyle = {
+    boxShadow: "0 0 10px 8px",
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    convertToBase64(file);
+  };
+
+  const convertToBase64 = (file) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64String = reader.result.split(",")[1];
+      setImage(base64String);
+    };
+
+    // Ensure to read the file as data URL
+    reader.readAsDataURL(file);
+  };
+
   const [reg, setReg] = useState({
-    EmailAddress:"",
-    Fname:"",
-    Lname:"",
-    UserName:"",
-    Password:"",
-    CNIC:"",
-    Contact:""
-  })
+    EmailAddress: "",
+    Fname: "",
+    Lname: "",
+    UserName: "",
+    Password: "",
+    CNIC: "",
+    Contact: "",
+  });
 
-  const Change = (e)=>{
-     setReg({...reg,[e.target.name]:e.target.value})
-  }
+  const Change = (e) => {
+    setReg({ ...reg, [e.target.name]: e.target.value });
+  };
 
-  const handleClick =async (e) =>{
+  const handleClick = async (e) => {
     e.preventDefault();
-    let response = await fetch("http://localhost:5005/api/auth/reg",{
-      method:'POST',
-      headers:{
-        "content-type":"application/json"
+    let response = await fetch("http://localhost:5005/api/transportregown", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
       },
-      body:JSON.stringify({
-            EmailAddress:reg.EmailAddress,
-            Fname:reg.Fname,
-            Lname:reg.Lname,
-            UserName:reg.UserName,
-            Password:reg.Password,
-            Contact:reg.Contact,
-            CNIC : reg.CNIC,
-            Address:reg.Address,
-            usertype:"user"
-      })
+      body: JSON.stringify({
+        EmailAddress: reg.EmailAddress,
+        Fname: reg.Fname,
+        Lname: reg.Lname,
+        UserName: reg.UserName,
+        Password: reg.Password,
+        Contact: reg.Contact,
+        CNIC: reg.CNIC,
+        Address: reg.Address,
+        usertype: "user",
+        ProfilePhoto: image,
+      }),
     });
     response = await response.json();
+    console.log(response);
+    localStorage.setItem("adminTransLogin", JSON.stringify(response));
 
-    if (response) {
-      window.location.href="/login";
-    }
-  }
+    router.push("/logintransport");
+  };
+
 
   return (
-    <div className='container flex justify-center items-center flex-col'  style={{height:"100vh"}}> 
+    <div className="container d-flex justify-content-center align-items-center flex-column p-5">
+      <div className="card p-4" style={cardStyle}>
+        <h3 className=" py-3 text-center">
+          Registration Information for Transport Admin
+        </h3>
 
-    <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Fname" onChange={Change} />
-  <label htmlFor="floatingInput">First Name</label>
-</div>
-<br></br>
+        <div className="mb-3">
+          <label htmlFor="Fname" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="Fname"
+            placeholder="Enter your first name"
+            name="Fname"
+            onChange={Change}
+          />
+        </div>
 
-    <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Lname" onChange={Change} />
-  <label htmlFor="floatingInput">Last Name</label>
-</div>
-<br></br>
+        <div className="mb-3">
+          <label htmlFor="Lname" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="Lname"
+            placeholder="Enter your last name"
+            name="Lname"
+            onChange={Change}
+          />
+        </div>
 
+        <div className="mb-3">
+          <label htmlFor="UserName" className="form-label">
+            Username
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="UserName"
+            placeholder="Choose a username"
+            name="UserName"
+            onChange={Change}
+          />
+        </div>
 
-    <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="UserName" onChange={Change} />
-  <label htmlFor="floatingInput">Username</label>
-</div>
-<br></br>
+        <div className="mb-3">
+          <label htmlFor="Password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="Password"
+            placeholder="Enter your password"
+            name="Password"
+            onChange={Change}
+          />
+        </div>
 
-<div className="form-floating">
-  <input type="password" className="form-control" id="floatingPassword" placeholder="Password" name="Password" onChange={Change}/>
-  <label htmlFor="floatingPassword" >Password</label>
-</div>
-<br></br>
+        <div className="mb-3">
+          <label htmlFor="EmailAddress" className="form-label">
+            Email address
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="EmailAddress"
+            placeholder="name@example.com"
+            name="EmailAddress"
+            onChange={Change}
+          />
+        </div>
 
-<div className="form-floating mb-3 ">
-  <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" name="EmailAddress" onChange={Change} />
-  <label htmlFor="floatingInput">Email address</label>
-</div>
-<br></br>
+        <div className="mb-3">
+          <label htmlFor="Contact" className="form-label">
+            Phone
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="Contact"
+            placeholder="Enter your phone number"
+            name="Contact"
+            onChange={Change}
+          />
+        </div>
 
+        <div className="mb-3">
+          <label htmlFor="CNIC" className="form-label">
+            CNIC
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="CNIC"
+            placeholder="Enter your CNIC"
+            name="CNIC"
+            onChange={Change}
+          />
+        </div>
 
-<div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Contact" onChange={Change} />
-  <label htmlFor="floatingInput">Phone</label>
-</div>
-<br></br>
+        <div className="mb-3">
+          <label htmlFor="Address" className="form-label">
+            Address
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="Address"
+            placeholder="Enter your address"
+            name="Address"
+            onChange={Change}
+          />
+        </div>
 
-<div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="CNIC" onChange={Change} />
-  <label htmlFor="floatingInput">Phone</label>
-</div>
-<br></br>
+        <div className="col-md-6">
+          <div className="mb-3">
+            <label htmlFor="image" className="form-label">
+              Upload Image
+            </label>
+            <input
+              type="file"
+              className="form-control"
+              accept=".jpeg, .jpg, .png"
+              onChange={handleImageChange}
+            />
+          </div>
 
-<div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Address" onChange={Change} />
-  <label htmlFor="floatingInput">Phone</label>
-</div>
-<br></br>
+          {image && (
+            <div className="mb-3">
+              <label className="form-label">Image Preview</label>
+              <img
+                src={`data:image/png;base64,${image}`}
+                alt="Preview"
+                className="img-thumbnail"
+              />
+            </div>
+          )}
+        </div>
 
-<button className=' text-center bg-slate-400' onClick={handleClick}>Submit</button>
+        <button type="button" className="btn btn-success" onClick={handleClick}>
+          Submit
+        </button>
+
+        <Link href="/login" className="link  mt-3">
+          Login
+        </Link>
+      </div>
     </div>
+
 
   )
 }

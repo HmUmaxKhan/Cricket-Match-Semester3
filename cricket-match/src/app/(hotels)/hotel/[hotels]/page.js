@@ -6,7 +6,7 @@ export default function page({params}) {
 
   return (
     <div>
-    <h1> Match Schedules are following</h1>
+    <h1> Hotels Schedules are following</h1>
         <HotelsList hotels= {params.hotels}/>
     </div>
   )

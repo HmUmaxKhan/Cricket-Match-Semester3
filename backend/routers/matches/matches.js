@@ -10,16 +10,16 @@ router.post("/matches", async(req,res)=>{
     try {
     // Taking Data from the Sql
     const results = await querySql({
-        query:"select * from matches join venues where tournament_id = ?",
+        query:"select * from matches m join venues v on m.match_id=v.match_id where m.tournament_id = ?",
         values:[match]
     });
 
     // Checking if the result is present or not
     if (!results || results.length===0) {
-        res.status(204).json({Msg:"There are no Tournaments"})
+        return res.status(204).json({Msg:"There are no Tournaments"})
     }
 
-    res.status(201).json({result:results})
+    return res.status(201).json({result:results})
 
 } catch (error) {
  console.log(error);       

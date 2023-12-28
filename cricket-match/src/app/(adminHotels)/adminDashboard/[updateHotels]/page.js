@@ -8,6 +8,14 @@ const page = (params) => {
   const [image,setImage] = useState();
   const [addingDate,setAddingDate]=useState(new Date());
 
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    height:'100%',
+    width:'100%'
+  }
+
+
   useEffect(()=>{
     //Getting the previous info
         const info = async()=>{
@@ -107,7 +115,7 @@ const page = (params) => {
   }
 
   return (
-    <>
+    <div style={background}>
     <h1 className="text-center m-4 bg-slate-400">Hotel Registration</h1>
     <div className="container">
       <div className="row">
@@ -272,7 +280,7 @@ const page = (params) => {
       </button>
 
     </div>
-    </>
+    </div>
   );
 
 }

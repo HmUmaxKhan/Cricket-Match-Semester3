@@ -43,12 +43,12 @@ function ListofTransport() {
 
   return <div>
   {
-    Array.isArray(transports) && transports.map((item, index) => {
+    Array.isArray(transports) && transports.length!==0 ? transports.map((item, index) => {
         return(
             {key : index},
             <ListItemsofTransport transport = {item} onDelete={handleDelete}/>
         )
-    })
+    }):(<h3 className="text-center">No Transports are given</h3>)
 }
     </div>;
 }

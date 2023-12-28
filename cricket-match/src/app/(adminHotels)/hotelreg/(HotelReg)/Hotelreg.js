@@ -19,10 +19,12 @@ function Hotelreg() {
       }
       detail = JSON.parse(detail);
 
+      console.log(detail);
+
       if (detail.admin_id) {
-        setAdminId(detail.admin_id[0].admin_id);
+        setAdminId(detail.admin_id);
       }
-      setUserId(detail.userId);
+      setUserId(detail.user_id);
     
   }, []);
 
