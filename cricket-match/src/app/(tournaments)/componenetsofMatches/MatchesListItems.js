@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MdHotel } from "react-icons/md";
-
+import { FaBus } from "react-icons/fa";
 export default function MatchesListItems(props) {
   const {match} = props;
 
@@ -10,7 +10,7 @@ export default function MatchesListItems(props) {
   }
 
   return (
-    <div className="card mb-3 mt-5" style={cardStyle}>
+    <div className="card mt-5" style={cardStyle}>
   <div className="row g-0">
     <div className="col-sm-6" style={{ overflow: "hidden", transition: "width 0.3s ease" }}>
       {match.img !== null ? (
@@ -37,7 +37,8 @@ export default function MatchesListItems(props) {
         <h5>Venue: {match.venue_name}</h5>
         <h5>Location: {match.location}</h5>
         <div>
-        <Link href={`/hotel/${match.match_id}`}><MdHotel size={50}/></Link>
+        <Link style={{marginRight:"30px"}} href={`/hotel/${match.match_id}`}><MdHotel size={40}/></Link>
+        <Link  href={`/transport/${match.match_id}`}><FaBus size={40}/></Link>
         </div>
       </div>
     </div>

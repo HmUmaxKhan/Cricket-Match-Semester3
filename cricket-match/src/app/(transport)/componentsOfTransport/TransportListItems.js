@@ -1,35 +1,18 @@
-import Image from "next/image";
-import Link from "next/link";
-import { MdDelete } from "react-icons/md";
-import { RxUpdate } from "react-icons/rx";
+import Image from 'next/image'
+import Link from 'next/link';
+import React from 'react'
 import { LiaRouteSolid } from "react-icons/lia";
 
-export default function ListItemsofTransport(props) {
-    const {transport,onDelete} = props
-    
+
+function TransportListItems(props) {
+    const {transport} = props
     const cardStyle={
-      maxWidth: "70%", marginLeft: "15%", overflow: "hidden",
-      boxShadow:"0 0 10px 8px"
-    }
-
-    const handleDelete=async()=>{
-      let response = await fetch("http://localhost:5005/api/deletetransport",{
-        method:"DELETE",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({transport_id:transport.transport_id})
-      })
-
-      response = await response.json();
-
-      console.log(response);
-
-      onDelete(transport.hotel_id)
-    }
-
-    return (
-      <div className="card mb-3 mt-3 " style={cardStyle}>
+        maxWidth: "70%", marginLeft: "15%", overflow: "hidden",
+        boxShadow:"0 0 10px 8px rgba(0,0,0,0.01)"
+      }
+  return (
+    <div>
+    <div className="card mt-3 " style={cardStyle}>
   <div className="row g-0">
     <div className="col-md-6" style={{ overflow: "hidden", transition: "width 0.3s ease" }}>
           {transport.ImageUrl ? (
@@ -61,24 +44,16 @@ export default function ListItemsofTransport(props) {
         <h6><b>Contact No</b>: {transport.contact}</h6>
         <h6><b>Capacity</b>: {transport.capacity}</h6>
         <h6><b>Number Plate</b>: {transport.numberPlate}</h6>
-        <div>
-        <Link href={`/transportdashboard/${transport.transport_id}`}>
-          <RxUpdate size={20}/>
-        </Link>
-
-        <Link style={{border:"none",background:"none",marginLeft:"20px"}} href={`/transportdashboard/route/${transport.transport_id}`}>
-          <LiaRouteSolid size={30}/>
-        </Link>
-
-        <button onClick={handleDelete} className="ml-3" style={{border:"none",background:"none",marginLeft:"20px"}} >
-            <MdDelete size={20} />
-        </button>
-        </div>
       </div>
+      <small className='text-body-secondary'>Check the Routes and their Fare</small>
+      <Link href={`/route/${transport.transport_id}`}><LiaRouteSolid size={40}/></Link>
+
     </div>
   </div>
 </div>
 
+    </div>
   )
-  }
-  
+}
+
+export default TransportListItems

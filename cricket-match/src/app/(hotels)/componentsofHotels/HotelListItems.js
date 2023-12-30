@@ -1,11 +1,17 @@
+import Image from "next/image";
+import Link from "next/link";
+import { FaExternalLinkSquareAlt } from "react-icons/fa";
+
 export default function HotelListItems(props) {
   const {hotel} = props
+  const cardStyle={
+    maxWidth: "70%", marginLeft: "15%", overflow: "hidden",
+    boxShadow:"2px 4px 10px 8px rgba(0, 0, 0, 0.1)"
+  }
   return (
-    <div className="card mb-3 mt-3 " style={cardStyle}>
+    <div className="card mt-3 " style={cardStyle}>
   <div className="row g-0">
     <div className="col-md-6" style={{ overflow: "hidden", transition: "width 0.3s ease" }}>
-      {hotel && hotel.WebUrl ? (
-        <a href={hotel.WebUrl}>
           {hotel.ImageUrl ? (
             <Image
               src={`data:image/png;base64, ${hotel.ImageUrl}`}
@@ -20,12 +26,8 @@ export default function HotelListItems(props) {
                 objectFit: "cover",
               }}
             />
-          ) : (
-            <span>No Image Available</span>
-          )}
-        </a>
       ) : (
-        <span>No WebUrl Available</span>
+        <span>No Picture is available</span>
       )}
     </div>
     <div className="col-md-6" style={{ transition: "width 0.3s ease" }}>
@@ -36,14 +38,7 @@ export default function HotelListItems(props) {
         <h5>City: {hotel.City}</h5>
         <h5>Contact No: {hotel.PhoneNumber}</h5>
         <h5>Email: {hotel.Email}</h5>
-        <div>
-        <Link href={`adminDashboard/${hotel.hotel_id}`}>
-          <RxUpdate size={20}/>
-        </Link>
-        <button onClick={handleDelete} className="ml-3" style={{border:"none",background:"none",marginLeft:"20px"}} >
-            <MdDelete size={20} />
-        </button>
-        </div>
+        <Link href={hotel.WebUrl?hotel.WebUrl:""}> <FaExternalLinkSquareAlt size={40}/> </Link>
       </div>
     </div>
   </div>

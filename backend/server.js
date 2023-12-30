@@ -25,6 +25,8 @@ app.use('/api',require("./routers/matchEdit/matchEdit"));
 app.use('/api',require("./routers/ticket_package/tickets"));
 app.use('/api',require("./routers/transport_admin/transport"));
 app.use('/api',require("./routers/misc/misc"));
+app.use('/api',require("./routers/transport/user_transport"));
+app.use('/api',require("./routers/route/route"));
 
 
 

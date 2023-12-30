@@ -1,4 +1,4 @@
-import MatchesList from "../../componenetsofMatches/MatchesList"
+import ListRoute from "../../componentsOfroutes/ListRoute"
 
 export default function page({params}) {
 
@@ -13,7 +13,8 @@ export default function page({params}) {
   
   return (
     <div style={background}>
-        <MatchesList matches= {params.matches}/>
+        <ListRoute transportId= {params.route}/>
     </div>
   )
 }
+

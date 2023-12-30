@@ -11,7 +11,7 @@ export default function TournamentListItems(props) {
   }
 
   return (
-    <div className="card mb-3 mt-5 " style={cardStyle}>
+    <div className="card mt-5 " style={cardStyle}>
   <div className="row g-0">
     <div className="col-md-6" style={{ overflow: "hidden", transition: "width 0.3s ease" }}> 
           {tournament.ImageUrl !==null ? (

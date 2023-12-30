@@ -124,7 +124,7 @@ function page(params) {
     modifieddate.setDate(modifieddate.getDate()+1);
 
     let response = await fetch("http://localhost:5005/api/updatetransportinfo", {
-      method: "POST",
+      method: "PUT",
       headers: {
         "content-type": "application/json",
       },
@@ -145,10 +145,6 @@ function page(params) {
     });
     response = await response.json();
     console.log(response);
-
-    console.log(reg);
-    console.log(adminId);
-    console.log("image:",image);
 
     if (response.success) {
       router.back();

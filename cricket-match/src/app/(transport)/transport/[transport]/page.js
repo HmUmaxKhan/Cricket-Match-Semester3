@@ -1,7 +1,8 @@
-import Link from "next/link";
-import TournamentList from "../componentsofTournaments/TournamentList";
+import React from 'react'
+import TransportList from '../../componentsOfTransport/TransportList'
 
-export default function page() {
+function page({params}) {
+
   const background= {
     backgroundImage : 'url("/bgImage.jpg")',
     backgroundSize:'cover',
@@ -9,9 +10,12 @@ export default function page() {
     width:'100%'
   }
 
+
   return (
     <div style={background}>
-      <TournamentList />
+        <TransportList matchId={params.transport}/>
     </div>
   )
 }
+
+export default page
