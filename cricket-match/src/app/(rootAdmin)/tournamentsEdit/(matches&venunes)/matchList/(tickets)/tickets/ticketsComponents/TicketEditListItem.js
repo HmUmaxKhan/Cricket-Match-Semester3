@@ -1,5 +1,6 @@
 import { matchIdaction } from "@/app/redux/slice/matchIdSlice";
 import Link from "next/link";
+import { useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import { RxUpdate } from "react-icons/rx";
 import { useDispatch } from "react-redux";
@@ -11,6 +12,7 @@ export default function TicketEditListItems (props) {
       height:"250px",
       boxShadow:"0 0 10px 8px"
     }
+
 
     const handleDelete=async()=>{
       let response = await fetch("http://localhost:5005/api/deleteticket",{

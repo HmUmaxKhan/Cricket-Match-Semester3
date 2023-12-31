@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { MdHotel } from "react-icons/md";
 import { FaBus } from "react-icons/fa";
+import { IoTicketSharp } from "react-icons/io5";
+
 export default function MatchesListItems(props) {
   const {match} = props;
+
 
   const cardStyle={
     maxWidth: "70%", marginLeft: "15%", overflow: "hidden",
@@ -38,7 +41,8 @@ export default function MatchesListItems(props) {
         <h5>Location: {match.location}</h5>
         <div>
         <Link style={{marginRight:"30px"}} href={`/hotel/${match.match_id}`}><MdHotel size={40}/></Link>
-        <Link  href={`/transport/${match.match_id}`}><FaBus size={40}/></Link>
+        <Link  href={`/transport/${match.match_id}`} style={{marginRight:"30px"}} ><FaBus size={40}/></Link>
+        <Link  href={`/ticket/${match.match_id}`}><IoTicketSharp size={40}/></Link>
         </div>
       </div>
     </div>

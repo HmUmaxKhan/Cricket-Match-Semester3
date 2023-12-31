@@ -5,6 +5,7 @@ import matchId from "./slice/matchIdSlice"
 import transportId from './slice/transportIdSlice'
 import pricingCategory from "./slice/pricingCategory"
 import pricingCategoryHotel from "./slice/pricingCategoryhotel";
+import ticketPriceSlice from "./slice/ticketPriceSlice";
 
 const { configureStore } = require("@reduxjs/toolkit");
 
@@ -17,7 +18,8 @@ const store = configureStore({
         matchId:matchId,
         transportId:transportId,
         pricingCategory:pricingCategory,
-        pricingCategoryHotel:pricingCategoryHotel
+        pricingCategoryHotel:pricingCategoryHotel,
+        ticket:ticketPriceSlice
     }
 });
 

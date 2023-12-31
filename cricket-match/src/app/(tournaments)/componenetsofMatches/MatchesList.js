@@ -31,6 +31,8 @@ export default function MatchesList(props) {
       setMatches(response.result);
     };
     lists();
+
+    
   }, []);
 
   return (
