@@ -4,6 +4,8 @@ import "./Reginfo.css"
 import Link from "next/link";
     import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { isCnicValid, isPhoneNumberValid } from '@/app/(shared components)/validation';
+import Alert from '@/app/(shared components)/Alert';
     
     function Reginfo() {
 
@@ -52,6 +54,23 @@ import { useDispatch } from "react-redux";
 
       const handleClick =async (e) =>{
         e.preventDefault();
+
+        if (!isCnicValid(reg.CNIC)) {
+          setAlert({
+            msg: "Invalid CNIC ",
+            type: "danger",
+          });
+          return;
+        }
+    
+        if (!isPhoneNumberValid(reg.Contact)) {
+          setAlert({
+            msg: "Invalid Contact Number ",
+            type: "danger",
+          });
+          return;
+        }
+
         let response = await fetch("http://localhost:5005/api//hotelregown",{
           method:'POST',
           headers:{
@@ -71,14 +90,29 @@ import { useDispatch } from "react-redux";
           })
         });
         response = await response.json();
-        localStorage.setItem("adminLogin",JSON.stringify(response));
-       
 
-        window.location.href="/hotelloginAdmin"
-        
+        setAlert({
+          msg: response.Msg,
+          type: response.success ? 'success' : 'danger',
+        });
+    
+        setTimeout(() => {
+          setAlert(null);
+        }, 5000);
+    
+        if (response.success) {
+          setTimeout(() => {
+            setAlert(null);
+            localStorage.setItem("adminLogin",JSON.stringify(response));
+            window.location.href="/hotelloginAdmin"
+          }, 3000);
+        }
+               
       }
     
       return (
+        <div>
+        <Alert Alert={alert} />
         <div className="container d-flex justify-content-center align-items-center flex-column p-5">
           <div className="card p-4"  style={cardStyle}>
             <h3 className=" py-3 text-center">Registration Information for Hostel Admin</h3>
@@ -228,6 +262,7 @@ import { useDispatch } from "react-redux";
               Login
             </Link>
           </div>
+        </div>
         </div>
       );
     }

@@ -8,6 +8,7 @@ export default function HotelsList(props){
 
     const [hotelsList, setHotels] = useState([])
     const [img, SetImg] = useState();
+    const [loading,SetLoading] = useState(true);
 
     console.log(props.hotels);
 
@@ -35,13 +36,16 @@ export default function HotelsList(props){
               response = await response.json();
               console.log(response.result);
               setHotels(response.result);  
+              SetLoading(false)
             };
         lists();    
 },[])  
 
   return (
     <div>
-    <Navbar val={true} img = {img}/>
+    {loading?(<Loader />):(
+      <div>
+      <Navbar val={true} img = {img}/>
     <h1 className="text-center m-3 mt-4">List of Hotels</h1>
     {
         Array.isArray(hotelsList) && hotelsList.length!==0 ? hotelsList.map((item, index) => {
@@ -51,6 +55,7 @@ export default function HotelsList(props){
             )
         }):(<h3>No hotels are there in this city</h3>)
     }
+    </div>)}
     </div>
   )
 }

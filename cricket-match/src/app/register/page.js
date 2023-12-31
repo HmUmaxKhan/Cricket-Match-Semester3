@@ -1,7 +1,11 @@
 "use client"
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Navbar from "../(shared components)/Navbar";
+import Alert from "../(shared components)/Alert";
+import { isCnicValid, isPhoneNumberValid } from "../(shared components)/validation";
 
 function Login() {
 
@@ -9,8 +13,20 @@ function Login() {
   
   const [image, setImage] = useState();
 
+
+  const [alert, setAlert] = useState(null);
+
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
+
+
+
   const cardStyle = {
-    boxShadow: "0 0 10px 8px",
+    boxShadow: "0 0 10px 8px rgba(0,0,0,0.1)",
   };
 
   const handleImageChange = (e) => {
@@ -46,7 +62,24 @@ function Login() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    let response = await fetch("http://localhost:5005/api/transportregown", {
+
+    if (!isCnicValid(reg.CNIC)) {
+      setAlert({
+        msg: "Invalid CNIC ",
+        type: "danger",
+      });
+      return;
+    }
+
+    if (!isPhoneNumberValid(reg.Contact)) {
+      setAlert({
+        msg: "Invalid Contact Number ",
+        type: "danger",
+      });
+      return;
+    }
+
+    let response = await fetch("http://localhost:5005/api/auth/reg", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -65,14 +98,31 @@ function Login() {
       }),
     });
     response = await response.json();
-    console.log(response);
-    localStorage.setItem("adminTransLogin", JSON.stringify(response));
 
-    router.push("/logintransport");
+    console.log(response);
+
+    setAlert({
+      msg: response.Msg,
+      type: response.success ? 'success' : 'danger',
+    });
+
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+
+    if (response.success) {
+      setTimeout(() => {
+        setAlert(null);
+        router.push("/login");
+      }, 3000);
+    }
   };
 
 
   return (
+    <div style={background}>
+    <Navbar />
+    <Alert Alert={alert} />
     <div className="container d-flex justify-content-center align-items-center flex-column p-5">
       <div className="card p-4" style={cardStyle}>
         <h3 className=" py-3 text-center">
@@ -224,6 +274,7 @@ function Login() {
           Login
         </Link>
       </div>
+    </div>
     </div>
 
 

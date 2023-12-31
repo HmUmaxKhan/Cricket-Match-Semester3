@@ -22,7 +22,8 @@ console.log(userId);
       ticketPrice:ticket.price,
       ticketCategory:ticket.Category,
       matchId:matchId,
-      userId:userId,}));
+      userId:userId,
+      ticketId:ticket.ticket_id}));
     router.push("paymentticket")
   };
 

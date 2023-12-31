@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react";
 import MatchesListItems from "./MatchesListItems";
 import Navbar from "@/app/(shared components)/Navbar";
+import Loader from "@/app/(spinner)/Loader";
 
 export default function MatchesList(props) {
   const [matchesList, setMatches] = useState([]);
   const [img, SetImg] = useState();
+  const [loading,setLoading] = useState(true)
 
   useEffect(() => {
     const list = async () => {
@@ -29,6 +31,7 @@ export default function MatchesList(props) {
       response = await response.json();
       console.log(response.result);
       setMatches(response.result);
+      setLoading(false);
     };
     lists();
 
@@ -37,6 +40,8 @@ export default function MatchesList(props) {
 
   return (
     <div>
+    {loading ? (<Loader />):(
+    <div>
     <Navbar val={true} img = {img}/>
     <h1 className="text-center m-3 mt-4">List of Matches</h1>
     <p className="text-center m-3">Now you can select your favourite matches</p>
@@ -44,6 +49,7 @@ export default function MatchesList(props) {
         matchesList.map((item, index) => {
           return { key: index }, (<MatchesListItems match={item} />);
         })}
+    </div>)}
     </div>
   );
 }

@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/app/(shared components)/Navbar";
 import TransportListItems from "./TransportListItems";
+import Loader from "@/app/(spinner)/Loader";
 
 export default function TransportList(props) {
   const [transports, setTransport] = useState([]);
   const [img, SetImg] = useState();
+  const [loading,SetLoading] = useState(true);
 
   console.log(props.matchId);
 
@@ -31,11 +33,14 @@ export default function TransportList(props) {
       response = await response.json();
       console.log(response.result);
       setTransport(response.result);
+      SetLoading(false)
     };
     lists();
   }, []);
 
   return (
+    <div>
+    {loading?(<Loader />):(
     <div>
       <Navbar val={true} img={img} />
       <h1 className="text-center m-3 mt-4">List of Hotels</h1>
@@ -46,6 +51,7 @@ export default function TransportList(props) {
       ) : (
         <h3>No Transport are there in this city</h3>
       )}
+    </div>)}
     </div>
   );
 }

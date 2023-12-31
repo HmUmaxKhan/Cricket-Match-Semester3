@@ -26,7 +26,7 @@ router.post("/login", async(req,res)=>{
     const len = results.length;
 
     if (!results || len==0) {
-        return res.json({Msg:"User with this username is not exits"})
+        return res.json({success:false,Msg:"User with this username is not exits"})
     }
     
     // Comparing Hash Password and Simple Password
@@ -37,7 +37,7 @@ router.post("/login", async(req,res)=>{
     let Boo = bcrypt.compareSync(Password,Pass)
 
     if (!Boo) {
-        return res.json({Msg:"Invalid Password"})
+        return res.json({success:false,Msg:"Invalid Password"})
 
     }else{
 
@@ -48,7 +48,7 @@ router.post("/login", async(req,res)=>{
     const token = JWT.sign({EmailAddress:results[0].EmailAddress,userId:userid,img:img},"Hello World , My life is js");
 
     // Last response 
-    return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,img:img});
+    return res.status(201).json({success:true,Msg:`Welcome to ${UserName}`,user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,img:img});
     }
 
 } catch (error) {

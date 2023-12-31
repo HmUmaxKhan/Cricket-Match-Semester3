@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import HotelsLists from "./AllHotels/HotelsLists";
 import { useRouter } from "next/navigation";
+import Loader from "@/app/(spinner)/Loader";
 
 function page() {
 
@@ -11,9 +12,11 @@ function page() {
   const background= {
     backgroundImage : 'url("/bgImage.jpg")',
     backgroundSize:'cover',
-    height:'100vh',
+    minHeight:'100vh',
     width:'100%'
   }
+
+  const [loading,setLoading] = useState(true)
 
   useEffect(() => {
     let details = localStorage.getItem("adminLogin");
@@ -56,6 +59,7 @@ function page() {
        window.location.href='/paymenthotel'
        }
       }
+      setLoading(false)
     }
 
     getBlock();
@@ -63,7 +67,9 @@ function page() {
   
   return (
     <div style={background}>
-      <h1 className="text-center mt-3">Hotel Management</h1>
+    {loading?(<Loader />):(
+      <div>
+      <h1 className="text-center">Hotel Management</h1>
       <Link
         className="text-center btn btn-primary"
         style={{
@@ -76,6 +82,8 @@ function page() {
         Add Hotel
       </Link>
       <HotelsLists />
+      </div>
+      )}
     </div>
   );
 }

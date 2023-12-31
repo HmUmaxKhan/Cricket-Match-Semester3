@@ -1,5 +1,6 @@
 "use client";
 
+import { isNumberPositive } from "@/app/(shared components)/validation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -58,6 +59,7 @@ function Hotelreg() {
     RoomPrice: "",
     RoomCapacity: "",
     WebUrl: "",
+    showing:1
   });
 
   const Change = (e) => {
@@ -66,6 +68,30 @@ function Hotelreg() {
 
   const handleClick = async (e) => {
     e.preventDefault();
+
+    if (!isPhoneNumberValid(reg.PhoneNumber)) {
+      setAlert({
+        msg: "Invalid Contact Number ",
+        type: "danger",
+      });
+      return;
+    }
+    if (isNumberPositive(reg.RoomCapacity)) {
+      setAlert({
+        msg: "RoomCapacity must be greater than 0 and contains onlu numbers",
+        type: "danger",
+      });
+      return;
+    }
+    if (isNumberPositive(reg.RoomPrice)) {
+      setAlert({
+        msg: "Room Price must be greater than 0 and contains onlu numbers",
+        type: "danger",
+      });
+      return;
+    }
+
+
 
     let response = await fetch("http://localhost:5005/api/hotelreg", {
       method: "POST",

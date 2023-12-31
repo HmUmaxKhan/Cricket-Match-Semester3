@@ -5,7 +5,8 @@ const initialState={
         ticketPrice:"",
         ticketCategory:"",
         matchId:"",
-        userId:""
+        userId:"",
+        ticketId:""
     }
 }
 

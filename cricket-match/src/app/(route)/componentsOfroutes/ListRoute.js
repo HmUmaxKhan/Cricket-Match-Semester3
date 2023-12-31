@@ -2,12 +2,14 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/app/(shared components)/Navbar";
 import ListItemsRoute from "./ListItemsRoute";
+import Loader from "@/app/(spinner)/Loader";
 
 
 export default function HotelsList(props){
 
     const [routes, setRoute] = useState([])
     const [img, SetImg] = useState();
+    const [loading,SetLoading] = useState(true);
 
     console.log(props.transportId);
 
@@ -35,11 +37,14 @@ export default function HotelsList(props){
               response = await response.json();
               console.log(response);
               setRoute(response);  
+              SetLoading(false);
             };
         lists();    
 },[])  
 
   return (
+    <div>
+    {loading?(<Loader />):(
     <div>
     <Navbar val={true} img = {img}/>
     <h1 className="text-center m-3 mt-4">List of Routes</h1>
@@ -51,6 +56,7 @@ export default function HotelsList(props){
             )
         }):(<h3 className="text-center">No Routes are there in this city</h3>)
     }
+    </div>)}
     </div>
   )
 }

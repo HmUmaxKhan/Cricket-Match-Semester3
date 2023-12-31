@@ -2,11 +2,13 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/app/(shared components)/Navbar";
 import ListItemsofTickets from "./ListItemsofTickets";
+import Loader from "@/app/(spinner)/Loader";
 
 export default function TransportList(props) {
   const [tickets, setTickets] = useState([]);
   const [img, SetImg] = useState();
   const [userId, SetUserId] = useState();
+  const[loading,setLoading] = useState(true)
 
   console.log(props.matchId);
 
@@ -33,8 +35,10 @@ export default function TransportList(props) {
       response = await response.json();
       console.log(response.result);
       setTickets(response.result);
+      setLoading(false);
     };
     lists();
+    
 
   }, []);
 
@@ -42,15 +46,26 @@ export default function TransportList(props) {
 
   return (
     <div>
-      <Navbar val={true} img={img} />
-      <h1 className="text-center m-3 mt-4">List of Hotels</h1>
-      {Array.isArray(tickets) && tickets.length !== 0 ? (
-        tickets.map((item, index) => {
-          return { key: index }, (<ListItemsofTickets ticket={item} matchId = {props.matchId} userId={userId} />);
-        })
-      ) : (
-        <h3 className="text-center">No Tickets are there</h3>
-      )}
-    </div>
+    {loading ? (
+      <Loader />
+    ) : (
+      <div>
+        <Navbar val={true} img={img} />
+        <h1 className="text-center m-3 mt-4">List of Hotels</h1>
+        {Array.isArray(tickets) && tickets.length !== 0 ? (
+          tickets.map((item, index) => (
+            <ListItemsofTickets
+              key={index}
+              ticket={item}
+              matchId={props.matchId}
+              userId={userId}
+            />
+          ))
+        ) : (
+          <h3 className="text-center">No Tickets are there</h3>
+        )}
+      </div>
+    )}
+  </div>
   );
 }

@@ -13,6 +13,7 @@ export default function page({params}) {
 
   return (
     <div style={background}>
+
       <ListofTickets matchId = {params.tickets}/>
     </div>
   )

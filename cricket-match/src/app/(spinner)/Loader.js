@@ -2,8 +2,18 @@ import React from 'react'
 import  "./loader.css"
 
 function Loader() {
+  const body = {
+    fontFamily: 'Roboto',   
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%',
+    fontSize: "1rem",
+    lineHeight: "1.6",
+    margin: "0"
+  }
   return (
-    <div>
+    <div style={body}>
     <main>
   <div id="loader">
     <img src="https://cdn-icons-png.flaticon.com/128/1099/1099680.png" id="ball" alt="ball" />
@@ -19,8 +29,7 @@ function Loader() {
     </svg>
   </div>
   
-  <p>Cricket Bat & Ball Loader <br></br>
-     With CSS & SVG.</p>
+  <p className='text-center'>Loading...</p>
   
 </main>
     </div>

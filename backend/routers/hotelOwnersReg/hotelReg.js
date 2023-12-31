@@ -68,6 +68,8 @@ router.post("/hotelregown", async (req, res) => {
     admin_id: admin_id,
     UserName: UserName,
     token: token,
+    success:true,
+    Msg:"Successfully Registered"
   };
 
   return res.json(newUserObj);
@@ -90,13 +92,14 @@ router.post("/hotelreg", async (req, res) => {
       ImageUrl,
       AddingDate,
       user_id,
+      showing
     } = req.body;
 
     // Insert data into the database
     const result = await querySql({
       query: `
-        INSERT INTO Hotels (Email, Name, City, PhoneNumber, Address, Description, RoomPrice, RoomCapacity, WebUrl, admin_id,ImageUrl,AddingDate,user_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)
+        INSERT INTO Hotels (Email, Name, City, PhoneNumber, Address, Description, RoomPrice, RoomCapacity, WebUrl, admin_id,ImageUrl,AddingDate,user_id,showing)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)
       `,
       values: [
         Email,
@@ -112,6 +115,7 @@ router.post("/hotelreg", async (req, res) => {
         ImageUrl,
         AddingDate,
         user_id,
+        showing
       ],
     });
 
@@ -127,14 +131,14 @@ router.post("/hotelreg", async (req, res) => {
       .status(200)
       .json({
         success: true,
-        message: "Hotel registration successful",
+        Msg: "Hotel registration successful",
         results,
       });
   } catch (error) {
     console.error("Error registering hotel:", error);
     return res
       .status(500)
-      .json({ success: false, message: "Internal server error" });
+      .json({ success: false, Msg: "Internal server error" });
   }
 });
 
@@ -212,7 +216,8 @@ router.post("/hotelloginadmin", async (req, res) => {
           token,
           usertype: results[0].usertype,
           admin_id: admin_id[0].admin_id,
-          success:true
+          success:true,
+          Msg:`Welcome ${UserName}`
         },);
     }
   } catch (error) {

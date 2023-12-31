@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Navbar from "../(shared components)/Navbar";
+import { useRouter } from "next/navigation";
+import Alert from "../(shared components)/Alert";
 
 function Login() {
   const [login, setLogin] = useState({
@@ -10,9 +12,13 @@ function Login() {
     Password: "",
   });
 
+  const router = useRouter();
+
   const cardStyle = {
-    boxShadow: "0 0 10px 8px",
+    boxShadow: "0 0 10px 8px rgba(0,0,0,0.1)",
   };
+
+  const [alert, setAlert] = useState(null);
 
   const background= {
     backgroundImage : 'url("/bgImage.jpg")',
@@ -25,45 +31,49 @@ function Login() {
     setLogin({ ...login, [e.target.name]: e.target.value });
   };
 
-  const handleClick = async (e) => {
-    e.preventDefault();
+  
+const handleClick = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await fetch("http://localhost:5005/api/auth/login", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          UserName: login.UserName,
-          Password: login.Password,
-        }),
-      });
+  try {
+    const response = await fetch("http://localhost:5005/api/auth/login", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        UserName: login.UserName,
+        Password: login.Password,
+      }),
+    });
 
-      // Log raw response for troubleshooting
-      console.log(response);
+    const responseData = await response.json();
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+    setAlert({
+      msg: responseData.Msg,
+      type: responseData.success ? 'success' : 'danger',
+    });
 
-      const responseData = await response.json();
-      console.log(responseData);
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
 
-      if (responseData.token) {
-        localStorage.setItem("login", JSON.stringify(responseData));
-        window.location.href = "/tournaments";
-      } else {
-        console.error("Login failed. No token in the response.");
-      }
-    } catch (error) {
-      console.error("Error during login:", error.message);
+    if (responseData.success) {
+      localStorage.setItem("login", JSON.stringify(responseData));
+      setTimeout(() => {
+        setAlert(null);
+        router.push("/tournaments");
+      }, 5000);
     }
-  };
+  } catch (error) {
+    console.error("Error during login:", error.message);
+  }
+};
 
   return (
     <div style={background}>
       <Navbar />
+      <Alert Alert = {alert} />
       <div className="container d-flex justify-content-center align-items-center flex-column p-5">
         <div className="card p-4" style={cardStyle}>
           <h3 className=" py-3 text-center">Login</h3>

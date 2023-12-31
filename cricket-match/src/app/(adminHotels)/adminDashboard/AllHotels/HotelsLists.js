@@ -6,6 +6,7 @@ function HotelsLists() {
     const [hotel,setHotel] = useState({});
     const [render,setRender] = useState();
     const [userId,setUserId] = useState();
+    const [loading,setLoading] = useState(true)
 
 
   useEffect(() => {
@@ -16,7 +17,6 @@ function HotelsLists() {
       window.location.href = "/hotelloginAdmin";
     }
     details = JSON.parse(details);
-
     console.log(details);
     
    
@@ -32,6 +32,7 @@ function HotelsLists() {
       response = await response.json();
       console.log(response);
       setHotel(response);
+      setLoading(false);
     };
 
     setRender(false);
@@ -45,6 +46,7 @@ function HotelsLists() {
   }
 
   return <div>
+  
   {
     Array.isArray(hotel) && hotel.length!==0 ? hotel.map((item, index) => {
         return(

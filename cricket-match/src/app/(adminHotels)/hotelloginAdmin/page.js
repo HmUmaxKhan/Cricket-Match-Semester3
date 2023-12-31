@@ -3,6 +3,8 @@
 import styles from "./login.module.css";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Alert from "@/app/(shared components)/Alert";
 
 function Login() {
   const [login, setLogin] = useState({
@@ -10,12 +12,18 @@ function Login() {
     Password: "",
   });
 
+  const router = useRouter();
+
+  
+  const [alert, setAlert] = useState(null);
+
   const background= {
     backgroundImage : 'url("/bgImage.jpg")',
     backgroundSize:'cover',
     height:'100vh',
     width:'100%'
   }
+
 
 
   const cardStyle = {
@@ -28,50 +36,45 @@ function Login() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await fetch("http://localhost:5005/api/hotelloginadmin", {
         method: "post",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           UserName: login.UserName,
           Password: login.Password,
         }),
       });
-
-      // Log raw response for troubleshooting
-      console.log(response);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
+  
       const responseData = await response.json();
-      console.log(responseData);
-
-      if(responseData.Msg==='Invalid Password'){
-        return
-      }
-
-      if (responseData.Msg=='User with this username is not exits') {
-        return
-      }
-
+  
+      setAlert({
+        msg: responseData.Msg,
+        type: responseData.success ? 'success' : 'danger',
+      });
+  
+      setTimeout(() => {
+        setAlert(null);
+      }, 5000);
+  
       if (responseData.success) {
         localStorage.setItem("adminLogin", JSON.stringify(responseData));
-        window.location.href = "/adminDashboard";
-      } else {
-        console.error("Login failed. No token in the response.");
+        setTimeout(() => {
+          setAlert(null);
+          router.push("/adminDashboard");
+        }, 5000);
       }
     } catch (error) {
       console.error("Error during login:", error.message);
     }
   };
-
+  
   return (
     <div style={background}>
+    <Alert Alert={alert} />
     <div className="container d-flex justify-content-center align-items-center flex-column p-5">
       <div className="card p-4" style={cardStyle}>
         <h3 className=" py-3 text-center">
