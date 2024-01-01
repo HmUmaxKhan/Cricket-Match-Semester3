@@ -12,6 +12,52 @@ router.post("/transportregown", async(req,res)=> {
   // Fetching Data from the Body
   let { Fname, Lname, EmailAddress, UserName, Password, Contact, CNIC, Address,usertype,ProfilePhoto } = await req.body;
 
+  // Checking if User is already exits or not
+  const results = await querySql({
+    query: "SELECT * FROM users WHERE UserName = ?",
+    values: [UserName],
+  });
+  
+  let len = results.length;
+
+  if (len>0) {
+   return res.json({ success:false,Msg: "User Already exits with same UserName" });
+  }
+
+  const results1 = await querySql({
+    query: "SELECT * FROM users WHERE EmailAddress = ?",
+    values: [EmailAddress],
+  });
+  
+  let len1 = results1.length;
+
+  if (len1>0) {
+   return res.json({ success:false,Msg: "User Already exits with same Email Address" });
+  }
+
+
+  const results2 = await querySql({
+    query: "SELECT * FROM users WHERE CNIC = ?",
+    values: [CNIC],
+  });
+  
+  let len2 = results2.length;
+
+  if (len2>0) {
+   return res.json({ success:false,Msg: "User Already exits with same CNIC" });
+  }
+
+  const results3 = await querySql({
+    query: "SELECT * FROM users WHERE Contact = ?",
+    values: [Contact],
+  });
+  
+  let len3 = results3.length;
+
+  if (len3>0) {
+   return res.json({ success:false,Msg: "User Already exits with same Phone number" });
+  }
+
   // Creating a Strong Hash Password
   let salt = bcrypt.genSaltSync(10);
   var Pass = bcrypt.hashSync(Password, salt);
@@ -41,7 +87,7 @@ router.post("/transportregown", async(req,res)=> {
     query:"Select admin_id From Admins where user_id = ?",
     values:[user_id]
   })
-  let newUserObj={userId:user_id,admin_id:admin_id[0].admin_id,usertype:usertype,UserName:UserName,token:token}
+  let newUserObj={userId:user_id,admin_id:admin_id[0].admin_id,usertype:usertype,UserName:UserName,token:token,success:true,Msg:`${UserName} registered successfully`}
   
   return res.json(newUserObj);
 
@@ -98,11 +144,12 @@ router.post("/transportloginadmin", async(req,res)=>{
 console.log(admin_id[0]);
 
   // Last response 
-  return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,usertype:results[0].usertype,admin_id:admin_id[0].admin_id,blocked:admin_id[0].blocked,success:true});
+  return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,usertype:results[0].usertype,admin_id:admin_id[0].admin_id,blocked:admin_id[0].blocked,success:true,Msg:`Welcome ${UserName}`});
   }
 
 } catch (error) {
-console.log(error);       
+console.log(error);  
+return res.status(500).json({Msg:`Internal Error`,success:false})     
 }
   
 })
@@ -357,6 +404,13 @@ router.post('/addroute', async (req, res) => {
         user_id
     } = req.body;
 
+    console.log(        stop,
+      arrival_time,
+      fare,
+      stop_number,
+      transport_id,
+      user_id);
+
     // Insert data into the database
     const result = await querySql({
       query: `
@@ -421,7 +475,7 @@ async(req,res)=>{
 })
 
 
-router.put("/updatetransportinfo",
+router.put("/updaterouteinfo",
 async(req,res)=>{
 
   let {
@@ -432,12 +486,18 @@ async(req,res)=>{
     stop_number,
 } = req.body;
 
+console.log(route_id,
+  stop,
+  arrival_time,
+  fare,
+  stop_number,);
+
     try {
 
           
         // check if user is authenticated or not
         let user = await querySql({
-            query: "Update Route Set stop = ?,arrival_time = ?,fare = ?,stop_number = ?, Where route_id = ?",
+            query: "Update Route Set stop = ?,arrival_time = ?,fare = ?,stop_number = ?  Where route_id = ?",
             values: [
               stop,
               arrival_time,

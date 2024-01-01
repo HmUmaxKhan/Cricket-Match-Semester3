@@ -9,7 +9,6 @@ function Payment() {
   const [name, setname] = useState();
   const router = useRouter();
 
-  const packageId = useSelector((state)=>state.pricingCategory.package_id)
 
   useEffect(() => {
 
@@ -30,6 +29,9 @@ function Payment() {
 
     setAdmin(JSON.stringify(detail.admin_id));
 
+    let packageId = localStorage.getItem("packageBus_id");
+    packageId = JSON.parse(packageId);
+
     console.log(packageId);
 
     const Price = async () => {
@@ -39,7 +41,7 @@ function Payment() {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          package_id:packageId,
+          package_id:packageId.package_id,
         }),
       });
 
@@ -81,6 +83,8 @@ function Payment() {
       },
       body: JSON.stringify(dataObject),
     });
+
+    response = await response.json()
     
     if (response.success) {
       router.push("/transportdashboard");

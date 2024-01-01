@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import HotelListItems from "./HotelListItems";
 import Navbar from "@/app/(shared components)/Navbar";
+import Loader from "@/app/(spinner)/Loader";
 
 
 export default function HotelsList(props){

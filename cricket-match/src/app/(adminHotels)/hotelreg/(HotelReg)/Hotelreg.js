@@ -1,7 +1,9 @@
 "use client";
 
-import { isNumberPositive } from "@/app/(shared components)/validation";
+import Alert from "@/app/(shared components)/Alert";
+import { isNumberPositive, isPhoneNumberValid } from "@/app/(shared components)/validation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 
@@ -10,6 +12,12 @@ function Hotelreg() {
   const [image, setImage] = useState();
   const [addingDate,setAddingDate]=useState(new Date());
   const [user_id,setUserId] = useState();
+
+  const [alert, setAlert] = useState(null);
+
+  const router = useRouter();
+
+
 
   useEffect(() => {
     
@@ -76,14 +84,14 @@ function Hotelreg() {
       });
       return;
     }
-    if (isNumberPositive(reg.RoomCapacity)) {
+    if (!isNumberPositive(reg.RoomCapacity)) {
       setAlert({
         msg: "RoomCapacity must be greater than 0 and contains onlu numbers",
         type: "danger",
       });
       return;
     }
-    if (isNumberPositive(reg.RoomPrice)) {
+    if (!isNumberPositive(reg.RoomPrice)) {
       setAlert({
         msg: "Room Price must be greater than 0 and contains onlu numbers",
         type: "danger",
@@ -111,23 +119,32 @@ function Hotelreg() {
         admin_id: adminId,
         ImageUrl:image,
         AddingDate:addingDate.toISOString().slice(0,10),
-        user_id:user_id
+        user_id:user_id,
+        showing:1
       }),
     });
     response = await response.json();
-    console.log(response);
+    
+    setAlert({
+      msg: response.Msg,
+      type: response.success ? 'success' : 'danger',
+    });
 
-    console.log(reg);
-    console.log(adminId);
-    console.log("image:",image);
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
 
     if (response.success) {
-      window.location.href = "/adminDashboard";
+      setTimeout(() => {
+        setAlert(null);
+        router.back();
+      }, 3000);
     }
   };
 
   return (
-    <>
+    <div>
+    <Alert Alert={alert} />
     <h1 className="text-center m-4 bg-slate-400">Hotel Registration</h1>
     <div className="container">
       <div className="row">
@@ -177,7 +194,7 @@ function Hotelreg() {
                 Phone Number
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="phoneNumber"
                 name="PhoneNumber"
@@ -285,7 +302,7 @@ function Hotelreg() {
 
       <Link style={{marginLeft:"30px"}} href="/paymenthotel">Hotel Payment</Link>
     </div>
-    </>
+    </div>
   );
 }
 

@@ -250,7 +250,7 @@ router.post("/updatehotelinfo", async (req, res) => {
     values: [hotel_id],
   });
 
-  res.status(200).json(result[0]);
+  return res.status(200).json(result[0]);
 });
 
 router.put("/updatehotelinfo", async (req, res) => {
@@ -273,7 +273,7 @@ router.put("/updatehotelinfo", async (req, res) => {
     // check if user is authenticated or not
     let user = await querySql({
       query:
-        "Update Hotels Set Email = ?,Name = ?,City = ?,PhoneNumber = ?,Address = ?,Description = ?,RoomPrice = ?,RoomCapacity = ?,WebUrl = ?,ImageUrl = ? AddingDate=? Where hotel_id = ?",
+        "Update Hotels Set Email = ?,Name = ?,City = ?,PhoneNumber = ?,Address = ?,Description = ?,RoomPrice = ?,RoomCapacity = ?,WebUrl = ?,ImageUrl = ? ,AddingDate=? Where hotel_id = ?",
       values: [
         Email,
         Name,
@@ -290,9 +290,8 @@ router.put("/updatehotelinfo", async (req, res) => {
       ],
     });
 
-    if (user) {
-      res.status(200).json({ Details: "Your Info has been updated",success:true });
-    }
+    return res.status(200).json({ Msg:"Your Info has been updated",success:true });
+    
   } catch (error) {
     res.status(600).json({ ERROR: "You are gettinhg error" });
   }
@@ -305,6 +304,8 @@ router.delete("/deleteHotel", async (req, res) => {
     query: "DELETE FROM Hotels where hotel_id = ?",
     values: [hotel_id],
   });
+
+  return res.status(200).json({Msg:`Note is Deleted`, success:true})
 });
 
 router.get("/gethotels", async (req, res) => {

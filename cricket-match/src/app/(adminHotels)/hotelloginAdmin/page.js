@@ -20,7 +20,7 @@ function Login() {
   const background= {
     backgroundImage : 'url("/bgImage.jpg")',
     backgroundSize:'cover',
-    height:'100vh',
+    minHeight:'100vh',
     width:'100%'
   }
 

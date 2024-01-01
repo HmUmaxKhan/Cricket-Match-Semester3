@@ -1,4 +1,7 @@
 "use client";
+import Alert from "@/app/(shared components)/Alert";
+import { isNumberPositive } from "@/app/(shared components)/validation";
+import Loader from "@/app/(spinner)/Loader";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -14,6 +17,18 @@ const page = ({params}) => {
     fare: "",
     stop_number: "",
   });
+
+  const [alert, setAlert] = useState(null);
+
+  const [loading,setLoading] = useState(true)
+
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
+
 
   useEffect(() => {
     //Getting the previous info
@@ -32,6 +47,7 @@ const page = ({params}) => {
       setReg({
         stop,stop_number,arrival_time,fare
       });
+      setLoading(false)
     };
     info();
   }, []);
@@ -43,12 +59,29 @@ const page = ({params}) => {
   const handleClick = async (e) => {
     e.preventDefault();
 
-    let response = await fetch("http://localhost:5005/api/addroute", {
-      method: "POST",
+    if (!isNumberPositive(reg.stop_number)) {
+      setAlert({
+        msg: "Stop Number must be greater than 0 and contains only numbers",
+        type: "danger",
+      });
+      return;
+    }
+
+    if (!isNumberPositive(reg.fare)) {
+      setAlert({
+        msg: "Fare must be greater than 0 and contains only numbers",
+        type: "danger",
+      });
+      return;
+    }
+
+    let response = await fetch("http://localhost:5005/api/updaterouteinfo", {
+      method: "PUT",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify({
+        route_id :params.updateroute,
         stop: reg.stop,
         arrival_time: reg.arrival_time,
         fare: reg.fare,
@@ -57,10 +90,29 @@ const page = ({params}) => {
     });
     response = await response.json();
     console.log(response);
-    router.back();
+    
+    setAlert({
+      msg: response.Msg,
+      type: response.success ? 'success' : 'danger',
+    });
+
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+
+    if (response.success) {
+      setTimeout(() => {
+        setAlert(null);
+        router.back();
+      }, 5000);
+    }
   };
 
   return (
+    <div style={background}>
+    {loading?(<Loader />):(
+    <div>
+    <Alert Alert={alert} />
     <div className="container d-flex justify-content-center align-items-center flex-column p-5">
       <div className="card p-4" style={cardStyle}>
         <h3 className=" py-3 text-center">Update route details </h3>
@@ -99,7 +151,7 @@ const page = ({params}) => {
             Fare From This Stop
           </label>
           <input
-            type="number"
+            type="text"
             className="form-control"
             id="UserName"
             placeholder="Ente rhte Fare"
@@ -114,7 +166,7 @@ const page = ({params}) => {
             Stop Number
           </label>
           <input
-            type="number"
+            type="text"
             className="form-control"
             id="UserName"
             placeholder="Ente rhte Fare"
@@ -129,6 +181,11 @@ const page = ({params}) => {
         </button>
       </div>
     </div>
+
+    </div>
+    )}
+    </div>
+
   );
 };
 

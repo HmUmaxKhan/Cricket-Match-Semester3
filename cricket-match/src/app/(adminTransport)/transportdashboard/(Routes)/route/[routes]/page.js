@@ -9,9 +9,16 @@ function page({params}) {
 
   const dispatch = useDispatch();
   dispatch(transportIdaction(params.routes));
+
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
   
   return (
-    <div>
+    <div style={background}>
         <h1 className='text-center'>Route Info</h1>
         <Link className='text-center btn btn-primary' style={{margin:"20px 0 20px 0",display:"flex",justifyContent:"center"}} href="/transportdashboard/route/addroute">Add Route</Link>
         <p className='text-center'><small className="text-body-secondary"><i>(Please enter stop numbers in the sequence from strat to destination)</i></small></p>

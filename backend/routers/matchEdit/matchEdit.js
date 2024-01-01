@@ -65,10 +65,10 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-       return res.status(201).json({Msg:"No tournaments are found"})
+       return res.status(201).json({success:false,Msg:"No tournaments are found"})
     }
 
-    return res.status(200).json({Msg:"Tournament is inserted"});
+    return res.status(200).json({success:true,Msg:"Tournament is inserted"});
 })
 
 //Updating Matches
@@ -86,10 +86,10 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-        return res.status(201).json({Msg:"No tournaments are found"})
+        return res.status(201).json({success:false,Msg:"No tournaments are found"})
     }
 
-    return res.status(200).json({Msg:"Tournament is updated"});
+    return res.status(200).json({success:true,Msg:"Tournament is updated"});
 })
 
 
@@ -125,7 +125,7 @@ async(req,res)=>{
         return res.status(201).json({Msg:"No tournaments are found"})
     }
 
-    return res.status(200).json({Msg:"Match & its venue is deleted"});
+    return res.status(200).json({success:true,Msg:"Match & its venue is deleted"});
 })
 
 module.exports = router

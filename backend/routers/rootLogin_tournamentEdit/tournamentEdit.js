@@ -96,6 +96,8 @@ async(req,res)=>{
 
     let {TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl,user_id} = req.body
 
+    console.log(TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl,user_id);
+
     StartingDate = StartingDate.slice(0,10)
     EndingDate = EndingDate.slice(0,10)
     AddingDate = AddingDate.slice(0,10)
@@ -107,10 +109,10 @@ async(req,res)=>{
     
 
     if (!result || result.length === 0) {
-       return res.status(201).json({Msg:"No tournaments are found"})
+       return res.status(201).json({success:false,Msg:"No tournaments are found"})
     }
 
-     return res.status(200).json({Msg:"Tournament is inserted"});
+     return res.status(200).json({success:true,Msg:"Tournament is inserted"});
 })
 
 router.put("/updatetournament",
@@ -127,10 +129,10 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-       return res.status(201).json({Msg:"No tournaments are found"})
+       return res.status(201).json({success:false,Msg:"No tournaments are found"})
     }
 
-   return res.status(200).json({Msg:"Tournament is updated"});
+   return res.status(200).json({success:true,Msg:"Tournament is updated"});
 })
 
 

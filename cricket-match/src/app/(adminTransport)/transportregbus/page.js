@@ -1,5 +1,8 @@
 "use client";
 
+import Alert from "@/app/(shared components)/Alert";
+import { isNumberPositive, isPhoneNumberValid } from "@/app/(shared components)/validation";
+import Loader from "@/app/(spinner)/Loader";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,34 +16,72 @@ function Hotelreg() {
   const [addingDate,setAddingDate]=useState(new Date());
   const [user_id, setUserId] = useState();
 
+  const [alert, setAlert] = useState(null);
+
+  const [loading,setLoading] = useState(true)
+
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
+
   useEffect(() => {
     const details = async () => {
       let detail = localStorage.getItem("adminTransLogin");
 
       if (!detail) {
-        router.push("/paymenttransport");
+        router.push("/logintransport");
       }
   
       detail = JSON.parse(detail);
+
+      console.log(detail);
   
       setUserId(detail.user_id);
 
 
   
       if (detail.usertype!=='transportadmin') {
-        router.push("/paymenttransport")
-      }
-  
-      if(detail.blocked===0) {
-        router.push("/paymenttransport")
+        router.push("/transportreg")
       }
 
       if (detail.admin_id) {
         setAdminId(detail.admin_id);
       }
+
+      
     };
 
+    const getBlock = async()=>{
+      let response = await fetch ("http://localhost:5005/api/getblocked",{
+        method:"POST",
+        headers:{
+          "content-type":"application/json"
+        },
+        body:JSON.stringify({admin_id:details.admin_id})
+      });
+
+      response =await response.json();
+
+      let pkg_id = localStorage.getItem("packageBus_id");
+      pkg_id = JSON.parse(pkg_id);
+
+       if(response===0){ 
+        if (pkg_id==null) {
+          router.push("/pricingbus")
+        }else{  
+       window.location.href='/paymenttransport'
+        }
+      }
+      
+    }
+
+
     details();
+    getBlock();
+    setLoading(false)
     
   }, []);
 
@@ -78,8 +119,26 @@ function Hotelreg() {
     setReg({ ...reg, [e.target.name]: e.target.value });
   };
 
+ console.log(adminId);
+
   const handleClick = async (e) => {
     e.preventDefault();
+
+    if (!isPhoneNumberValid(reg.contact)) {
+      setAlert({
+        msg: "Invalid Contact Number ",
+        type: "danger",
+      });
+      return;
+    }
+    if (!isNumberPositive(reg.capacity)) {
+      setAlert({
+        msg: "Capacity must be greater than 0 and contains only numbers",
+        type: "danger",
+      });
+      return;
+    }
+
 
     const modifieddate = new Date();
     modifieddate.setDate(modifieddate.getDate()+1);
@@ -107,18 +166,29 @@ function Hotelreg() {
     response = await response.json();
     console.log(response);
 
-    console.log(reg);
-    console.log(adminId);
-    console.log("image:",image);
+    setAlert({
+      msg: response.Msg,
+      type: response.success ? 'success' : 'danger',
+    });
+
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
 
     if (response.success) {
-      router.push("/transportdashboard");
+      setTimeout(() => {
+        setAlert(null);
+        router.back();
+      }, 3000);
     }
   };
 
   return (
-    <>
-    <h1 className="text-center m-4 bg-slate-400">Transport Registration</h1>
+    <div style={background}>
+    {loading?(<Loader />):(
+    <div>
+    <Alert Alert={alert} />
+    <h1 className="text-center mb-4 bg-slate-400">Transport Registration</h1>
     <div className="container">
       <div className="row">
         <div className="col-md-6">
@@ -167,7 +237,7 @@ function Hotelreg() {
                 Contact
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="phoneNumber"
                 name="contact"
@@ -206,7 +276,7 @@ function Hotelreg() {
                 Capacity of Passengers
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="roomCapacity"
                 name="capacity"
@@ -262,7 +332,11 @@ function Hotelreg() {
 
       <Link style={{marginLeft:"30px"}} href="/paymenthotel">Hotel Payment</Link>
     </div>
-    </>
+    
+    </div>
+    )}
+    </div>
+
   );
 }
 

@@ -1,4 +1,6 @@
 "use client"
+import Alert from "@/app/(shared components)/Alert";
+import { isEndingDate, isStartingDate } from "@/app/(shared components)/validation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import ReactDatePicker from "react-datepicker";
@@ -13,6 +15,9 @@ const page = () => {
   const [endingDate,setEndingDate]=useState(new Date());
   const [addingDate,setAddingDate]=useState(new Date());
   const [user_id,setUserId] = useState();
+
+  const [alert, setAlert] = useState(null);
+
 
 
     const handleImageChange = (e)=>{
@@ -56,6 +61,25 @@ const page = () => {
     
       const modifiedEndDate = new Date(endingDate);
       modifiedEndDate.setDate(modifiedEndDate.getDate() + 1);
+
+      const modifiedAddingDate = new Date(addingDate);
+      modifiedAddingDate.setDate(modifiedAddingDate.getDate() + 1);
+      
+
+      if (!isStartingDate(modifiedStartDate)) {
+        setAlert({
+          msg: "Invalid Statrting Date.",
+          type: "danger",
+        });
+        return;
+      }
+      if (!isEndingDate(modifiedStartDate,modifiedEndDate)) {
+        setAlert({
+          msg: "Invalid Ending Date Date.",
+          type: "danger",
+        });
+        return;
+      }
         
       let response = await fetch("http://localhost:5005/api/addtournament", {
         method: 'POST',
@@ -66,18 +90,34 @@ const page = () => {
           TournamentName: name,
           StartingDate: modifiedStartDate.toISOString().slice(0, 10),
           EndingDate: modifiedEndDate.toISOString().slice(0, 10),
-          AddingDate: addingDate.toISOString().slice(0, 10),
+          AddingDate: modifiedAddingDate.toISOString().slice(0, 10),
           ImageUrl: image,
           user_id:user_id
         }),
       });
       response = await response.json();
       console.log(response);
-      router.push("/tournamentsEdit");
+      setAlert({
+        msg: response.Msg,
+        type: response.success ? 'success' : 'danger',
+      });
+  
+
+      setTimeout(() => {
+        setAlert(null);
+      }, 5000);
+  
+      if (response.success) {
+        setTimeout(() => {
+          setAlert(null);
+          router.back();
+        }, 3000);
+      }
     }
     
   return (
     <>
+    <Alert Alert={alert} />
     <h1 className="text-center m-4 bg-slate-400">Add Tournament</h1>
     <div className="container">
       <div className="row">

@@ -47,16 +47,16 @@ function page() {
 
       console.log(response);
 
-      let pkg_id = localStorage.getItem("package_id");
+      let pkg_id = localStorage.getItem("packageHotel_id");
       pkg_id = JSON.parse(pkg_id);
       console.log(pkg_id);
 
-      if (response===0) {
-       if(pkg_id==null || pkg_id===undefined){
-        router.push("/pricinghotel")
+      if (pkg_id==null || pkg_id===undefined) {
+       if(response===0){
+        window.location.href='/paymenthotel'
        }
        else{
-       window.location.href='/paymenthotel'
+      router.push("/pricinghotel")
        }
       }
       setLoading(false)

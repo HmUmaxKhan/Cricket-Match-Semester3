@@ -1,4 +1,7 @@
 "use client"
+import Alert from "@/app/(shared components)/Alert";
+import { isNumberPositive } from "@/app/(shared components)/validation";
+import Loader from "@/app/(spinner)/Loader";
 import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,12 +17,21 @@ const page = () => {
     boxShadow:"0 0 10px 8px"
   }
 
-  useEffect(()=>{
-    let details = localStorage.getItem("rootLogin");
-    details = JSON.parse(details);
-    console.log(details.user_id);
-    setUserId(details.user_id)
-  },[])
+  const [alert, setAlert] = useState(null);
+
+  const [loading,setLoading] = useState(false)
+
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
+
+
+  // useEffect(()=>{
+  //   setLoading(false)
+  // },[])
 
   const [reg, setReg] = useState({
     stop:"",
@@ -34,11 +46,32 @@ const page = () => {
 
   const transport_id = useSelector((state)=>state.transportId.transport_id)
 
+  console.log(transport_id);
+
 
   const handleClick =async (e) =>{
     e.preventDefault();
 
-    console.log(transport_id);
+    let details = localStorage.getItem("rootLogin");
+    details = JSON.parse(details);
+    console.log(details.user_id);
+    setUserId(details.user_id)
+
+    if (!isNumberPositive(reg.stop_number)) {
+      setAlert({
+        msg: "Stop Number must be greater than 0 and contains only numbers",
+        type: "danger",
+      });
+      return;
+    }
+
+    if (!isNumberPositive(reg.fare)) {
+      setAlert({
+        msg: "Fare must be greater than 0 and contains only numbers",
+        type: "danger",
+      });
+      return;
+    }
     
     let response = await fetch("http://localhost:5005/api/addroute",{
       method:'POST',
@@ -56,10 +89,30 @@ const page = () => {
     });
     response = await response.json();
     console.log(response);
-    router.back();
+
+    setAlert({
+      msg: response.Msg,
+      type: response.success ? 'success' : 'danger',
+    });
+
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+
+    if (response.success) {
+      setTimeout(() => {
+        setAlert(null);
+        router.back();
+      }, 5000);
+    }
+
   }
 
   return (
+    <div style={background}>
+    {loading?(<Loader />):(
+    <div>
+    <Alert Alert={alert} />
     <div className="container d-flex justify-content-center align-items-center flex-column p-5">
           <div className="card p-4"  style={cardStyle}>
             <h3 className=" py-3 text-center">Add route details </h3>
@@ -96,7 +149,7 @@ const page = () => {
                 Fare From This Stop
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="UserName"
                 placeholder="Ente rhte Fare"
@@ -110,7 +163,7 @@ const page = () => {
                 Stop Number 
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="UserName"
                 placeholder="Ente rhte Fare"
@@ -124,6 +177,10 @@ const page = () => {
             </button>
           </div>
         </div>
+        </div>
+        )}
+        </div>
+    
   );
 
 }

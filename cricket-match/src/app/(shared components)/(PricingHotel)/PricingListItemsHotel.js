@@ -9,7 +9,7 @@ function PricingListItemsHotel(props) {
     const router = useRouter();
 
     const handleClick =  () =>{
-      localStorage.setItem("package_id",JSON.stringify({package_id:packages.package_id}));
+      localStorage.setItem("packageHotel_id",JSON.stringify({package_id:packages.package_id}));
       router.push("/registerAdmin")
     }
   return (

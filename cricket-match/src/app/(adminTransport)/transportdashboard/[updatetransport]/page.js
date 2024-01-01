@@ -1,5 +1,8 @@
 "use client";
 
+import Alert from "@/app/(shared components)/Alert";
+import { isNumberPositive, isPhoneNumberValid } from "@/app/(shared components)/validation";
+import Loader from "@/app/(spinner)/Loader";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -7,10 +10,22 @@ import { useEffect, useState } from "react";
 
 function page(params) {
 
-  const router = useRouter();
   const [adminId, setAdminId] = useState();
   const [image, setImage] = useState();
   const [addingDate,setAddingDate]=useState(new Date());
+
+  const background = {
+    backgroundImage: 'url("/bgImage.jpg")',
+    backgroundSize: "cover",
+    minHeight: "100vh",
+    width: "100%",
+  };
+  const router = useRouter();
+  const [alert, setAlert] = useState(null);
+
+  const [loading,setLoading] = useState(true);
+
+
 
   useEffect(() => {
     const details = async () => {
@@ -25,10 +40,6 @@ function page(params) {
       console.log(detail);
   
       if (detail.usertype!=='transportadmin') {
-        router.push("/paymenttransport")
-      }
-  
-      if(detail.blocked===0) {
         router.push("/paymenttransport")
       }
 
@@ -74,7 +85,7 @@ function page(params) {
             });
 
           setAddingDate(new Date(AddingDate.slice(0,10)));
-
+          setLoading(false);
     }
 
     info();
@@ -117,8 +128,26 @@ function page(params) {
     setReg({ ...reg, [e.target.name]: e.target.value });
   };
 
+
   const handleClick = async (e) => {
     e.preventDefault();
+
+
+    if (!isPhoneNumberValid(reg.contact)) {
+      setAlert({
+        msg: "Invalid Contact Number ",
+        type: "danger",
+      });
+      return;
+    }
+    if (!isNumberPositive(reg.capacity)) {
+      setAlert({
+        msg: "Capacity must be greater than 0 and contains only numbers",
+        type: "danger",
+      });
+      return;
+    }
+
 
     const modifieddate = new Date();
     modifieddate.setDate(modifieddate.getDate()+1);
@@ -146,13 +175,28 @@ function page(params) {
     response = await response.json();
     console.log(response);
 
+    setAlert({
+      msg: response.Msg,
+      type: response.success ? 'success' : 'danger',
+    });
+
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+
     if (response.success) {
-      router.back();
+        setTimeout(() => {
+        setAlert(null);
+        router.back();
+      }, 5000);
     }
   };
 
   return (
-    <>
+    <div style={background}>
+    {loading?(<Loader />):(
+    <div>
+    <Alert Alert={alert} />
     <h1 className="text-center m-4 bg-slate-400">Transport Update</h1>
     <div className="container">
       <div className="row">
@@ -205,7 +249,7 @@ function page(params) {
                 Contact
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="phoneNumber"
                 name="contact"
@@ -247,7 +291,7 @@ function page(params) {
                 Capacity of Passengers
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="roomCapacity"
                 name="capacity"
@@ -303,7 +347,9 @@ function page(params) {
         Submit
       </button>
     </div>
-    </>
+    </div>
+    )}
+    </div>
   );
 }
 

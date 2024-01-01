@@ -3,12 +3,23 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Alert from "@/app/(shared components)/Alert";
 
 function page() {
   const [login, setLogin] = useState({
     UserName: "",
     Password: "",
   });
+
+  const [alert, setAlert] = useState(null);
+
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
+
 
   const router = useRouter();
 
@@ -35,21 +46,22 @@ function page() {
         }),
       });
 
-      // Log raw response for troubleshooting
-      console.log(login);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
       const responseData = await response.json();
-      console.log(responseData);
-
+      setAlert({
+        msg: responseData.Msg,
+        type: responseData.success ? 'success' : 'danger',
+      });
+  
+      setTimeout(() => {
+        setAlert(null);
+      }, 5000);
+  
       if (responseData.success) {
         localStorage.setItem("adminTransLogin", JSON.stringify(responseData));
-        router.push("/transportdashboard");
-      } else {
-        console.error("Login failed. No token in the response.");
+        setTimeout(() => {
+          setAlert(null);
+          router.push("/transportdashboard");
+        }, 5000);
       }
     } catch (error) {
       console.error("Error during login:", error.message);
@@ -57,6 +69,8 @@ function page() {
   };
 
   return (
+    <div style={background}>
+    <Alert Alert={alert} />
     <div className="container d-flex justify-content-center align-items-center flex-column p-5">
       <div className="card p-4" style={cardStyle}>
         <h3 className=" py-3 text-center">
@@ -99,6 +113,7 @@ function page() {
           SignUp
         </Link>
       </div>
+    </div>
     </div>
   );
 }

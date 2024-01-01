@@ -1,4 +1,6 @@
 "use client"
+import Alert from "@/app/(shared components)/Alert";
+import { isNumberPositive } from "@/app/(shared components)/validation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import 'react-datepicker/dist/react-datepicker.css';
@@ -13,6 +15,8 @@ const page = () => {
   const cardStyle={
     boxShadow:"0 0 10px 8px"
   }
+  const [alert, setAlert] = useState(null);
+
 
   useEffect(()=>{
     let details = localStorage.getItem("rootLogin");
@@ -41,6 +45,22 @@ const page = () => {
     e.preventDefault();
     const modifiedadd = new Date();
     modifiedadd.setDate(modifiedadd.getDate()+1);  
+
+    if (!isNumberPositive(reg.price)) {
+      setAlert({
+        msg: "Price must be greater than 0 and contains only numbers",
+        type: "danger",
+      });
+      return;
+    }
+    if (!isNumberPositive(reg.total_seats)) {
+      setAlert({
+        msg: "Total Seats must be greater than 0 and contains only numbers",
+        type: "danger",
+      });
+      return;
+    }
+
     let response = await fetch("http://localhost:5005/api/addtickets",{
       method:'POST',
       headers:{
@@ -57,10 +77,26 @@ const page = () => {
     });
     response = await response.json();
     console.log(response);
-    router.back();
+    setAlert({
+      msg: response.Msg,
+      type: response.success ? 'success' : 'danger',
+    });
+
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+
+    if (response.success) {
+      setTimeout(() => {
+        setAlert(null);
+        router.back();
+      }, 3000);
+    }
   }
 
   return (
+    <>
+    <Alert Alert={alert} />
     <div className="container d-flex justify-content-center align-items-center flex-column p-5">
           <div className="card p-4"  style={cardStyle}>
             <h3 className=" py-3 text-center">Add ticket details</h3>
@@ -83,7 +119,7 @@ const page = () => {
                 Price
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="Lname"
                 placeholder="Enter your last name"
@@ -97,7 +133,7 @@ const page = () => {
                 Total Seats
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="UserName"
                 placeholder="Choose a username"
@@ -110,6 +146,7 @@ const page = () => {
             </button>
           </div>
         </div>
+        </>
   );
 
 }

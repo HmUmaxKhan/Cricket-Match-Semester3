@@ -1,10 +1,15 @@
+import Alert from "@/app/(shared components)/Alert";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { RxUpdate } from "react-icons/rx";
 
 export default function HotelListItems(props) {
     const {hotel,onDelete} = props
+    const [alert, setAlert] = useState(null);
+
+
     
     const cardStyle={
       maxWidth: "70%", marginLeft: "15%", overflow: "hidden",
@@ -25,10 +30,21 @@ export default function HotelListItems(props) {
       console.log(response);
 
       onDelete(hotel.hotel_id)
+
+      setAlert({
+        msg: response.Msg,
+        type: response.success ? 'success' : 'danger',
+      });
+  
+      setTimeout(() => {
+        setAlert(null);
+      }, 5000);
+  
     }
 
     return (
-      <div className="card mb-3 mt-3 " style={cardStyle}>
+      <div className="card mb-3 " style={cardStyle}>
+      <Alert Alert={alert} />
   <div className="row g-0">
     <div className="col-md-6" style={{ overflow: "hidden", transition: "width 0.3s ease" }}>
       {hotel && hotel.WebUrl ? (

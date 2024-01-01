@@ -55,10 +55,10 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-       return res.status(201).json({Msg:"Ticket is not added"})
+       return res.status(201).json({success:false,Msg:"Ticket is not added"})
     }
 
-    return res.status(200).json({Msg:"Ticket is inserted"});
+    return res.status(200).json({success:true,Msg:"Ticket is inserted"});
 })
 
 //Updating Matches
@@ -73,10 +73,10 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-        return res.status(201).json({Msg:"Error in the Query"})
+        return res.status(201).json({success:false,Msg:"Error in the Query"})
     }
 
-    return res.status(200).json({Msg:"Ticket Details are updated"});
+    return res.status(200).json({success:true,Msg:"Ticket Details are updated"});
 })
 
 
@@ -100,10 +100,10 @@ async(req,res)=>{
 
 
     if (!result2 || result2.length === 0) {
-        return res.status(201).json({Msg:"No tickets are found"})
+        return res.status(201).json({success:false,Msg:"No tickets are found"})
     }
 
-    return res.status(200).json({Msg:"Tickets are deleted"});
+    return res.status(200).json({success:true,Msg:"Tickets are deleted"});
 })
 
 
@@ -121,7 +121,7 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-        return res.status(201).json({Msg:"No Packages are found"})
+        return res.status(201).json({success:false,Msg:"No Packages are found"})
     }
 
     return res.status(200).json(result);
@@ -160,10 +160,10 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-       return res.status(201).json({Msg:"Package is not added"})
+       return res.status(201).json({success:false,Msg:"Package is not added"})
     }
 
-    return res.status(200).json({Msg:"Package is "});
+    return res.status(200).json({success:true,Msg:"Package is "});
 })
 
 //Updating Matches
@@ -180,10 +180,10 @@ async(req,res)=>{
     });
 
     if (!result || result.length === 0) {
-        return res.status(201).json({Msg:"Error in the Query"})
+        return res.status(201).json({success:false,Msg:"Error in the Query"})
     }
 
-    return res.status(200).json({Msg:"Package Details are updated"});
+    return res.status(200).json({success:true,Msg:"Package Details are updated"});
 })
 
 
@@ -205,7 +205,7 @@ async(req,res)=>{
         return res.status(201).json({Msg:"No tickets are found"})
     }
 
-    return res.status(200).json({Msg:"Tickets are deleted"});
+    return res.status(200).json({success:true,Msg:"Tickets are deleted"});
 })
 
 module.exports = router

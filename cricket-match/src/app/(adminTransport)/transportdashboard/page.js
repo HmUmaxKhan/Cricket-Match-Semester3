@@ -1,9 +1,10 @@
 "use client"
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ListofTransport from './components of transport/ListofTransport';
 import { useSelector } from 'react-redux';
+import Loader from '@/app/(spinner)/Loader';
 
 
 
@@ -12,6 +13,16 @@ function page() {
   const router = useRouter();
   const packageId = useSelector((state)=>state.pricingCategory.package_id);
   
+  const [loading,setLoading] = useState(true)
+
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
+
+
   useEffect(()=>{
 
     let details = localStorage.getItem("adminTransLogin");
@@ -44,22 +55,27 @@ function page() {
 
       console.log(response);
 
-      if (response===0) {
-        if(pkg_id==null || pkg_id===undefined){
-         router.push("/pricinghotel")
+      let pkg_id = localStorage.getItem("packageBus_id");
+      pkg_id = JSON.parse(pkg_id);
+
+       if(response===0){ 
+        if (pkg_id==null) {
+          router.push("/pricingbus")
+        }else{  
+       window.location.href='/paymenttransport'
         }
-        else{
-        window.location.href='/paymenthotel'
-        }
-       }
+      }
+      setLoading(false)
     }
 
     getBlock();
   })
 
   return (
-    <div>
-      <h1 className="text-center mt-3">Transport Management</h1>
+    <div style={background}>
+    {loading?(<Loader />):(
+      <div>
+      <h1 className="text-center">Transport Management</h1>
       <Link
         className="text-center btn btn-primary"
         style={{
@@ -72,6 +88,8 @@ function page() {
         Add Transport
       </Link>
       <ListofTransport />
+    </div>
+    )}
     </div>
   )
 }

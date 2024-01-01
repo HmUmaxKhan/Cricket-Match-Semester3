@@ -3,10 +3,13 @@ import Link from "next/link";
 import { MdDelete } from "react-icons/md";
 import { RxUpdate } from "react-icons/rx";
 import { LiaRouteSolid } from "react-icons/lia";
+import { useState } from "react";
+import Alert from "@/app/(shared components)/Alert";
 
 export default function ListItemsofTransport(props) {
     const {transport,onDelete} = props
-    
+    const [alert, setAlert] = useState(null);
+
     const cardStyle={
       maxWidth: "70%", marginLeft: "15%", overflow: "hidden",
       boxShadow:"0 0 10px 8px"
@@ -26,10 +29,21 @@ export default function ListItemsofTransport(props) {
       console.log(response);
 
       onDelete(transport.hotel_id)
+
+      setAlert({
+        msg: response.Msg,
+        type: response.success ? 'success' : 'danger',
+      });
+  
+      setTimeout(() => {
+        setAlert(null);
+      }, 5000);
+  
     }
 
     return (
       <div className="card mb-3 mt-3 " style={cardStyle}>
+      <Alert Alert={alert} />
   <div className="row g-0">
     <div className="col-md-6" style={{ overflow: "hidden", transition: "width 0.3s ease" }}>
           {transport.ImageUrl ? (

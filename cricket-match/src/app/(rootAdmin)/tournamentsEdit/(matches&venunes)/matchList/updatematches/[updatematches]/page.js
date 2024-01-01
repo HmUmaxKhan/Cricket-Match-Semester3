@@ -1,4 +1,7 @@
 "use client"
+import Alert from "@/app/(shared components)/Alert";
+import { isStartingDate } from "@/app/(shared components)/validation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import ReactDatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
@@ -9,6 +12,10 @@ const page = ({params}) => {
   const [matchDate,setMatchDate] = useState(new Date());
   const [addingDate,setAddingDate] = useState(new Date());
   const [tournament_id,setTournamentId] = useState();
+
+  const [alert, setAlert] = useState(null);
+  const router = useRouter();
+
 
   useEffect(()=>{
     //Getting the previous info
@@ -84,8 +91,17 @@ const page = ({params}) => {
   const handleClick =async (e) =>{
     e.preventDefault();
     
+
     const modifiedMatchDate = new Date(matchDate);
     modifiedMatchDate.setDate(modifiedMatchDate.getDate() + 1);
+
+    if (!isStartingDate(modifiedMatchDate)) {
+      setAlert({
+        msg: "Invalid Statrting Date.",
+        type: "danger",
+      });
+      return;
+    }
       
     let response = await fetch("http://localhost:5005/api/updatematch",{
       method:'PUT',
@@ -106,11 +122,27 @@ const page = ({params}) => {
     });
     response = await response.json();
     console.log(response);
-    window.location.href=`/tournamentsEdit//matchList/${tournament_id}`
+    setAlert({
+      msg: response.Msg,
+      type: response.success ? 'success' : 'danger',
+    });
+
+
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+
+    if (response.success) {
+      setTimeout(() => {
+        setAlert(null);
+        router.back();
+      }, 3000);
+    }
   }
 
   return (
     <>
+    <Alert Alert={alert}/>
     <h1 className="text-center m-4 bg-slate-400">Match Update</h1>
     <div className="container">
       <div className="row">

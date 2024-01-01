@@ -20,4 +20,21 @@ const isNumberPositive = (input) => {
         return false;
     }
 }
-module.exports = { isCnicValid, isPhoneNumberValid, isNumberPositive };
+
+const isStartingDate = (input) => {
+    if(input>Date.now()){
+        return true
+    }else{
+        return false;
+    }
+}
+
+const isEndingDate = (start,end) => {
+    if(end>start){
+        return true
+    }else{
+        return false;
+    }
+}
+
+module.exports = { isCnicValid, isPhoneNumberValid, isNumberPositive,isStartingDate, isEndingDate };

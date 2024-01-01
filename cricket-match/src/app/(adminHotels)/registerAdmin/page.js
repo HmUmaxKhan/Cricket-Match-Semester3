@@ -4,7 +4,7 @@ function page() {
   const background= {
     backgroundImage : 'url("/bgImage.jpg")',
     backgroundSize:'cover',
-    height:'100%',
+    minHeight:'100vh',
     width:'100%'
   }
 

@@ -1,11 +1,14 @@
 "use client"
 import { useEffect, useState } from "react";
 import RouteListItems from "./RouteListItems";
+import Loader from "@/app/(spinner)/Loader";
 
 function RouteList(props) {
 
     const [routes,setRoutes] = useState([]);
     const [render,setRender] = useState(false)
+    const [loading,setLoading] = useState(true)
+
   useEffect(() => {
 
     const info = async () => {
@@ -20,6 +23,7 @@ function RouteList(props) {
       response = await response.json();
       console.log(response);
       setRoutes(response);
+      setLoading(false);
     };
 
     setRender(false);
@@ -33,7 +37,10 @@ function RouteList(props) {
   }
   
 
-  return <div className="row">
+  return(
+    <div>
+    {loading?(<Loader />):(
+   <div className="row">
   {
     Array.isArray(routes) ? routes.map((item, index) => {
         return(
@@ -42,7 +49,10 @@ function RouteList(props) {
         )
     }):(<h2 className="text-center mb-3">No Routes are added</h2>)
 }
-    </div>;
+    </div>
+    )}
+    </div>
+  )
 }
 
 export default RouteList;

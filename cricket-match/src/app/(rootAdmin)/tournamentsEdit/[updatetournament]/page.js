@@ -1,4 +1,7 @@
 "use client"
+import Alert from "@/app/(shared components)/Alert";
+import { isEndingDate, isStartingDate } from "@/app/(shared components)/validation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import ReactDatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
@@ -10,6 +13,11 @@ const page = (params) => {
   const [startDate,setStartDate]=useState(new Date());
   const [endingDate,setEndingDate]=useState(new Date());
   const [addingDate,setAddingDate]=useState(new Date());
+
+  const [alert, setAlert] = useState(null);
+  const router = useRouter();
+
+
 
   console.log(params.params.updatetournament);
   useEffect(()=>{
@@ -65,11 +73,30 @@ const page = (params) => {
 
     const handleClick = async (e) => {
       e.preventDefault();
+
       const modifiedStartDate = new Date(startDate);
       modifiedStartDate.setDate(modifiedStartDate.getDate() + 1);
       
+      const modifiedAddingDate = new Date(addingDate);
+      modifiedAddingDate.setDate(modifiedAddingDate.getDate() + 1);
+      
       const modifiedEndDate = new Date(endingDate);
       modifiedEndDate.setDate(modifiedEndDate.getDate() + 1);
+
+      if (!isStartingDate(modifiedStartDate)) {
+        setAlert({
+          msg: "Invalid Statrting Date.",
+          type: "danger",
+        });
+        return;
+      }
+      if (!isEndingDate(modifiedStartDate,modifiedEndDate)) {
+        setAlert({
+          msg: "Invalid Ending Date Date.",
+          type: "danger",
+        });
+        return;
+      }
       
     
       let response = await fetch("http://localhost:5005/api/updatetournament",{
@@ -82,17 +109,34 @@ const page = (params) => {
           TournamentName:name,
           StartingDate: modifiedStartDate.toISOString().slice(0, 10),
           EndingDate: modifiedEndDate.toISOString().slice(0, 10),
-          AddingDate: addingDate.toISOString().slice(0, 10),
+          AddingDate: modifiedAddingDate.toISOString().slice(0, 10),
           ImageUrl:image
         }),
       });
       response = await response.json();
       console.log(response);
-      window.location.href="/tournamentsEdit"
+
+      setAlert({
+        msg: response.Msg,
+        type: response.success ? 'success' : 'danger',
+      });
+  
+
+      setTimeout(() => {
+        setAlert(null);
+      }, 5000);
+  
+      if (response.success) {
+        setTimeout(() => {
+          setAlert(null);
+          router.back();
+        }, 3000);
+      }
     }
     
   return (
     <>
+    <Alert Alert={alert}/>
     <h1 className="text-center m-4 bg-slate-400">Update Tournament Details</h1>
     <div className="container">
       <div className="row">
