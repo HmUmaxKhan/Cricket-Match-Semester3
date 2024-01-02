@@ -9,7 +9,7 @@ router.post("/transportusers", async(req,res)=>{
 
     try {
     // Taking Data from the Sql
-    const results = await querySql({
+    let results = await querySql({
         query:"select * from Transport where city = ( select location from venues where match_id = ?)",
         values:[match_id]
     });
@@ -18,6 +18,8 @@ router.post("/transportusers", async(req,res)=>{
     if (!results || results.length===0) {
        return  res.status(204).json({Msg:"There are no Transport in this City"})
     }
+
+    results = results.filter(result=>result.showing===1);
     
     return res.status(201).json({result:results})
 

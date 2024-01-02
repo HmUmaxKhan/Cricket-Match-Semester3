@@ -191,7 +191,7 @@ function Hotelreg() {
 
             <div className="mb-3">
               <label htmlFor="phoneNumber" className="form-label">
-                Phone Number
+                Phone Number <small>(Use country code like +92 and do not includes the dashes)</small>
               </label>
               <input
                 type="text"
@@ -230,7 +230,7 @@ function Hotelreg() {
 
             <div className="mb-3">
               <label htmlFor="roomCapacity" className="form-label">
-                No. of Rooms
+                No. of Rooms <small>(Rooms must be greater than 0)</small>
               </label>
               <input
                 type="text"
@@ -243,7 +243,7 @@ function Hotelreg() {
 
             <div className="mb-3">
               <label htmlFor="roomPrice" className="form-label">
-                Price
+                Price <small>(Price must be greater than 0)</small>
               </label>
               <input
                 type="number"

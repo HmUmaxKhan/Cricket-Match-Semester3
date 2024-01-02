@@ -189,7 +189,7 @@ import Alert from '@/app/(shared components)/Alert';
     
             <div className="mb-3">
               <label htmlFor="Contact" className="form-label">
-                Phone
+                Phone <small>(Use country code like +92 and do not includes the dashes)</small>
               </label>
               <input
                 type="text"
@@ -203,7 +203,7 @@ import Alert from '@/app/(shared components)/Alert';
     
             <div className="mb-3">
               <label htmlFor="CNIC" className="form-label">
-                CNIC
+                CNIC <small>(Do not includes the dashes)</small>
               </label>
               <input
                 type="text"

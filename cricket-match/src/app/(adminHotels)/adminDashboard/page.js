@@ -45,19 +45,15 @@ function page() {
 
       response =await response.json();
 
-      console.log(response);
-
       let pkg_id = localStorage.getItem("packageHotel_id");
       pkg_id = JSON.parse(pkg_id);
-      console.log(pkg_id);
 
-      if (pkg_id==null || pkg_id===undefined) {
-       if(response===0){
-        window.location.href='/paymenthotel'
-       }
-       else{
-      router.push("/pricinghotel")
-       }
+      if(response===0){ 
+        if (pkg_id==null) {
+          router.push("/pricinghotel")
+        }else{  
+       window.location.href='/paymenthotel'
+        }
       }
       setLoading(false)
     }

@@ -34,11 +34,13 @@ export default function HotelsList(props){
                     transport_id: props.transportId
                 })
               });
-              response = await response.json();
               console.log(response);
-              setRoute(response);  
-              SetLoading(false);
+              response = await response.json();
+              
+              setRoute(response.result);  
+              
             };
+            SetLoading(false);
         lists();    
 },[])  
 

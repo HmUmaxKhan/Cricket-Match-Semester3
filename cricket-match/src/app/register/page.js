@@ -126,7 +126,7 @@ function Login() {
     <div className="container d-flex justify-content-center align-items-center flex-column p-5">
       <div className="card p-4" style={cardStyle}>
         <h3 className=" py-3 text-center">
-          Registration Information for Transport Admin
+          Registration of User
         </h3>
 
         <div className="mb-3">
@@ -201,7 +201,7 @@ function Login() {
 
         <div className="mb-3">
           <label htmlFor="Contact" className="form-label">
-            Phone
+            Phone <small>(Use country code like +92 and do not includes the dashes)</small>
           </label>
           <input
             type="text"
@@ -215,7 +215,7 @@ function Login() {
 
         <div className="mb-3">
           <label htmlFor="CNIC" className="form-label">
-            CNIC
+            CNIC <small>(Do not includes the dashes)</small>
           </label>
           <input
             type="text"

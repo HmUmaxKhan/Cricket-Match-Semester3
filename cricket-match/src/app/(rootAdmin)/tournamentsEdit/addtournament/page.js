@@ -18,7 +18,14 @@ const page = () => {
 
   const [alert, setAlert] = useState(null);
 
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
 
+  console.log(user_id);
 
     const handleImageChange = (e)=>{
       const file = e.target.files[0];
@@ -116,7 +123,7 @@ const page = () => {
     }
     
   return (
-    <>
+    <div style={background}>
     <Alert Alert={alert} />
     <h1 className="text-center m-4 bg-slate-400">Add Tournament</h1>
     <div className="container">
@@ -199,7 +206,7 @@ const page = () => {
       </button>
 
     </div>
-    </>
+    </div>
   );
 
 }

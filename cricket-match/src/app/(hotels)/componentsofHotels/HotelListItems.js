@@ -38,7 +38,7 @@ export default function HotelListItems(props) {
         <h5>City: {hotel.City}</h5>
         <h5>Contact No: {hotel.PhoneNumber}</h5>
         <h5>Email: {hotel.Email}</h5>
-        <Link href={hotel.WebUrl?hotel.WebUrl:""}> <FaExternalLinkSquareAlt size={40}/> </Link>
+        <a href={`/${hotel.WebUrl?hotel.WebUrl:""}`}> <FaExternalLinkSquareAlt size={40}/> </a>
       </div>
     </div>
   </div>

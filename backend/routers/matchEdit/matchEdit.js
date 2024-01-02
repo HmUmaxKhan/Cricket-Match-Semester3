@@ -49,6 +49,24 @@ async(req,res)=>{
     const {tournament_id,match_date,match_time,team1,team2,img,AddingDate,venue_name,location,user_id} = req.body
 
 
+    const tournamentResult = await querySql({
+        query: "Select * from tournament where tournament_id = ?",
+        values: [tournament_id]
+    });
+
+    const tournament = tournamentResult[0];
+    const start = new Date(tournament.StartingDate);
+    const end = new Date(tournament.EndingDate);
+    const matchDate = new Date(match_date);
+
+    if (matchDate < start) {
+      return res.status(201).json({ success: false, Msg: "Match should not be placed before Starting Date" });
+    }
+
+    if (matchDate > end) {
+      return res.status(201).json({ success: false, Msg: "Match should not be placed after Ending Date" });
+    }
+
     const result = await querySql({
         query: "INSERT INTO matches (tournament_id,match_date,match_time, team1, team2, AddingDate,img,user_id) VALUES (?, ?, ?, ?,?,?,?,?)",
         values: [tournament_id,match_date,match_time, team1, team2, AddingDate,img,user_id]
@@ -63,6 +81,7 @@ async(req,res)=>{
         query: "INSERT INTO venues (venue_name,match_id,location,AddingDate) VALUES (?, ?, ?, ?)",
         values: [venue_name,match_id,location,AddingDate]
     });
+
 
     if (!result || result.length === 0) {
        return res.status(201).json({success:false,Msg:"No tournaments are found"})

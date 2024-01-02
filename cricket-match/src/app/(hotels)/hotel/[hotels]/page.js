@@ -13,7 +13,6 @@ export default function page({params}) {
 
   return (
     <div style={background}>
-    <h1> Hotels Schedules are following</h1>
         <HotelsList hotels= {params.hotels}/>
     </div>
   )

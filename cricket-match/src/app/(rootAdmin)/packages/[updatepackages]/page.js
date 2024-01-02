@@ -14,6 +14,13 @@ const page = ({params}) => {
     boxShadow:"0 0 10px 8px"
   }
 
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
+
   const [alert, setAlert] = useState(null);
   const router = useRouter()
   
@@ -115,14 +122,14 @@ const page = ({params}) => {
   }
 
   return (
-    <>
+    <div style={background}>
     <Alert Alert={alert} />
     <div className="container d-flex justify-content-center align-items-center flex-column p-5">
           <div className="card p-4"  style={cardStyle}>
             <h3 className=" py-3 text-center">Update the Package</h3>
             <div className="mb-3">
               <label htmlFor="Fname" className="form-label">
-                Duration IN Days
+                Duration IN Days <small>(Must be greater than 0)</small>
               </label>
               <input
                 type="text"
@@ -152,7 +159,7 @@ const page = ({params}) => {
     
             <div className="mb-3">
               <label htmlFor="UserName" className="form-label">
-                Package Fee
+                Package Fee <small>(Must be greater than 0)</small>
               </label>
               <input
                 type="text"
@@ -169,7 +176,7 @@ const page = ({params}) => {
             </button>
           </div>
         </div>
-        </>
+        </div>
   );
 
 }

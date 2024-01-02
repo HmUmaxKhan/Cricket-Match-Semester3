@@ -18,6 +18,12 @@ const page = (params) => {
   const router = useRouter();
 
 
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
 
   console.log(params.params.updatetournament);
   useEffect(()=>{
@@ -135,7 +141,7 @@ const page = (params) => {
     }
     
   return (
-    <>
+    <div style={background}>
     <Alert Alert={alert}/>
     <h1 className="text-center m-4 bg-slate-400">Update Tournament Details</h1>
     <div className="container">
@@ -218,7 +224,7 @@ const page = (params) => {
       </button>
 
     </div>
-    </>
+    </div>
   );
 
 }

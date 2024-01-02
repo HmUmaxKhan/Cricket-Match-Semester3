@@ -5,6 +5,7 @@ import { MdOutlineEmojiTransportation } from "react-icons/md";
 import { FaHotel } from "react-icons/fa6";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { logout } from "./logout";
 function Navbar(props) {
 
   const cardStyle = {
@@ -70,11 +71,24 @@ function Navbar(props) {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-             {isLogged? <Image src={base64image} width={40} height={40} alt="login" />
+             {isLogged? <Image src={base64image} width={40} height={40} style={{borderRadius:"100%"}} alt="login" />
             :<Image src={"/login.jpg"} width={40} height={40} alt="login" />}
               
               </Link>
 
+              {isLogged? 
+                <ul className="dropdown-menu">
+                <li>
+                  <Link className="dropdown-item" href="/update">
+                    update
+                  </Link>
+                </li>
+                <li>
+                  <button className="dropdown-item" onClick={logout}>
+                    Logout
+                  </button>
+                </li>
+              </ul>:
               <ul className="dropdown-menu">
                 <li>
                   <Link className="dropdown-item" href="/login">
@@ -87,6 +101,7 @@ function Navbar(props) {
                   </Link>
                 </li>
               </ul>
+              }
             </div>
           </div>
         </div>

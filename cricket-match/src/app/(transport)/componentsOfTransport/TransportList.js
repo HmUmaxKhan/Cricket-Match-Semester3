@@ -43,7 +43,7 @@ export default function TransportList(props) {
     {loading?(<Loader />):(
     <div>
       <Navbar val={true} img={img} />
-      <h1 className="text-center m-3 mt-4">List of Hotels</h1>
+      <h1 className="text-center m-3 mt-4">List of Transports</h1>
       {Array.isArray(transports) && transports.length !== 0 ? (
         transports.map((item, index) => {
           return { key: index }, (<TransportListItems transport={item} />);

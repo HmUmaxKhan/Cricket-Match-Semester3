@@ -1,9 +1,23 @@
 "use client"
 import { useEffect, useState } from "react"
+import Alert from "../(shared components)/Alert";
+import Navbar from "../(shared components)/Navbar";
+import Link from "next/link";
+import { isCnicValid, isPhoneNumberValid } from "../(shared components)/validation";
 
 const UpdatePage = () => {
 
   const [userDetails,SetUserDetails] = useState({});
+  const [img,SetImage] = useState();
+
+  const [alert, setAlert] = useState(null);
+
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
 
   useEffect(()=>{
     //Getting the previous info
@@ -14,7 +28,7 @@ const UpdatePage = () => {
       const loginInfo=JSON.parse(localStorage.getItem('login'));
       SetUserDetails(loginInfo);
   
-      const { EmailAddress, Fname, Lname, UserName, Contact, CNIC, Address } = loginInfo;
+      const { EmailAddress, Fname, Lname, UserName, Contact, CNIC, Address , ProfilePhoto} = loginInfo;
 
       setReg({
         EmailAddress,
@@ -25,8 +39,31 @@ const UpdatePage = () => {
         CNIC,
         Address
       });
+      SetImage(ProfilePhoto)
     }
   }, []);
+
+  const cardStyle = {
+    boxShadow: "0 0 10px 8px rgba(0,0,0,0.1)",
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    convertToBase64(file);
+  };
+
+  const convertToBase64 = (file) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64String = reader.result.split(",")[1];
+      SetImage(base64String);
+    };
+
+    // Ensure to read the file as data URL
+    reader.readAsDataURL(file);
+  };
+
 
   const [reg, setReg] = useState({
     EmailAddress: "",
@@ -44,6 +81,24 @@ const UpdatePage = () => {
 
   const handleClick =async (e) =>{
     e.preventDefault();
+
+    if (!isCnicValid(reg.CNIC)) {
+      setAlert({
+        msg: "Invalid CNIC ",
+        type: "danger",
+      });
+      return;
+    }
+
+    if (!isPhoneNumberValid(reg.Contact)) {
+      setAlert({
+        msg: "Invalid Contact Number ",
+        type: "danger",
+      });
+      return;
+    }
+
+
     console.log(reg);
     let response = await fetch("http://localhost:5005/api/auth/update",{
       method:'PUT',
@@ -57,63 +112,166 @@ const UpdatePage = () => {
             UserName:reg.UserName,
             Contact:reg.Contact,
             CNIC:reg.CNIC,
-            Address:reg.Address
+            Address:reg.Address,
+            ProfilePhoto:img
       })
     });
     response = await response.json();
     console.log(response);
+
+    setAlert({
+      msg: response.Msg,
+      type: response.success ? 'success' : 'danger',
+    });
+
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+
+    if (response.success) {
+      setTimeout(() => {
+        setAlert(null);
+        router.push("/login");
+      }, 3000);
+    }
   }
 
   return (
-    <div className='container flex justify-center items-center flex-col'  style={{height:"100vh"}}> 
+    <div style={background}>
+    <Navbar />
+    <Alert Alert={alert} />
+    <div className="container d-flex justify-content-center align-items-center flex-column p-5">
+      <div className="card p-4" style={cardStyle}>
+        <h3 className=" py-3 text-center">
+           Update Profile
+        </h3>
 
-    <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Fname" value={reg.Fname} onChange={Change} />
-  <label htmlFor="floatingInput">First Name</label>
-</div>
-<br></br>
+        <div className="mb-3">
+          <label htmlFor="Fname" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="Fname"
+            placeholder="Enter your first name"
+            name="Fname"
+            onChange={Change}
+            value={reg.Fname}
+          />
+        </div>
 
-    <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Lname" value={reg.Lname} onChange={Change} readOnly/>
-  <label htmlFor="floatingInput">Last Name</label>
-</div>
-<br></br>
+        <div className="mb-3">
+          <label htmlFor="Lname" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="Lname"
+            placeholder="Enter your last name"
+            name="Lname"
+            onChange={Change}
+            value={reg.Lname}
+          />
+        </div>
 
+        <div className="mb-3">
+          <label htmlFor="UserName" className="form-label">
+            Username
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="UserName"
+            placeholder="Choose a username"
+            name="UserName"
+            onChange={Change}
+            value={reg.UserName}
+          />
+        </div>
 
-    <div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="UserName" value={reg.UserName} onChange={Change} />
-  <label htmlFor="floatingInput">Username</label>
-</div>
-<br></br>
+        <div className="mb-3">
+          <label htmlFor="EmailAddress" className="form-label">
+            Email address
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="EmailAddress"
+            placeholder="name@example.com"
+            name="EmailAddress"
+            onChange={Change}
+            value={reg.EmailAddress}
+          />
+        </div>
 
+        <div className="mb-3">
+          <label htmlFor="Contact" className="form-label">
+            Phone <small>(Use country code like +92 and do not includes the dashes)</small>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="Contact"
+            placeholder="Enter your phone number"
+            name="Contact"
+            onChange={Change}
+            value={reg.Contact}
+          />
+        </div>
 
-<div className="form-floating mb-3 ">
-  <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" name="EmailAddress" value={reg.EmailAddress} onChange={Change} />
-  <label htmlFor="floatingInput">Email address</label>
-</div>
-<br></br>
+        <div className="mb-3">
+          <label htmlFor="Address" className="form-label">
+            Address
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="Address"
+            placeholder="Enter your address"
+            name="Address"
+            onChange={Change}
+            value={reg.Address}
+          />
+        </div>
 
+        <div className="col-md-6">
+          <div className="mb-3">
+            <label htmlFor="image" className="form-label">
+              Upload Image
+            </label>
+            <input
+              type="file"
+              className="form-control"
+              accept=".jpeg, .jpg, .png"
+              onChange={handleImageChange}
+            />
+          </div>
 
-<div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" value={reg.Contact} name="Contact" onChange={Change} />
-  <label htmlFor="floatingInput">Phone</label>
-</div>
-<br></br>
+          {img && (
+            <div className="mb-3">
+              <label className="form-label">Image Preview</label>
+              <img
+                src={`data:image/png;base64,${img}`}
+                alt="Preview"
+                className="img-thumbnail"
+              />
+            </div>
+          )}
+        </div>
 
-<div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="CNIC" value={reg.CNIC} onChange={Change} disabled/>
-  <label htmlFor="floatingInput">CNIC</label>
-</div>
-<br></br>
+        <button type="button" className="btn btn-success" onClick={handleClick}>
+          Submit
+        </button>
 
-<div className="form-floating mb-3 ">
-  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" name="Address" value={reg.Address} onChange={Change} />
-  <label htmlFor="floatingInput">CNIC</label>
-</div>
-<br></br>
-
-<button className=' text-center bg-slate-400' onClick={handleClick}>Submit</button>
+        <Link href="/login" className="link  mt-3">
+          Login
+        </Link>
+      </div>
     </div>
+    </div>
+
 
   )
 

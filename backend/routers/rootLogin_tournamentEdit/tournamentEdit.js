@@ -24,12 +24,12 @@ router.post("/rootlogin", async(req,res)=>{
 
     const len = results.length;
 
-    if (!results || len==0) {
+    if (!results) {
         return res.json({Msg:"User with this username is not exits"})
     }
 
     if (results[0].usertype!=="rootadmin") {
-        res.status(401).json({Msg:"You are not allowed to access this"})
+        res.status(401).json({success:false,Msg:"You are not allowed to access this"})
     }
     
     // Comparing Hash Password and Simple Password
@@ -40,7 +40,7 @@ router.post("/rootlogin", async(req,res)=>{
     
 
     if (Pass!==Password) {
-        return res.json({Msg:"Invalid Password"})
+        return res.json({success:false,Msg:"Invalid Password"})
 
     }else{
 
@@ -50,7 +50,7 @@ router.post("/rootlogin", async(req,res)=>{
     const token = JWT.sign({EmailAddress:results[0].EmailAddress,userId:userid},"Hello World , My life is js");
 
     // Last response 
-    return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,usertype:results[0].usertype});
+    return res.status(201).json({user_id:userid, Fname:results[0].Fname,Lname:results[0].Lname,EmailAddress:results[0].EmailAddress,UserName,Contact:results[0].Contact,Address:results[0].Address,token,usertype:results[0].usertype,success:true,Msg:`Welcome  Sir`});
     }
 
 } catch (error) {
@@ -66,7 +66,7 @@ async(req,res)=>{
         values:[]
     });
 
-    if (!result || result.length === 0) {
+    if (!result) {
         return res.status(201).json({Msg:"No tournaments are found"})
     }
 
@@ -83,7 +83,7 @@ async(req,res)=>{
         values:[tournament_id]
     });
 
-    if (!result || result.length === 0) {
+    if (!result) {
        return  res.status(201).json({Msg:"No tournaments are found"})
     }
 
@@ -91,29 +91,64 @@ async(req,res)=>{
 })
 
 
-router.post("/addtournament",
-async(req,res)=>{
+// router.post("/addtournament",
+// async(req,res)=>{
 
-    let {TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl,user_id} = req.body
+//     let {TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl,user_id} = req.body
 
-    console.log(TournamentName,StartingDate,EndingDate,AddingDate,ImageUrl,user_id);
+//     console.log(TournamentName,StartingDate,EndingDate,AddingDate,user_id);
 
-    StartingDate = StartingDate.slice(0,10)
-    EndingDate = EndingDate.slice(0,10)
-    AddingDate = AddingDate.slice(0,10)
+//     StartingDate = StartingDate.slice(0,10)
+//     EndingDate = EndingDate.slice(0,10)
+//     AddingDate = AddingDate.slice(0,10)
 
-    const result = await querySql({
-        query: "INSERT INTO tournament (TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl,user_id) VALUES (?,?,?,?,?,?)",
-        values: [TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl,user_id]
-    });
+//     const result = await querySql({
+//         query: "INSERT INTO tournament (TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl,user_id) VALUES (?,?,?,?,?,?)",
+//         values: [TournamentName, StartingDate, EndingDate, AddingDate,ImageUrl,user_id]
+//     });
     
 
-    if (!result || result.length === 0) {
-       return res.status(201).json({success:false,Msg:"No tournaments are found"})
-    }
+//     if (!result || result.length === 0) {
+//        return res.status(201).json({success:false,Msg:"No tournaments are found"})
+//     }
 
-     return res.status(200).json({success:true,Msg:"Tournament is inserted"});
-})
+//      return res.status(200).json({success:true,Msg:"Tournament is inserted"});
+// })
+
+router.post("/addtournament", async (req, res) => {
+    let { TournamentName, StartingDate, EndingDate, AddingDate, ImageUrl, user_id } = req.body;
+
+    console.log(TournamentName, StartingDate, EndingDate, AddingDate, user_id);
+
+    StartingDate = StartingDate.slice(0, 10);
+    EndingDate = EndingDate.slice(0, 10);
+    AddingDate = AddingDate.slice(0, 10);
+
+    const sqlQuery = "INSERT INTO tournament (TournamentName, StartingDate, EndingDate, AddingDate, ImageUrl, user_id) VALUES (?,?,?,?,?,?)";
+    const values = [TournamentName, StartingDate, EndingDate, AddingDate, ImageUrl, user_id];
+
+    console.log("SQL Query:", sqlQuery);
+    console.log("Values:", values);
+
+    try {
+        const result = await querySql({
+            query: sqlQuery,
+            values: values
+        });
+
+        console.log("Query Result:", result);
+
+        if (!result || result.length === 0) {
+            return res.status(201).json({ success: false, Msg: "No tournaments are found" });
+        }
+
+        return res.status(200).json({ success: true, Msg: "Tournament is inserted" });
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ success: false, Msg: "Internal server error" });
+    }
+});
+
 
 router.put("/updatetournament",
 async(req,res)=>{

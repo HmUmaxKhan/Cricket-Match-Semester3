@@ -4,6 +4,14 @@ import { useEffect } from "react"
 
 function page() {
 
+  const background= {
+    backgroundImage : 'url("/bgImage.jpg")',
+    backgroundSize:'cover',
+    minHeight:'100vh',
+    width:'100%'
+  }
+
+
   useEffect(()=>{
     let details = localStorage.getItem("rootLogin")
 
@@ -21,10 +29,14 @@ function page() {
   })
 
   return (
-    <div>
-        <h1>Root Login</h1>
-        <Link href="/tournamentsEdit">Tournaments</Link><br></br>
-        <Link href="/packages">Packages</Link>
+    <div style={background}>
+        <h1 className="text-center">Root Login</h1>
+        <div style={{display:"flex", justifyContent:"space-evenly", marginTop:"80px"}}>
+
+        <Link className="btn btn-primary"  href="/tournamentsEdit">Tournaments</Link><br></br>
+        <Link className="btn btn-primary" href="/packages">Packages</Link><br></br>
+        <Link className="btn btn-primary" href="/history">History</Link>
+        </div>
     </div>
   )
 }

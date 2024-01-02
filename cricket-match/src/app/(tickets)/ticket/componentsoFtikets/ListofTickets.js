@@ -51,7 +51,7 @@ export default function TransportList(props) {
     ) : (
       <div>
         <Navbar val={true} img={img} />
-        <h1 className="text-center m-3 mt-4">List of Hotels</h1>
+        <h1 className="text-center m-3 mt-4">Tickets</h1>
         {Array.isArray(tickets) && tickets.length !== 0 ? (
           tickets.map((item, index) => (
             <ListItemsofTickets

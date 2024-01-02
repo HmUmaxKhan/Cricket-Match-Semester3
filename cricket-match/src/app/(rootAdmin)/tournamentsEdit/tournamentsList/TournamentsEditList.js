@@ -9,9 +9,9 @@ function TournamentsEditList() {
   useEffect(() => {
     //Getting the previous info
 
-    let details = localStorage.getItem("adminLogin");
+    let details = localStorage.getItem("rootLogin");
     if (!details && details === null) {
-      window.location.href = "/hotelloginAdmin";
+      window.location.href = "/rootadminlogin";
     }
     details = JSON.parse(details);
 

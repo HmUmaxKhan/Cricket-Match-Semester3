@@ -177,8 +177,8 @@ router.post('/transportreg', async (req, res) => {
     // Insert data into the database
     const result = await querySql({
       query: `
-        INSERT INTO Transport (transportName, model, numberPlate, capacity, city, email, website, contact, ImageUrl, admin_id,AddingDate,user_id)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+        INSERT INTO Transport (transportName, model, numberPlate, capacity, city, email, website, contact, ImageUrl, admin_id,AddingDate,user_id,showing)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
       `,
       values: [
         transportName,
@@ -192,7 +192,8 @@ router.post('/transportreg', async (req, res) => {
         ImageUrl,
         admin_id,
         AddingDate,
-        user_id
+        user_id,
+        1
       ],
     });
 
@@ -207,7 +208,7 @@ router.post('/transportreg', async (req, res) => {
 
 
     // Respond with success
-    return res.status(200).json({ success: true, Msg: 'Hotel registration successful', result });
+    return res.status(200).json({ success: true, Msg: 'Transport registration successful', result });
 
   } catch (error) {
     console.error('Error registering hotel:', error);
@@ -271,6 +272,16 @@ router.post('/paymentadmin', async (req, res) => {
     }    
     const result1 = await querySql({
       query:`Update Admins Set blocked = 1 where admin_id = ?`,
+      values:[admin_id]
+    })
+
+    const result2 = await querySql({
+      query:`Update Hotels Set showing = 1 where admin_id = ?`,
+      values:[admin_id]
+    })
+
+    const result3 = await querySql({
+      query:`Update Transport Set showing = 1 where admin_id = ?`,
       values:[admin_id]
     })
 

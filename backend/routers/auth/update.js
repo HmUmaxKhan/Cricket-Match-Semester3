@@ -7,7 +7,7 @@ const AuthToken = require("../../middlewares/authMiddleware");
 
 router.put("/update",
 async(req,res)=>{
-    let {Fname,Lname,UserName,Contact,EmailAddress,CNIC,Address} = req.body;
+    let {Fname,Lname,UserName,Contact,EmailAddress,CNIC,Address,ProfilePhoto} = req.body;
 
     try {
 
@@ -19,11 +19,11 @@ async(req,res)=>{
           });
 
           if(user){
-            res.status(200).json({Details:"Your Info has been updated"});
+            res.status(200).json({success:true,Msg:'Info has been updated'});
           }
         
     } catch (error) {
-        res.status(600).json({ERROR:"You are gettinhg error"});
+        res.status(600).json({success:false,Msg:'Info has not been updated'});
     }
 })
 

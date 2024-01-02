@@ -15,11 +15,11 @@ router.post("/routes", async(req,res)=>{
     });
 
     // Checking if the result is present or not
-    if (!results || results.length===0) {
-        return res.status(204).json({Msg:"There are no Tournaments"})
+    if (!results) {
+        return res.status(204).json({success:false,Msg:"There are no Tournaments"})
     }
 
-    return res.status(201).json(results)
+    return res.status(201).json({result:results,success:true,Msg:`Routes are shown`})
 
 } catch (error) {
  console.log(error);       
